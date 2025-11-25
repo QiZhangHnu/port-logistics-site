@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>港口物流知识图谱 - 教学思维导图</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --dot: rgba(0, 0, 0, 0.04);
+      --link: #b0bec5;
+      --root-bg: #007bff;
+      --root-text: #ffffff;
+      --lvl1-bg: #e3f2fd;
+      --lvl1-text: #0d47a1;
+      --lvl2-bg: #ffffff;
+      --lvl2-border: #c6d8ec;
+      --lvl2-text: #37474f;
+      --shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+      --badge-bg: #ffe0b2;
+      --badge-text: #e57c04;
+      --badge-bg-gray: #eceff1;
+      --badge-text-gray: #546e7a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Nunito", "Segoe UI", sans-serif;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 0),
+        radial-gradient(circle at 12px 12px, rgba(0, 0, 0, 0.02) 1px, transparent 0);
+      background-size: 18px 18px, 36px 36px;
+      color: #263238;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header.hero {
+      padding: 22px 26px 10px;
+    }
+
+    .hero__title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: #1f3a5f;
+      margin: 0;
+    }
+
+    .hero__subtitle {
+      margin-top: 6px;
+      color: #607d8b;
+      font-size: 14px;
+    }
+
+    #tree-container {
+      flex: 1;
+      min-height: calc(100vh - 100px);
+      padding: 6px 14px 22px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      font-family: "Nunito", "Segoe UI", sans-serif;
+    }
+
+    .link {
+      fill: none;
+      stroke: var(--link);
+      stroke-width: 2px;
+      stroke-linecap: round;
+      opacity: 0.9;
+    }
+
+    .node-fo {
+      overflow: visible;
+    }
+
+    .node-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      padding: 12px 14px;
+      border: 1px solid transparent;
+      width: 230px;
+      min-height: 76px;
+      pointer-events: all;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .node-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+    }
+
+    .node-card.root {
+      background: var(--root-bg);
+      color: var(--root-text);
+      border-color: #006ae0;
+    }
+
+    .node-card.level1 {
+      background: var(--lvl1-bg);
+      color: var(--lvl1-text);
+      border-color: #c2dffc;
+    }
+
+    .node-card.level2 {
+      background: var(--lvl2-bg);
+      color: var(--lvl2-text);
+      border: 1px solid var(--lvl2-border);
+    }
+
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      background: #e0f7fa;
+      border: 1px solid #c5e9ef;
+    }
+
+    .card-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #0056b3;
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+      word-break: break-word;
+      margin: 0;
+    }
+
+    .badge-row {
+      display: inline-flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .tag.primary {
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      border-color: #ffc66d;
+    }
+
+    .tag.neutral {
+      background: var(--badge-bg-gray);
+      color: var(--badge-text-gray);
+      border-color: #d9e0e5;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <h1 class="hero__title">《港口物流》课程知识图谱</h1>
+    <div class="hero__subtitle">现代化教学思维导图 · 点击节点展开/收起 · 左至右布局</div>
+  </header>
+  <div id="tree-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script id="knowledge-json" type="application/json">
+[
+  {
+    "id": "ch9_1",
+    "title": "第九章 港口集装箱运输业务管理",
+    "children": [
+      {
+        "id": "ch9_2",
+        "title": "集装箱运输概述",
+        "children": [
+          {
+            "id": "ch9_3",
+            "title": "集装箱运输的起源",
+            "children": [
+              {
+                "id": "ch9_4",
+                "title": "早期的集装箱运输设想与实践",
+                "children": []
+              },
+              {
+                "id": "ch9_5",
+                "title": "现代集装箱运输的开创期 \\(1956~1965 年 \\)",
+                "children": []
+              },
+              {
+                "id": "ch9_6",
+                "title": "集装箱运输成长期 \\(1966~1971 年 \\)",
+                "children": []
+              },
+              {
+                "id": "ch9_7",
+                "title": "集装箱运输扩展期 \\(1971~1988 年）",
+                "children": []
+              },
+              {
+                "id": "ch9_8",
+                "title": "集装箱运输成熟期 \\(20 世纪 80 年代末至今 \\)",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch9_9",
+            "title": "集装箱与集装箱运输的定义",
+            "children": []
+          },
+          {
+            "id": "ch9_10",
+            "title": "集装箱运输的特点和优缺点",
+            "children": [
+              {
+                "id": "ch9_11",
+                "title": "集装箱运输的特点",
+                "children": [
+                  {
+                    "id": "ch9_12",
+                    "title": "\\(1\\) 集装箱运输是一种“门到门”运输。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_13",
+                    "title": "\\(2\\) 集装箱运输是一种多式联运。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_14",
+                    "title": "\\(3\\) 集装箱运输方式是一种高效率的运输方式。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_15",
+                    "title": "\\(4\\) 集装箱是一种消除了所运货物外形差异的运输方式。",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch9_16",
+                "title": "集装箱运输的优越性",
+                "children": [
+                  {
+                    "id": "ch9_17",
+                    "title": "\\(1\\) 扩大成组单元，提高装卸效率，降低劳动强度。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_18",
+                    "title": "\\(2\\) 减少货损、货差，提高货物运输的安全与质量水平。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_19",
+                    "title": "\\(3\\) 缩短货物在途时间，降低流成本。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_20",
+                    "title": "\\(4\\) 节省货物运输包装费用，简化理货工作。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_21",
+                    "title": "\\(5\\) 减少货物运输费用。",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch9_22",
+                "title": "集装箱运输的缺陷",
+                "children": [
+                  {
+                    "id": "ch9_23",
+                    "title": "集装箱运输需要大量的初始投资。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_24",
+                    "title": "\\(2\\) 建立新的管理体制，形成新的管理人员队伍。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_25",
+                    "title": "\\(3\\) 增加了一些潜在的不安全因素。",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ch9_26",
+            "title": "集装箱运输系统",
+            "children": [
+              {
+                "id": "ch9_27",
+                "title": "集装箱运输的基本要素",
+                "children": [
+                  {
+                    "id": "ch9_28",
+                    "title": "适箱货源",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_29",
+                    "title": "标准集装箱",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_30",
+                    "title": "集装箱船舶",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_31",
+                    "title": "集装箱码头",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_32",
+                    "title": "集装箱货运站",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_33",
+                    "title": "集装箱卡车",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_34",
+                    "title": "集装箱铁路专用车",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch9_35",
+                "title": "集装箱运输的子系统",
+                "children": [
+                  {
+                    "id": "ch9_36",
+                    "title": "水路运输子系统",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_37",
+                    "title": "铁路运输子系统",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_38",
+                    "title": "公路运输子系统",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_39",
+                    "title": "航空运输子系统",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch9_40",
+        "title": "集装箱货物的交接方式和流转程序",
+        "children": [
+          {
+            "id": "ch9_41",
+            "title": "典型的集装箱货物运输流程",
+            "children": [
+              {
+                "id": "ch9_42",
+                "title": "\\(1\\)发货人将货物发至内陆某一地点，可能是一个内陆集装箱货运站，也可能是一个铁路集装箱办理站或公路集装箱中转站。",
+                "children": []
+              },
+              {
+                "id": "ch9_43",
+                "title": "\\(2\\)集装箱在内陆某一地点通过铁路或公路运输，运达装船港。",
+                "children": []
+              },
+              {
+                "id": "ch9_44",
+                "title": "\\(3\\)集装箱装船后，通过海上运输，运至卸船港。",
+                "children": []
+              },
+              {
+                "id": "ch9_45",
+                "title": "\\(4\\)集箱在船港卸船后，再通过铁路或公路运输，运至目的地内陆集装希货运站、铁路集装箱办理站或公路集装箱中转站。",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch9_46",
+            "title": "集装箱运输的交接地点与方式",
+            "children": [
+              {
+                "id": "ch9_47",
+                "title": "集装箱货物的交接地点。",
+                "children": [
+                  {
+                    "id": "ch9_48",
+                    "title": "门 \\(door\\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_49",
+                    "title": "集装箱堆场 \\(container yard , CY\\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_50",
+                    "title": "船边或吊钩 \\(ship’s rail or hook/tackle\\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_51",
+                    "title": "集装箱货运站",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch9_52",
+                "title": "交接方式：",
+                "children": [
+                  {
+                    "id": "ch9_53",
+                    "title": "门到门 \\(door to door\\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_54",
+                    "title": "门到场 \\(door to CY\\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_55",
+                    "title": "门到站 \\(door to CFS\\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_56",
+                    "title": "场到门 \\(CY to door\\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_57",
+                    "title": "场到场 \\(CY to CY\\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_58",
+                    "title": "场到站 \\(CY to CFS\\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_59",
+                    "title": "站到门 \\(CFS to door\\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_60",
+                    "title": "站到场 \\(CFS to CY\\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_61",
+                    "title": "站到站 \\(CFS to CFS\\)",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch9_62",
+                "title": "集装箱货物的交接方式。",
+                "children": [
+                  {
+                    "id": "ch9_63",
+                    "title": "门到门运输方式",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_64",
+                    "title": "门到场站运输方式",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_65",
+                    "title": "场站到门运输方式",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_66",
+                    "title": "场站到场站运输方式",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ch9_67",
+            "title": "整箱货与拼箱货的一般流转程序",
+            "children": [
+              {
+                "id": "ch9_68",
+                "title": "整箱货",
+                "children": [
+                  {
+                    "id": "ch9_69",
+                    "title": "货主自己拖运。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_70",
+                    "title": "承运人拖运。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_71",
+                    "title": "混合拖运。",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch9_72",
+                "title": "拼箱货",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch9_73",
+        "title": "集装箱出口业务与单证流转",
+        "children": [
+          {
+            "id": "ch9_74",
+            "title": "出口货运的业务流程",
+            "children": [
+              {
+                "id": "ch9_75",
+                "title": "订舱托运",
+                "children": []
+              },
+              {
+                "id": "ch9_76",
+                "title": "投保",
+                "children": []
+              },
+              {
+                "id": "ch9_77",
+                "title": "申请空箱",
+                "children": []
+              },
+              {
+                "id": "ch9_78",
+                "title": "装箱",
+                "children": []
+              },
+              {
+                "id": "ch9_79",
+                "title": "重箱进场",
+                "children": []
+              },
+              {
+                "id": "ch9_80",
+                "title": "出口报验、报关",
+                "children": []
+              },
+              {
+                "id": "ch9_81",
+                "title": "装船理箱",
+                "children": []
+              },
+              {
+                "id": "ch9_82",
+                "title": "签发提单",
+                "children": []
+              },
+              {
+                "id": "ch9_83",
+                "title": "结汇",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch9_84",
+            "title": "出口货运主要单证及其流转",
+            "children": [
+              {
+                "id": "ch9_85",
+                "title": "\\(1\\)订舱托运：场站收据 \\(十联单\\)。",
+                "children": []
+              },
+              {
+                "id": "ch9_86",
+                "title": "\\(2\\)确认订舱和放空箱：货物托运单、装货单、场站收据大副联、场站收据正本、场站收据货代联、集装箱设备交接单、集装箱放箱凭证。",
+                "children": []
+              },
+              {
+                "id": "ch9_87",
+                "title": "\\(3\\)提运空箱：集装箱设备交接单、集装箱放箱单。",
+                "children": []
+              },
+              {
+                "id": "ch9_88",
+                "title": "\\(4\\)重箱进场：装箱单、集装箱设备交接单。",
+                "children": []
+              },
+              {
+                "id": "ch9_89",
+                "title": "\\(5\\)报关报验：装箱单、装货单、报关单、合同副本、信用证副本、商业发票、出口许可证等。",
+                "children": []
+              },
+              {
+                "id": "ch9_90",
+                "title": "\\(6\\)签发场站收据：装货单、场站收据大副联、场站收据正本。",
+                "children": []
+              },
+              {
+                "id": "ch9_91",
+                "title": "\\(7\\)装船理箱：场站收据大副联、装箱单、配载船图、装船顺序单、理货报告集装箱装船清单。",
+                "children": []
+              },
+              {
+                "id": "ch9_92",
+                "title": "\\(8\\)签发提单：场站收据正本、装箱单、提单。",
+                "children": []
+              },
+              {
+                "id": "ch9_93",
+                "title": "\\(9\\)结汇：提单、装箱单、合同副本、信用证副本、商业发票、出口许可证等",
+                "children": []
+              },
+              {
+                "id": "ch9_94",
+                "title": "\\(10\\)随船单证：出口船图、出口舱单、理货报告等。",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch9_95",
+        "title": "集装箱进口业务与单证流转",
+        "children": [
+          {
+            "id": "ch9_96",
+            "title": "进口货运的业务流程",
+            "children": [
+              {
+                "id": "ch9_97",
+                "title": "进口货运资料预到",
+                "children": []
+              },
+              {
+                "id": "ch9_98",
+                "title": "发出到货通知书",
+                "children": []
+              },
+              {
+                "id": "ch9_99",
+                "title": "赎取提单",
+                "children": []
+              },
+              {
+                "id": "ch9_100",
+                "title": "卸船、理箱",
+                "children": []
+              },
+              {
+                "id": "ch9_101",
+                "title": "换取提货单",
+                "children": []
+              },
+              {
+                "id": "ch9_102",
+                "title": "进口报关报验",
+                "children": []
+              },
+              {
+                "id": "ch9_103",
+                "title": "提运重箱",
+                "children": []
+              },
+              {
+                "id": "ch9_104",
+                "title": "拆箱",
+                "children": []
+              },
+              {
+                "id": "ch9_105",
+                "title": "还空箱",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch9_106",
+            "title": "主要进口单证及其流转",
+            "children": [
+              {
+                "id": "ch9_107",
+                "title": "\\(1\\)索偿相关资料：提单、装箱单、合同副本、信用证副本、商业发票、出口许可证等。",
+                "children": []
+              },
+              {
+                "id": "ch9_108",
+                "title": "\\(2\\)进口货运资料：进口舱单、进口船图、装运港理货报告、集装箱清单、提单副本。",
+                "children": []
+              },
+              {
+                "id": "ch9_109",
+                "title": "\\(3\\)到货通知：到货通知书。",
+                "children": []
+              },
+              {
+                "id": "ch9_110",
+                "title": "\\(4\\)提单、装箱单、商业发票等。",
+                "children": []
+              },
+              {
+                "id": "ch9_111",
+                "title": "\\(5\\)卸船和理箱进口舱单、进口船图、装运港理货报告、卸船清单、卸货港理货报告。",
+                "children": []
+              },
+              {
+                "id": "ch9_112",
+                "title": "\\(6\\)换取提货单提单、到货通知书、提货单、设备交接单。",
+                "children": []
+              },
+              {
+                "id": "ch9_113",
+                "title": "\\(7\\)报关报检提货单、报关单、合同本、信用证副本、商业发票、进口许可证等。",
+                "children": []
+              },
+              {
+                "id": "ch9_114",
+                "title": "\\(8\\)提运重箱提货单、设备交接单。",
+                "children": []
+              },
+              {
+                "id": "ch9_115",
+                "title": "\\(9\\)归还空箱设备交接单。",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch9_116",
+        "title": "主要进口单证及其流转",
+        "children": [
+          {
+            "id": "ch9_117",
+            "title": "检查口的含义和基本职责",
+            "children": [
+              {
+                "id": "ch9_118",
+                "title": "检查口的含义",
+                "children": []
+              },
+              {
+                "id": "ch9_119",
+                "title": "检查口的基本职责",
+                "children": [
+                  {
+                    "id": "ch9_120",
+                    "title": "\\(1\\) 检验集装箱箱体，进行集装箱交接。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_121",
+                    "title": "\\(2\\) 审核有关集装箱单证，磅出出口箱实际重量 。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_122",
+                    "title": "\\(3\\) 配合堆场作业，指定收箱或提箱堆场箱位。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_123",
+                    "title": "\\(4\\) 进场、出场集装箱的信息汇总处理。",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ch9_124",
+            "title": "检查口业务及其流程",
+            "children": [
+              {
+                "id": "ch9_125",
+                "title": "检查口的出口业务",
+                "children": [
+                  {
+                    "id": "ch9_126",
+                    "title": "\\(1\\)提运空箱",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_127",
+                    "title": "\\(2\\)重箱进场",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_128",
+                    "title": "\\(3\\) 中转箱进场和出场",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_129",
+                    "title": "\\(4\\) 退关箱出场",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch9_130",
+                "title": "检查口的进口业务",
+                "children": [
+                  {
+                    "id": "ch9_131",
+                    "title": "\\(1\\)提运重箱",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_132",
+                    "title": "\\(2\\)回空箱进场",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch9_133",
+        "title": "集装箱码头箱务管理",
+        "children": [
+          {
+            "id": "ch9_134",
+            "title": "集装箱码头箱务管理的内容",
+            "children": [
+              {
+                "id": "ch9_135",
+                "title": "空箱管理",
+                "children": [
+                  {
+                    "id": "ch9_136",
+                    "title": "\\(1\\)空箱进场管理",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_137",
+                    "title": "\\(2\\)空箱出场管理",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch9_138",
+                "title": "冷藏箱管理",
+                "children": []
+              },
+              {
+                "id": "ch9_139",
+                "title": "危险品箱管理",
+                "children": []
+              },
+              {
+                "id": "ch9_140",
+                "title": "特种箱管理",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch9_141",
+            "title": "集装箱码头堆场管理",
+            "children": [
+              {
+                "id": "ch9_142",
+                "title": "堆场的堆箱规则",
+                "children": []
+              },
+              {
+                "id": "ch9_143",
+                "title": "堆场的分区",
+                "children": [
+                  {
+                    "id": "ch9_144",
+                    "title": "\\)按堆场的前后位置，可分为 前方堆场 和 后方堆场",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_145",
+                    "title": "\\(2\\)按进口和出口业务，可分为 进口箱区 和 出口箱区",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_146",
+                    "title": "\\(3\\)按不同的箱型可分为 普通箱区、特种箱区、冷箱区和危险品箱区",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_147",
+                    "title": "\\(4\\)按集装箱的空重，可分为 空箱区 和 重箱区",
+                    "children": []
+                  },
+                  {
+                    "id": "ch9_148",
+                    "title": "\\(5\\)按中转类型，可分为 国际中转箱区 和 国内中转箱区",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
+</script>
+  <script>
+    (function () {
+      const knowledgeData = JSON.parse(document.getElementById('knowledge-json').textContent);
+
+      // Icon set: simple, flat SVGs matched by iconType.
+      const ICON_MAP = {
+        port: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 11h14v2H5v-2zm2-6h10v2H7V5zm2 4h6v2H9V9zm9 7.5-1.6-.9-2.4 4.2H10l-2.4-4.2-1.6.9 2 3.5H6v2h12v-2h-2.1l2.1-3.5z"/>
+          </svg>`,
+        ship: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 16.5 12 20l9-3.5v-2l-2 .8V9l-7-3-7 3v6.8l-2-.8v2zM12 6.7l3 1.3v1L12 8l-3 1v-1l3-1.3zm-4 4.1 3-.9v6.1l-3-1.2V10.8zm10 4.2-3 1.2v-6.1l3 .9v4z"/>
+          </svg>`,
+        global: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.6 9h-2.2a15.3 15.3 0 0 0-.9-4 8 8 0 0 1 3.1 4Zm-4.3 0h-4.6a13 13 0 0 1 1-3.9 7 7 0 0 1 2.6 0 13 13 0 0 1 1 3.9Zm-5.1 2h5.6a13 13 0 0 1-1 3.9 7 7 0 0 1-3.6 0 13 13 0 0 1-1-3.9Zm6.2 0h2.2a8 8 0 0 1-3.1 4 15.3 15.3 0 0 0 .9-4Zm-8.5 0H4.7a8 8 0 0 1 3.1-4 15.3 15.3 0 0 0-.9 4Zm0 2a15.3 15.3 0 0 0 .9 4 8 8 0 0 1-3.1-4h2.2Zm2.1 0a11.3 11.3 0 0 0 .7 2.7 7 7 0 0 1-1.2-.7 8 8 0 0 1-.9-2h1.4Zm5.7 2.7a11.3 11.3 0 0 0 .7-2.7h1.4a8 8 0 0 1-.9 2 7 7 0 0 1-1.2.7ZM12 4a8 8 0 0 1 1.2.1 15.3 15.3 0 0 0-1.2-.1Zm-1.9.3a7 7 0 0 1 1-.2 15.3 15.3 0 0 0-1 .2Zm3.8 0a7 7 0 0 1 1 .2 15.3 15.3 0 0 0-1-.2Z"/>
+          </svg>`,
+        book: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 4h7a3 3 0 0 1 3 3v11.5a2.5 2.5 0 0 0-2-1H6a2 2 0 0 0-2 2V6a2 2 0 0 1 2-2Zm0 2v11.5a3.5 3.5 0 0 1 2.5-1h6.5V7a1 1 0 0 0-1-1H6Zm10 1h2a1 1 0 0 1 1 1v11.5a2.5 2.5 0 0 0-2-1h-1V7Z"/>
+          </svg>`,
+        document: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 3h8l4 4v11a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Zm7 1.4V8h3.6L13 4.4ZM6 7v2h8V7H6Zm0 4v2h10v-2H6Zm0 4v2h6v-2H6Z"/>
+          </svg>`,
+        question: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 15.2a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Zm1.9-6.2c-.3.3-.5.4-.7.6-.4.3-.7.6-.7 1.2v.3h-1.8V13c0-1 .5-1.6 1-2 .3-.3.6-.5.9-.7.5-.3.8-.6.8-1.1 0-.7-.6-1.2-1.5-1.2-.8 0-1.4.4-1.6 1.1l-1.7-.5c.4-1.3 1.6-2.3 3.3-2.3 2 0 3.3 1.2 3.3 2.8 0 .9-.4 1.6-1.4 2.1Z"/>
+          </svg>`
+      };
+
+      // Normalize names for layout and build a root wrapper.
+      const normalize = node => {
+        node.name = node.title || node.name || node.id || '未命名';
+        (node.children || []).forEach(normalize);
+        return node;
+      };
+      knowledgeData.forEach(normalize);
+
+      const rootData = {
+        id: 'root',
+        name: '《港口物流》课程知识图谱',
+        type: '主题',
+        children: knowledgeData
+      };
+
+      const container = d3.select('#tree-container');
+      const width = 1600;
+      const margin = { top: 40, right: 260, bottom: 40, left: 200 };
+      const dx = 110; // vertical spacing
+      const dy = 260; // horizontal spacing
+      const tree = d3.tree().nodeSize([dx, dy]);
+      const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
+
+      const svg = container.append('svg')
+        .attr('viewBox', [-margin.left, -margin.top, width + margin.left + margin.right, 900])
+        .attr('role', 'presentation');
+
+      const gLink = svg.append('g').attr('class', 'links');
+      const gNode = svg.append('g').attr('class', 'nodes');
+
+      let nodeId = 0;
+      const root = d3.hierarchy(rootData);
+      root.x0 = 0;
+      root.y0 = 0;
+
+      root.descendants().forEach(d => {
+        d.id = d.data.id || `node-${++nodeId}`;
+        d._children = d.children;
+        if (d.depth > 1) d.children = null; // collapse deeper nodes by default
+      });
+
+      update(root);
+
+      function update(source) {
+        tree(root);
+        const nodes = root.descendants().reverse();
+        const links = root.links();
+
+        let left = root;
+        let right = root;
+        root.eachBefore(node => {
+          if (node.x < left.x) left = node;
+          if (node.x > right.x) right = node;
+        });
+        const height = Math.max(600, right.x - left.x + margin.top + margin.bottom);
+
+        svg.transition().duration(350)
+          .attr('viewBox', [-margin.left, left.x - margin.top, width + margin.left + margin.right, height]);
+
+        const node = gNode.selectAll('g.node')
+          .data(nodes, d => d.id);
+
+        const nodeEnter = node.enter().append('g')
+          .attr('class', 'node')
+          .attr('transform', () => `translate(${source.y0},${source.x0})`)
+          .on('click', (event, d) => {
+            toggle(d);
+            update(d);
+          });
+
+        nodeEnter.append('foreignObject')
+          .attr('class', 'node-fo')
+          .attr('x', d => -getBox(d).width / 2)
+          .attr('y', d => -getBox(d).height / 2)
+          .attr('width', d => getBox(d).width)
+          .attr('height', d => getBox(d).height)
+          .append('xhtml:div')
+          .attr('class', d => `node-card ${getLevelClass(d)}`)
+          .html(d => buildCardHTML(d));
+
+        const nodeUpdate = node.merge(nodeEnter);
+
+        nodeUpdate.select('foreignObject')
+          .attr('x', d => -getBox(d).width / 2)
+          .attr('y', d => -getBox(d).height / 2)
+          .attr('width', d => getBox(d).width)
+          .attr('height', d => getBox(d).height)
+          .select('.node-card')
+          .attr('class', d => `node-card ${getLevelClass(d)}`)
+          .html(d => buildCardHTML(d));
+
+        nodeUpdate.transition()
+          .duration(350)
+          .attr('transform', d => `translate(${d.y},${d.x})`);
+
+        node.exit().transition()
+          .duration(250)
+          .attr('transform', () => `translate(${source.y},${source.x})`)
+          .remove();
+
+        const link = gLink.selectAll('path')
+          .data(links, d => d.target.id);
+
+        const linkEnter = link.enter().append('path')
+          .attr('class', 'link')
+          .attr('d', () => {
+            const o = { x: source.x0, y: source.y0 };
+            return diagonal({ source: o, target: o });
+          });
+
+        link.merge(linkEnter)
+          .transition()
+          .duration(350)
+          .attr('d', diagonal);
+
+        link.exit().transition()
+          .duration(250)
+          .attr('d', () => {
+            const o = { x: source.x, y: source.y };
+            return diagonal({ source: o, target: o });
+          })
+          .remove();
+
+        root.eachBefore(d => {
+          d.x0 = d.x;
+          d.y0 = d.y;
+        });
+      }
+
+      function toggle(d) {
+        if (d.children) {
+          d._children = d.children;
+          d.children = null;
+        } else {
+          d.children = d._children;
+          d._children = null;
+        }
+      }
+
+      // Build HTML for each node card.
+      function buildCardHTML(d) {
+        const title = d.data.name || d.data.title || d.data.id;
+        const tags = getTags(d);
+        const icon = getIconSVG(d);
+        const tagHtml = tags.map(tag => {
+          const cls = tag.isKey ? 'tag primary' : 'tag neutral';
+          return `<span class="${cls}">${tag.label}</span>`;
+        }).join('');
+
+        return `
+          <div class="card-icon">${icon}</div>
+          <div class="card-content">
+            <p class="card-title">${escapeHTML(title)}</p>
+            <div class="badge-row">${tagHtml}</div>
+          </div>
+        `;
+      }
+
+      // Approximate card size from text length for better spacing.
+      function getBox(d) {
+        const title = d.data.name || '';
+        const chars = Array.from(title).length;
+        const lines = Math.max(1, Math.ceil(chars / 16));
+        const baseHeight = 78;
+        const extra = (lines - 1) * 18;
+        const height = baseHeight + extra;
+        const width = 230;
+        d._box = { width, height };
+        return d._box;
+      }
+
+      function getLevelClass(d) {
+        if (d.depth === 0) return 'root';
+        if (d.depth === 1) return 'level1';
+        return 'level2';
+      }
+
+      function getTags(d) {
+        const depth = d.depth;
+        if (depth === 0) return [{ label: '主题', isKey: true }];
+        if (depth === 1) return [{ label: '模块', isKey: true }, { label: '概念', isKey: false }];
+        const hasChildren = (d.children && d.children.length) || (d._children && d._children.length);
+        if (hasChildren) {
+          return [{ label: '摘要', isKey: true }, { label: '重点', isKey: false }];
+        }
+        return [{ label: '条目', isKey: false }];
+      }
+
+      function getIconSVG(d) {
+        const type = (d.data.iconType || 'document').toLowerCase();
+        return ICON_MAP[type] || ICON_MAP.document;
+      }
+
+      function escapeHTML(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+    })();
+  </script>
+</body>
+</html>

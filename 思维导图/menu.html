@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>《港口物流》课程知识图谱导航</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --dot: rgba(0, 0, 0, 0.04);
+      --panel: #ffffff;
+      --text-main: #1f3a5f;
+      --text-sub: #607d8b;
+      --accent: #007bff;
+      --accent-soft: #e3f2fd;
+      --shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+      --border: #d6e2f1;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Nunito", "Segoe UI", sans-serif;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 0),
+        radial-gradient(circle at 12px 12px, rgba(0, 0, 0, 0.02) 1px, transparent 0);
+      background-size: 18px 18px, 36px 36px;
+      color: #263238;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header.hero {
+      padding: 26px 28px 12px;
+    }
+
+    .hero__title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: var(--text-main);
+      margin: 0;
+    }
+
+    .hero__subtitle {
+      margin-top: 8px;
+      color: var(--text-sub);
+      font-size: 14px;
+    }
+
+    .layout {
+      padding: 0 24px 32px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 18px 18px 20px;
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: var(--text-main);
+    }
+
+    .panel p {
+      margin: 4px 0 0;
+      color: var(--text-sub);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+      padding: 14px 14px 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+      border-color: #c8dbf4;
+    }
+
+    .card__title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0;
+    }
+
+    .card__meta {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid #cde3ff;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .instructions {
+      list-style: none;
+      padding: 0;
+      margin: 6px 0 0;
+      color: var(--text-sub);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .instructions li {
+      margin: 4px 0;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .instructions li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    footer {
+      padding: 12px 24px 20px;
+      color: var(--text-sub);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <h1 class="hero__title">《港口物流》课程知识图谱导航</h1>
+    <div class="hero__subtitle">选择章节即可进入对应思维导图 · 风格与章节页一致</div>
+  </header>
+
+  <div class="layout">
+    <section class="panel">
+      <div class="badge">课程简介</div>
+      <h2>课程概览</h2>
+      <p>《港口物流》聚焦港口在现代物流体系中的角色与运作，涵盖港口发展历程、物流功能、设施装备、运营管理、集装箱运输以及口岸监管等内容。通过分章节的知识图谱，可直观呈现核心概念、层级关系和重点要点。</p>
+    </section>
+
+    <section class="panel">
+      <div class="badge">使用说明</div>
+      <h2>导航与查看</h2>
+      <ul class="instructions">
+        <li>点击右侧章节卡片即可打开对应章节的思维导图页面。</li>
+        <li>在章节页中，点击节点可展开/收起层级，便于聚焦重点或查看细节。</li>
+        <li>建议在桌面端全屏浏览，获得更佳的层级布局体验。</li>
+        <li>如需返回导航，可使用浏览器后退，或在新标签打开章节卡片。</li>
+      </ul>
+    </section>
+
+    <section class="panel" style="grid-column: 1 / -1;">
+      <div class="badge">章节入口</div>
+      <h2>快速访问</h2>
+      <div class="grid">
+        <a class="card" href="ch1.html" target="_blank" rel="noopener">
+          <p class="card__title">第1章 港口物流发展史</p>
+          <p class="card__meta">港口概念与分类、海上运输历史、现代港口物流形成</p>
+        </a>
+        <a class="card" href="ch2.html" target="_blank" rel="noopener">
+          <p class="card__title">第2章 港口物流的基本规律</p>
+          <p class="card__meta">港口物流概念、基本特征、功能与系统构成</p>
+        </a>
+        <a class="card" href="ch3.html" target="_blank" rel="noopener">
+          <p class="card__title">第3章 港口物流与经济</p>
+          <p class="card__meta">港口与经济、港城互动、物流与产业发展</p>
+        </a>
+        <a class="card" href="ch4.html" target="_blank" rel="noopener">
+          <p class="card__title">第4章 中国沿海港口布局</p>
+          <p class="card__meta">港口群现状、大宗运输体系、发展战略</p>
+        </a>
+        <a class="card" href="ch5.html" target="_blank" rel="noopener">
+          <p class="card__title">第5章 世界典型港口物流</p>
+          <p class="card__meta">全球航线、典型港口案例、管理与运营模式</p>
+        </a>
+        <a class="card" href="ch6.html" target="_blank" rel="noopener">
+          <p class="card__title">第6章 港口物流设施与设备</p>
+          <p class="card__meta">港口设施、码头设置、集装箱装卸机械</p>
+        </a>
+        <a class="card" href="ch7.html" target="_blank" rel="noopener">
+          <p class="card__title">第7章 港口物流生产与统计</p>
+          <p class="card__meta">生产流程、作业计划、调度与统计指标</p>
+        </a>
+        <a class="card" href="ch9.html" target="_blank" rel="noopener">
+          <p class="card__title">第9章 集装箱运输管理</p>
+          <p class="card__meta">集装箱运输概念、业务流程、单证与箱务管理</p>
+        </a>
+        <a class="card" href="ch10.html" target="_blank" rel="noopener">
+          <p class="card__title">第10章 港口物流服务</p>
+          <p class="card__meta">理货业务、船舶代理、国际货运代理、第三/第四方物流</p>
+        </a>
+        <a class="card" href="ch12.html" target="_blank" rel="noopener">
+          <p class="card__title">第12章 港口口岸管理</p>
+          <p class="card__meta">口岸管理制度、检验检疫、海关监管与物流监控</p>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <footer>提示：章节入口将在新标签页打开对应思维导图。</footer>
+</body>
+</html>

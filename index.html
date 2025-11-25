@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>港口物流课程 | Port Logistics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Nunito Sans"', 'system-ui', 'sans-serif'] },
+          colors: {
+            ocean: {
+              deep: '#0B3A5A',
+              mid: '#115D8C',
+              light: '#C7E3FF'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-white text-slate-800 font-sans">
+  <header class="sticky top-0 z-30 backdrop-blur bg-white/85 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4">
+      <nav class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-2">
+          <div class="h-9 w-9 rounded-full bg-gradient-to-br from-ocean-mid to-ocean-deep flex items-center justify-center text-white font-bold">港</div>
+          <span class="text-lg font-semibold text-ocean-deep">港口物流课程</span>
+        </div>
+        <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-ocean-deep">
+          <a class="hover:text-ocean-mid" href="#hero">首页</a>
+          <a class="hover:text-ocean-mid" href="#videos">教学视频</a>
+          <a class="hover:text-ocean-mid" href="#graph">知识图谱</a>
+          <a class="hover:text-ocean-mid" href="#news">行业新闻</a>
+          <a class="hover:text-ocean-mid" href="#exercises">习题集</a>
+        </div>
+        <button class="md:hidden text-ocean-deep" aria-label="菜单">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero" class="bg-gradient-to-br from-ocean-deep via-slate-900 to-ocean-mid text-white">
+      <div class="max-w-6xl mx-auto px-4 py-20 grid lg:grid-cols-2 gap-10 items-center">
+        <div class="space-y-6">
+          <p class="text-sm uppercase tracking-[0.3em] text-ocean-light/80">港口物流 · 专业课程</p>
+          <h1 class="text-4xl md:text-5xl font-bold leading-tight">《港口物流》</h1>
+          <p class="text-lg text-slate-100/90">探索全球供应链的核心枢纽，理解港口运营、航运管理与多式联运的协同逻辑。</p>
+          <div class="flex gap-4">
+            <a href="#videos" class="px-5 py-3 rounded-full bg-white text-ocean-deep font-semibold shadow-lg shadow-slate-900/30 hover:-translate-y-0.5 transition">开始学习</a>
+            <a href="#graph" class="px-5 py-3 rounded-full border border-white/50 text-white font-semibold hover:bg-white/10 transition">查看知识图谱</a>
+          </div>
+          <div class="flex items-center gap-6 text-sm text-slate-100/70">
+            <div class="flex items-center gap-2">
+              <div class="h-2 w-2 rounded-full bg-emerald-400"></div>
+              <span>覆盖案例：港口运营 / 航运计划 / 信息化</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 shadow-2xl shadow-slate-900/40">
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div class="col-span-2 bg-white/10 rounded-xl p-4">
+              <p class="text-xs text-ocean-light/80">课程亮点</p>
+              <h3 class="text-xl font-semibold mt-2">数字港口 · 智能物流 · 安全运营</h3>
+              <p class="mt-2 text-slate-100/80">以真实港口案例结合数据分析工具，训练决策能力与运营思维。</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4">
+              <p class="text-xs text-ocean-light/80">教学形式</p>
+              <p class="mt-2 font-semibold">视频 + 互动讨论 + 案例演练</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-4">
+              <p class="text-xs text-ocean-light/80">适合对象</p>
+              <p class="mt-2 font-semibold">物流 / 管理 / 工程相关专业</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="videos" class="max-w-6xl mx-auto px-4 py-16 space-y-6">
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="text-sm font-semibold text-ocean-mid uppercase tracking-wide">教学视频</p>
+          <h2 class="text-2xl md:text-3xl font-bold text-ocean-deep">精选章节 · 快速预览</h2>
+        </div>
+        <a href="#" class="hidden sm:inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep">查看全部</a>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
+          <div class="relative aspect-video bg-slate-900">
+            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1HWUQBBErr&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy"></iframe>
+          </div>
+          <div class="p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">第一章 1.1节</h3>
+            <p class="text-sm text-slate-600">来源：Bilibili · 港口的概念与分类。</p>
+            <a href="https://www.bilibili.com/video/BV1HWUQBBErr/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
+          </div>
+        </article>
+        <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
+          <div class="relative aspect-video bg-slate-900">
+            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1HWUQBBE9c&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy"></iframe>
+          </div>
+          <div class="p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">第一章 1.3节</h3>
+            <p class="text-sm text-slate-600">来源：Bilibili · 港口物流的形成与发展。</p>
+            <a href="https://www.bilibili.com/video/BV1HWUQBBE9c/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
+          </div>
+        </article>
+        <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
+          <div class="aspect-video bg-slate-200" style="background-image:url('https://source.unsplash.com/featured/?container');background-size:cover;background-position:center;"></div>
+          <div class="p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">智慧港口信息化</h3>
+            <p class="text-sm text-slate-600">时长：11:20 · 了解TOS、IoT与数据可视化。</p>
+            <button class="mt-2 w-full py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">观看</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="graph" class="bg-slate-50">
+      <div class="max-w-6xl mx-auto px-4 py-16 grid lg:grid-cols-2 gap-10 items-center">
+        <div class="space-y-4">
+          <p class="text-sm font-semibold text-ocean-mid uppercase tracking-wide">知识图谱</p>
+          <h2 class="text-2xl md:text-3xl font-bold text-ocean-deep">从港口节点到全球供应链</h2>
+          <p class="text-slate-700 leading-relaxed">本课程以港口为核心，梳理航运、陆侧集疏运、仓储与报关的知识体系，配合数据驱动的分析工具，帮助学生建立系统化的认知结构。</p>
+          <ul class="space-y-2 text-slate-700">
+            <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-ocean-mid"></span>基础模块：港口设施、装备与安全标准</li>
+            <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-ocean-mid"></span>运营模块：船期安排、场桥协同、堆场管理</li>
+            <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-ocean-mid"></span>拓展模块：信息系统、风险管理、绿色港口</li>
+          </ul>
+          <div class="flex flex-wrap gap-3">
+            <a href="思维导图/menu.html" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep">打开知识图谱导航页</a>
+            <a href="思维导图/ch1.html" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep">章节 1：发展概述</a>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
+            <a href="思维导图/ch2.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 2</a>
+            <a href="思维导图/ch3.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 3</a>
+            <a href="思维导图/ch4.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 4</a>
+            <a href="思维导图/ch5.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 5</a>
+            <a href="思维导图/ch6.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 6</a>
+            <a href="思维导图/ch7.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 7</a>
+            <a href="思维导图/ch9.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 9</a>
+            <a href="思维导图/ch10.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 10</a>
+            <a href="思维导图/ch12.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 12</a>
+          </div>
+        </div>
+        <div class="bg-white border border-slate-100 rounded-2xl shadow-lg overflow-hidden">
+          <div class="aspect-[4/3] bg-slate-900">
+            <iframe src="思维导图/ch1.html" class="w-full h-full border-0" loading="lazy" title="港口物流思维导图 - 第1章"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="news" class="max-w-6xl mx-auto px-4 py-16 space-y-6">
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="text-sm font-semibold text-ocean-mid uppercase tracking-wide">行业新闻</p>
+          <h2 class="text-2xl md:text-3xl font-bold text-ocean-deep">港口物流 · 最新观察</h2>
+        </div>
+        <a href="#" class="hidden sm:inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep">订阅周报</a>
+      </div>
+      <div class="space-y-4">
+        <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
+          <span class="text-xs font-semibold text-ocean-mid">2024-05-12</span>
+          <h3 class="text-lg font-semibold text-ocean-deep">某国际港口上线新能源设备，堆场碳排下降15%</h3>
+          <p class="text-sm text-slate-700">通过岸电、氢燃料集卡和智能调度系统，实现绿色运营的可量化收益。</p>
+        </article>
+        <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
+          <span class="text-xs font-semibold text-ocean-mid">2024-05-05</span>
+          <h3 class="text-lg font-semibold text-ocean-deep">班轮公司调整亚欧航线，舱位紧张促使港口优化装卸效率</h3>
+          <p class="text-sm text-slate-700">港口通过动态堆场规划与机器视觉作业引导，提升桥吊效率以应对波动。</p>
+        </article>
+        <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
+          <span class="text-xs font-semibold text-ocean-mid">2024-04-28</span>
+          <h3 class="text-lg font-semibold text-ocean-deep">多式联运示范项目落地，铁路集装箱中心站与港口联动</h3>
+          <p class="text-sm text-slate-700">通过电子提单与实时轨迹共享，海铁联运效率显著提升，周转时间缩短。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="exercises" class="bg-slate-50">
+      <div class="max-w-6xl mx-auto px-4 py-16 space-y-6">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold text-ocean-mid uppercase tracking-wide">习题集</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-ocean-deep">巩固知识 · 即刻练习</h2>
+          </div>
+          <a href="#" class="hidden sm:inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep">提交作业</a>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">港口作业流程测验</h3>
+            <p class="text-sm text-slate-700">在线测试 · 15 题 · 20 分钟</p>
+            <a href="#" class="inline-block mt-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep">开始答题</a>
+          </div>
+          <div class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">案例：集装箱船靠泊计划</h3>
+            <p class="text-sm text-slate-700">PDF 下载 · 作业提交截止：本周日</p>
+            <a href="#" class="inline-block mt-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep">下载 PDF</a>
+          </div>
+          <div class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">数据分析：堆场周转率</h3>
+            <p class="text-sm text-slate-700">附带 CSV 示例 · 可用 Python 或 Excel</p>
+            <a href="#" class="inline-block mt-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep">获取数据集</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-ocean-deep text-white">
+    <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
+      <div class="space-y-2">
+        <h3 class="text-lg font-semibold">港口物流课程</h3>
+        <p class="text-sm text-slate-100/80">面向未来的港口运营与供应链人才培养。</p>
+      </div>
+      <div class="space-y-2 text-sm">
+        <p class="font-semibold text-ocean-light">联系方式</p>
+        <p>授课老师：李老师</p>
+        <p>邮箱：instructor@example.edu</p>
+        <p>办公时间：周三 14:00 - 16:00</p>
+      </div>
+      <div class="space-y-2 text-sm">
+        <p class="font-semibold text-ocean-light">版权信息</p>
+        <p>© 2024 港口物流课程. 保留所有权利。</p>
+        <p>课程平台与资料仅供教学使用。</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

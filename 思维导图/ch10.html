@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>港口物流知识图谱 - 教学思维导图</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --dot: rgba(0, 0, 0, 0.04);
+      --link: #b0bec5;
+      --root-bg: #007bff;
+      --root-text: #ffffff;
+      --lvl1-bg: #e3f2fd;
+      --lvl1-text: #0d47a1;
+      --lvl2-bg: #ffffff;
+      --lvl2-border: #c6d8ec;
+      --lvl2-text: #37474f;
+      --shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+      --badge-bg: #ffe0b2;
+      --badge-text: #e57c04;
+      --badge-bg-gray: #eceff1;
+      --badge-text-gray: #546e7a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Nunito", "Segoe UI", sans-serif;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 0),
+        radial-gradient(circle at 12px 12px, rgba(0, 0, 0, 0.02) 1px, transparent 0);
+      background-size: 18px 18px, 36px 36px;
+      color: #263238;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header.hero {
+      padding: 22px 26px 10px;
+    }
+
+    .hero__title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: #1f3a5f;
+      margin: 0;
+    }
+
+    .hero__subtitle {
+      margin-top: 6px;
+      color: #607d8b;
+      font-size: 14px;
+    }
+
+    #tree-container {
+      flex: 1;
+      min-height: calc(100vh - 100px);
+      padding: 6px 14px 22px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      font-family: "Nunito", "Segoe UI", sans-serif;
+    }
+
+    .link {
+      fill: none;
+      stroke: var(--link);
+      stroke-width: 2px;
+      stroke-linecap: round;
+      opacity: 0.9;
+    }
+
+    .node-fo {
+      overflow: visible;
+    }
+
+    .node-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      padding: 12px 14px;
+      border: 1px solid transparent;
+      width: 230px;
+      min-height: 76px;
+      pointer-events: all;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .node-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+    }
+
+    .node-card.root {
+      background: var(--root-bg);
+      color: var(--root-text);
+      border-color: #006ae0;
+    }
+
+    .node-card.level1 {
+      background: var(--lvl1-bg);
+      color: var(--lvl1-text);
+      border-color: #c2dffc;
+    }
+
+    .node-card.level2 {
+      background: var(--lvl2-bg);
+      color: var(--lvl2-text);
+      border: 1px solid var(--lvl2-border);
+    }
+
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      background: #e0f7fa;
+      border: 1px solid #c5e9ef;
+    }
+
+    .card-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #0056b3;
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+      word-break: break-word;
+      margin: 0;
+    }
+
+    .badge-row {
+      display: inline-flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .tag.primary {
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      border-color: #ffc66d;
+    }
+
+    .tag.neutral {
+      background: var(--badge-bg-gray);
+      color: var(--badge-text-gray);
+      border-color: #d9e0e5;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <h1 class="hero__title">《港口物流》课程知识图谱</h1>
+    <div class="hero__subtitle">现代化教学思维导图 · 点击节点展开/收起 · 左至右布局</div>
+  </header>
+  <div id="tree-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script id="knowledge-json" type="application/json">
+[
+  {
+    "id": "ch10_1",
+    "title": "第十章港口物流服务",
+    "children": [
+      {
+        "id": "ch10_2",
+        "title": "船舶理货业务",
+        "children": [
+          {
+            "id": "ch10_3",
+            "title": "船舶理货概述",
+            "children": [
+              {
+                "id": "ch10_4",
+                "title": "理货的由来",
+                "children": []
+              },
+              {
+                "id": "ch10_5",
+                "title": "理货的演变",
+                "children": []
+              },
+              {
+                "id": "ch10_6",
+                "title": "理货的概念",
+                "children": [
+                  {
+                    "id": "ch10_7",
+                    "title": "理货",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_8",
+                    "title": "理残",
+                    "children": [
+                      {
+                        "id": "ch10_9",
+                        "title": "工残",
+                        "children": []
+                      },
+                      {
+                        "id": "ch10_10",
+                        "title": "原残",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ch10_11",
+            "title": "船舶理货业务",
+            "children": [
+              {
+                "id": "ch10_12",
+                "title": "理货的业务范围",
+                "children": [
+                  {
+                    "id": "ch10_13",
+                    "title": "\\(1\\) 根据进口舱单和出口装货单，核对货物上的主标志是否相符，按票理清货物数字，分清或剔除残损货物，办理货物交接手续。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_14",
+                    "title": "\\(2\\) 指导和监督货物装舱积载、隔票和分票卸货，分清货物工残、原残。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_15",
+                    "title": "\\(3\\) 依据理货结果，出具进口货物溢短、残损证明，签批出口货物装货单，提供原始理货单证。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_16",
+                    "title": "\\(4\\) 根据货物实际装船情况，绘制积载图，制作分舱单。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_17",
+                    "title": "\\(5\\) 船舶配载和货物挑样、分规格等。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_18",
+                    "title": "\\(6\\) 集装箱装卸船的理箱和装拆箱的理货业务。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_19",
+                    "title": "\\(7\\) 文量货物尺码，计算货物容积。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_20",
+                    "title": "\\(8\\) 办理散装货物装卸船的单证手续业务，包括提供装卸进度，分清货物残损，办理交接签证手续，提供理货单证。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_21",
+                    "title": "\\(9\\) 区外理货，随船理货，出国理货。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_22",
+                    "title": "\\(10\\) 其他理货业务。",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch10_23",
+                "title": "理货的工作程序",
+                "children": [
+                  {
+                    "id": "ch10_24",
+                    "title": "\\(1\\) 登轮前，了解、核对单证资料，发现问题及时联系解决，做好登轮的各项准备工作。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_25",
+                    "title": "\\(2\\) 登轮后，",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_26",
+                    "title": "\\(3\\) 货物装船中，",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_27",
+                    "title": "\\(4\\) 单船理货长指导、监督装卸工组按票卸货和装舱，零星货物集中堆放，大票货物分隔清楚，同包装的大宗货物严格码定量钩。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_28",
+                    "title": "\\(5\\) 作业中，由于船方原因造成理货人员停工待时，如船舶吊机故障，舱内打冷气，开关舱，铺垫舱，隔票，拆加固等，要在计数单上做好记录。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_29",
+                    "title": "\\(6\\) 一票货物装船后，在装货单上批注实际装船日期、件数和装舱部位。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_30",
+                    "title": "\\(7\\) 节假日、夜班、非一般货舱理货，以及对融化、冻结、凝固、粘连货物和海事货物理货，均要在计数单上做好记录。对装舱混乱、隔票不清和翻仓货物理货，要编制现场记录。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_31",
+                    "title": "\\(8\\) 工班结束时，",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_32",
+                    "title": "\\(9\\) 船装卸结束时，检查舱内、库场以及装卸沿途，防止错装、漏装、错卸、漏卸。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_33",
+                    "title": "\\(10\\) 装卸货结束后，征求船方对理货工作的意见和要求，做好离船的各项收尾工作。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_34",
+                    "title": "\\(11\\) 填写单船报告表，做好单船理货小结和单证资料归档工作。",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch10_35",
+                "title": "理货方法",
+                "children": [
+                  {
+                    "id": "ch10_36",
+                    "title": "\\(1\\) 划数理货法",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_37",
+                    "title": "\\(2\\) 点垛交接法",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_38",
+                    "title": "\\(3\\) 发筹理货法",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_39",
+                    "title": "\\(4\\) 按重理货法",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_40",
+                    "title": "\\(5\\) 计数器理货法",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_41",
+                    "title": "\\(6\\) 小票理货法",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch10_42",
+                "title": "理货过程中一些问题的处理",
+                "children": [
+                  {
+                    "id": "ch10_43",
+                    "title": "\\(1\\) 对残损的处理",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_44",
+                    "title": "\\(2\\) 翻舱",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_45",
+                    "title": "\\(3\\) 隔票",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_46",
+                    "title": "\\(4\\) 待工时间",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_47",
+                    "title": "\\(5\\) 非本港货",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_48",
+                    "title": "\\(6\\) 理货数字",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_49",
+                    "title": "\\(7\\) 货物安全",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_50",
+                    "title": "\\(8\\) 货物更改",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch10_51",
+                "title": "理货结束工作",
+                "children": [
+                  {
+                    "id": "ch10_52",
+                    "title": "\\(1\\) 在本舱装卸结束时，理货员应检查舱内、库场，防止货物漏装、漏卸。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_53",
+                    "title": "\\(2\\) 在全船装卸结束时，单船理货长应核对全部理货单证和货物资料",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_54",
+                    "title": "\\(3\\) 在全船理货结束时，对进口货物，单船理货长应根据计数单和舱单，汇总编制货物溢短单",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_55",
+                    "title": "\\(4\\) 对 出口货物 ，单船理货长应根据货物积载草图，绘制 ，经船方签字后，根据计数单和装货单，制作货物分舱单。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_56",
+                    "title": "\\(5\\) 理货长应制作理货证明书 \\( 一式三份 \\) ，经船方签字。",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch10_57",
+        "title": "船舶代理业务",
+        "children": [
+          {
+            "id": "ch10_58",
+            "title": "船舶代理关系及其形式",
+            "children": [
+              {
+                "id": "ch10_59",
+                "title": "长期代理关系",
+                "children": []
+              },
+              {
+                "id": "ch10_60",
+                "title": "航次代理关系",
+                "children": []
+              },
+              {
+                "id": "ch10_61",
+                "title": "第二委托方",
+                "children": []
+              },
+              {
+                "id": "ch10_62",
+                "title": "监护代理关系",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch10_63",
+            "title": "船舶代理的主要业务",
+            "children": [
+              {
+                "id": "ch10_64",
+                "title": "船进出港手续",
+                "children": [
+                  {
+                    "id": "ch10_65",
+                    "title": "船舶进港手续",
+                    "children": [
+                      {
+                        "id": "ch10_66",
+                        "title": "\\) 有关检疫的手续。",
+                        "children": []
+                      },
+                      {
+                        "id": "ch10_67",
+                        "title": "\\) 法规规定的船舶进港须办理的手续。",
+                        "children": []
+                      },
+                      {
+                        "id": "ch10_68",
+                        "title": "\\) 边防机关或海上保安机关或移民局和港口当局对进港船要求办理的手续。",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ch10_69",
+                    "title": "船舶出港手续",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch10_70",
+                "title": "出口货运业务",
+                "children": [
+                  {
+                    "id": "ch10_71",
+                    "title": "货物承运",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_72",
+                    "title": "国际海上联运货物的中转",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_73",
+                    "title": "绘制出口货物积载计划",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_74",
+                    "title": "缮制各种货运单证",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_75",
+                    "title": "运费计算工作",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch10_76",
+                "title": "进口货运业务",
+                "children": [
+                  {
+                    "id": "ch10_77",
+                    "title": "收受载货运费清单",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_78",
+                    "title": "收受积载计划",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_79",
+                    "title": "催提",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_80",
+                    "title": "签发提货单",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_81",
+                    "title": "进口货物理赔",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch10_82",
+                "title": "供应工作",
+                "children": [
+                  {
+                    "id": "ch10_83",
+                    "title": "\\(1\\) 安排供应船用燃油、淡水",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_84",
+                    "title": "\\(2\\) 安排供应船舶物料、垫料、备件",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_85",
+                    "title": "\\(3\\) 安排船长借支",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_86",
+                    "title": "\\(4\\) 安排供应船员伙食",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_87",
+                    "title": "\\(5\\) 应船长要求联系安排清舱、洗舱等工作",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch10_88",
+                "title": "其他服务工作",
+                "children": [
+                  {
+                    "id": "ch10_89",
+                    "title": "\\(1\\) 安排船员遣返",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_90",
+                    "title": "\\(2\\) 办理船员登陆 或出入境 手续",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_91",
+                    "title": "\\(3\\) 安排船员就医、住院",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_92",
+                    "title": "\\(4\\) 联系安排船员其他事宜",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch10_93",
+        "title": "国际货运代理",
+        "children": [
+          {
+            "id": "ch10_94",
+            "title": "国际货运代理的性质",
+            "children": [
+              {
+                "id": "ch10_95",
+                "title": "国际货运代理的基本性质 : 作为中间人行事的代理人",
+                "children": []
+              },
+              {
+                "id": "ch10_96",
+                "title": "国际货运代理的扩展性质 : 作为当事人行事的承运人和物流商",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch10_97",
+            "title": "国际货运代理的服务内容",
+            "children": [
+              {
+                "id": "ch10_98",
+                "title": "国际货运代理的服务对象",
+                "children": [
+                  {
+                    "id": "ch10_99",
+                    "title": "发货人 \\( 出口商 \\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_100",
+                    "title": "收货人 \\( 进口商 \\)",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_101",
+                    "title": "海关",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_102",
+                    "title": "承运人",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_103",
+                    "title": "班轮公司",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_104",
+                    "title": "航空公司",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch10_105",
+                "title": "国际货运代理的业务内容",
+                "children": [
+                  {
+                    "id": "ch10_106",
+                    "title": "\\(1\\) 国际货运代理作为货运服务代理人的服务 。",
+                    "children": [
+                      {
+                        "id": "ch10_107",
+                        "title": "\\) 国际货运代理为发货人服务 。",
+                        "children": []
+                      },
+                      {
+                        "id": "ch10_108",
+                        "title": "\\) 国际货运代理为收货人服务。",
+                        "children": []
+                      },
+                      {
+                        "id": "ch10_109",
+                        "title": "\\) 国际货运代理为检验检疫机构、海关服务。",
+                        "children": []
+                      },
+                      {
+                        "id": "ch10_110",
+                        "title": "\\) 国际货运代理为承运人如班轮公司、铁路部门、航空公司服务。",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ch10_111",
+                    "title": "\\(2\\) 国际货运代理作为当事人开展服务。",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ch10_112",
+            "title": "国际货运代理的种类",
+            "children": [
+              {
+                "id": "ch10_113",
+                "title": "业务范围分类",
+                "children": [
+                  {
+                    "id": "ch10_114",
+                    "title": "租船订舱及货运安排代理。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_115",
+                    "title": "货物报检报关代理。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_116",
+                    "title": "转运及理货代理。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_117",
+                    "title": "储存代理。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_118",
+                    "title": "集装箱代理。",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch10_119",
+                "title": "重点和经营方式",
+                "children": [
+                  {
+                    "id": "ch10_120",
+                    "title": "海上运输 \\( 海运 \\) 代理。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_121",
+                    "title": "航空运输 \\( 空运 \\) 代理。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_122",
+                    "title": "国际陆路 （ 铁路、公路 \\) 运输代理。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_123",
+                    "title": "国际多式联运代理。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_124",
+                    "title": "无船承运人。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_125",
+                    "title": "第三方物流经营人。",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch10_126",
+        "title": "第三方、第四方国际物流",
+        "children": [
+          {
+            "id": "ch10_127",
+            "title": "第三方国际物流",
+            "children": [
+              {
+                "id": "ch10_128",
+                "title": "第一方物流",
+                "children": []
+              },
+              {
+                "id": "ch10_129",
+                "title": "第二方物流",
+                "children": []
+              },
+              {
+                "id": "ch10_130",
+                "title": "第三方物流",
+                "children": []
+              },
+              {
+                "id": "ch10_131",
+                "title": "第三方国际物流的服务形态",
+                "children": []
+              },
+              {
+                "id": "ch10_132",
+                "title": "第三方国际物流的特点",
+                "children": [
+                  {
+                    "id": "ch10_133",
+                    "title": "\\(1\\) 建立在现代信息技术的基础上。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_134",
+                    "title": "\\(2\\) 提供合同导向的一系列服务。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_135",
+                    "title": "\\(3\\) 提供个性化物流服务。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_136",
+                    "title": "\\(4\\) 企业之间是联盟关系。",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch10_137",
+                "title": "第三方国际物流服务的效益体现及其原理",
+                "children": [
+                  {
+                    "id": "ch10_138",
+                    "title": "\\(1\\) 规模效益源泉。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_139",
+                    "title": "\\(2\\) 系统协调效益。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_140",
+                    "title": "\\(3\\) 专业化效益。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_141",
+                    "title": "\\(4\\) 群体效益。",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ch10_142",
+            "title": "第四方国际物流",
+            "children": [
+              {
+                "id": "ch10_143",
+                "title": "第四方物流的含义",
+                "children": []
+              },
+              {
+                "id": "ch10_144",
+                "title": "第四方物流的特点",
+                "children": [
+                  {
+                    "id": "ch10_145",
+                    "title": "\\(1\\) 能够提供一整套完善的综合性的供应链解决方案。",
+                    "children": [
+                      {
+                        "id": "ch10_146",
+                        "title": "\\) 供应链再造",
+                        "children": []
+                      },
+                      {
+                        "id": "ch10_147",
+                        "title": "\\) 功能转化。",
+                        "children": []
+                      },
+                      {
+                        "id": "ch10_148",
+                        "title": "\\) 业务流程再造。",
+                        "children": []
+                      },
+                      {
+                        "id": "ch10_149",
+                        "title": "\\) 实施第四方物流，开展多功能、多流的供应链管理。",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ch10_150",
+                    "title": "\\(2) 第四方物流充分利用一批服务提供商的能力",
+                    "children": [
+                      {
+                        "id": "ch10_151",
+                        "title": "\\) 利润增长。",
+                        "children": []
+                      },
+                      {
+                        "id": "ch10_152",
+                        "title": "\\) 运营成本降低。",
+                        "children": []
+                      },
+                      {
+                        "id": "ch10_153",
+                        "title": "\\) 工作成本降低。",
+                        "children": []
+                      },
+                      {
+                        "id": "ch10_154",
+                        "title": "\\) 提高资产利用率。",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ch10_155",
+                "title": "第四方物流的基本运作模式",
+                "children": [
+                  {
+                    "id": "ch10_156",
+                    "title": "\\(1\\) 超能力组合 \\(1\\+1>2\\) 协同运作模式。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_157",
+                    "title": "\\(2\\) 方案集成商模式。",
+                    "children": []
+                  },
+                  {
+                    "id": "ch10_158",
+                    "title": "\\(3\\) 行业创新者模式。",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
+</script>
+  <script>
+    (function () {
+      const knowledgeData = JSON.parse(document.getElementById('knowledge-json').textContent);
+
+      // Icon set: simple, flat SVGs matched by iconType.
+      const ICON_MAP = {
+        port: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 11h14v2H5v-2zm2-6h10v2H7V5zm2 4h6v2H9V9zm9 7.5-1.6-.9-2.4 4.2H10l-2.4-4.2-1.6.9 2 3.5H6v2h12v-2h-2.1l2.1-3.5z"/>
+          </svg>`,
+        ship: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 16.5 12 20l9-3.5v-2l-2 .8V9l-7-3-7 3v6.8l-2-.8v2zM12 6.7l3 1.3v1L12 8l-3 1v-1l3-1.3zm-4 4.1 3-.9v6.1l-3-1.2V10.8zm10 4.2-3 1.2v-6.1l3 .9v4z"/>
+          </svg>`,
+        global: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.6 9h-2.2a15.3 15.3 0 0 0-.9-4 8 8 0 0 1 3.1 4Zm-4.3 0h-4.6a13 13 0 0 1 1-3.9 7 7 0 0 1 2.6 0 13 13 0 0 1 1 3.9Zm-5.1 2h5.6a13 13 0 0 1-1 3.9 7 7 0 0 1-3.6 0 13 13 0 0 1-1-3.9Zm6.2 0h2.2a8 8 0 0 1-3.1 4 15.3 15.3 0 0 0 .9-4Zm-8.5 0H4.7a8 8 0 0 1 3.1-4 15.3 15.3 0 0 0-.9 4Zm0 2a15.3 15.3 0 0 0 .9 4 8 8 0 0 1-3.1-4h2.2Zm2.1 0a11.3 11.3 0 0 0 .7 2.7 7 7 0 0 1-1.2-.7 8 8 0 0 1-.9-2h1.4Zm5.7 2.7a11.3 11.3 0 0 0 .7-2.7h1.4a8 8 0 0 1-.9 2 7 7 0 0 1-1.2.7ZM12 4a8 8 0 0 1 1.2.1 15.3 15.3 0 0 0-1.2-.1Zm-1.9.3a7 7 0 0 1 1-.2 15.3 15.3 0 0 0-1 .2Zm3.8 0a7 7 0 0 1 1 .2 15.3 15.3 0 0 0-1-.2Z"/>
+          </svg>`,
+        book: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 4h7a3 3 0 0 1 3 3v11.5a2.5 2.5 0 0 0-2-1H6a2 2 0 0 0-2 2V6a2 2 0 0 1 2-2Zm0 2v11.5a3.5 3.5 0 0 1 2.5-1h6.5V7a1 1 0 0 0-1-1H6Zm10 1h2a1 1 0 0 1 1 1v11.5a2.5 2.5 0 0 0-2-1h-1V7Z"/>
+          </svg>`,
+        document: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 3h8l4 4v11a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Zm7 1.4V8h3.6L13 4.4ZM6 7v2h8V7H6Zm0 4v2h10v-2H6Zm0 4v2h6v-2H6Z"/>
+          </svg>`,
+        question: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 15.2a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Zm1.9-6.2c-.3.3-.5.4-.7.6-.4.3-.7.6-.7 1.2v.3h-1.8V13c0-1 .5-1.6 1-2 .3-.3.6-.5.9-.7.5-.3.8-.6.8-1.1 0-.7-.6-1.2-1.5-1.2-.8 0-1.4.4-1.6 1.1l-1.7-.5c.4-1.3 1.6-2.3 3.3-2.3 2 0 3.3 1.2 3.3 2.8 0 .9-.4 1.6-1.4 2.1Z"/>
+          </svg>`
+      };
+
+      // Normalize names for layout and build a root wrapper.
+      const normalize = node => {
+        node.name = node.title || node.name || node.id || '未命名';
+        (node.children || []).forEach(normalize);
+        return node;
+      };
+      knowledgeData.forEach(normalize);
+
+      const rootData = {
+        id: 'root',
+        name: '《港口物流》课程知识图谱',
+        type: '主题',
+        children: knowledgeData
+      };
+
+      const container = d3.select('#tree-container');
+      const width = 1600;
+      const margin = { top: 40, right: 260, bottom: 40, left: 200 };
+      const dx = 110; // vertical spacing
+      const dy = 260; // horizontal spacing
+      const tree = d3.tree().nodeSize([dx, dy]);
+      const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
+
+      const svg = container.append('svg')
+        .attr('viewBox', [-margin.left, -margin.top, width + margin.left + margin.right, 900])
+        .attr('role', 'presentation');
+
+      const gLink = svg.append('g').attr('class', 'links');
+      const gNode = svg.append('g').attr('class', 'nodes');
+
+      let nodeId = 0;
+      const root = d3.hierarchy(rootData);
+      root.x0 = 0;
+      root.y0 = 0;
+
+      root.descendants().forEach(d => {
+        d.id = d.data.id || `node-${++nodeId}`;
+        d._children = d.children;
+        if (d.depth > 1) d.children = null; // collapse deeper nodes by default
+      });
+
+      update(root);
+
+      function update(source) {
+        tree(root);
+        const nodes = root.descendants().reverse();
+        const links = root.links();
+
+        let left = root;
+        let right = root;
+        root.eachBefore(node => {
+          if (node.x < left.x) left = node;
+          if (node.x > right.x) right = node;
+        });
+        const height = Math.max(600, right.x - left.x + margin.top + margin.bottom);
+
+        svg.transition().duration(350)
+          .attr('viewBox', [-margin.left, left.x - margin.top, width + margin.left + margin.right, height]);
+
+        const node = gNode.selectAll('g.node')
+          .data(nodes, d => d.id);
+
+        const nodeEnter = node.enter().append('g')
+          .attr('class', 'node')
+          .attr('transform', () => `translate(${source.y0},${source.x0})`)
+          .on('click', (event, d) => {
+            toggle(d);
+            update(d);
+          });
+
+        nodeEnter.append('foreignObject')
+          .attr('class', 'node-fo')
+          .attr('x', d => -getBox(d).width / 2)
+          .attr('y', d => -getBox(d).height / 2)
+          .attr('width', d => getBox(d).width)
+          .attr('height', d => getBox(d).height)
+          .append('xhtml:div')
+          .attr('class', d => `node-card ${getLevelClass(d)}`)
+          .html(d => buildCardHTML(d));
+
+        const nodeUpdate = node.merge(nodeEnter);
+
+        nodeUpdate.select('foreignObject')
+          .attr('x', d => -getBox(d).width / 2)
+          .attr('y', d => -getBox(d).height / 2)
+          .attr('width', d => getBox(d).width)
+          .attr('height', d => getBox(d).height)
+          .select('.node-card')
+          .attr('class', d => `node-card ${getLevelClass(d)}`)
+          .html(d => buildCardHTML(d));
+
+        nodeUpdate.transition()
+          .duration(350)
+          .attr('transform', d => `translate(${d.y},${d.x})`);
+
+        node.exit().transition()
+          .duration(250)
+          .attr('transform', () => `translate(${source.y},${source.x})`)
+          .remove();
+
+        const link = gLink.selectAll('path')
+          .data(links, d => d.target.id);
+
+        const linkEnter = link.enter().append('path')
+          .attr('class', 'link')
+          .attr('d', () => {
+            const o = { x: source.x0, y: source.y0 };
+            return diagonal({ source: o, target: o });
+          });
+
+        link.merge(linkEnter)
+          .transition()
+          .duration(350)
+          .attr('d', diagonal);
+
+        link.exit().transition()
+          .duration(250)
+          .attr('d', () => {
+            const o = { x: source.x, y: source.y };
+            return diagonal({ source: o, target: o });
+          })
+          .remove();
+
+        root.eachBefore(d => {
+          d.x0 = d.x;
+          d.y0 = d.y;
+        });
+      }
+
+      function toggle(d) {
+        if (d.children) {
+          d._children = d.children;
+          d.children = null;
+        } else {
+          d.children = d._children;
+          d._children = null;
+        }
+      }
+
+      // Build HTML for each node card.
+      function buildCardHTML(d) {
+        const title = d.data.name || d.data.title || d.data.id;
+        const tags = getTags(d);
+        const icon = getIconSVG(d);
+        const tagHtml = tags.map(tag => {
+          const cls = tag.isKey ? 'tag primary' : 'tag neutral';
+          return `<span class="${cls}">${tag.label}</span>`;
+        }).join('');
+
+        return `
+          <div class="card-icon">${icon}</div>
+          <div class="card-content">
+            <p class="card-title">${escapeHTML(title)}</p>
+            <div class="badge-row">${tagHtml}</div>
+          </div>
+        `;
+      }
+
+      // Approximate card size from text length for better spacing.
+      function getBox(d) {
+        const title = d.data.name || '';
+        const chars = Array.from(title).length;
+        const lines = Math.max(1, Math.ceil(chars / 16));
+        const baseHeight = 78;
+        const extra = (lines - 1) * 18;
+        const height = baseHeight + extra;
+        const width = 230;
+        d._box = { width, height };
+        return d._box;
+      }
+
+      function getLevelClass(d) {
+        if (d.depth === 0) return 'root';
+        if (d.depth === 1) return 'level1';
+        return 'level2';
+      }
+
+      function getTags(d) {
+        const depth = d.depth;
+        if (depth === 0) return [{ label: '主题', isKey: true }];
+        if (depth === 1) return [{ label: '模块', isKey: true }, { label: '概念', isKey: false }];
+        const hasChildren = (d.children && d.children.length) || (d._children && d._children.length);
+        if (hasChildren) {
+          return [{ label: '摘要', isKey: true }, { label: '重点', isKey: false }];
+        }
+        return [{ label: '条目', isKey: false }];
+      }
+
+      function getIconSVG(d) {
+        const type = (d.data.iconType || 'document').toLowerCase();
+        return ICON_MAP[type] || ICON_MAP.document;
+      }
+
+      function escapeHTML(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+    })();
+  </script>
+</body>
+</html>

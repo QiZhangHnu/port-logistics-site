@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>港口物流知识图谱 - 教学思维导图</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --dot: rgba(0, 0, 0, 0.04);
+      --link: #b0bec5;
+      --root-bg: #007bff;
+      --root-text: #ffffff;
+      --lvl1-bg: #e3f2fd;
+      --lvl1-text: #0d47a1;
+      --lvl2-bg: #ffffff;
+      --lvl2-border: #c6d8ec;
+      --lvl2-text: #37474f;
+      --shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+      --badge-bg: #ffe0b2;
+      --badge-text: #e57c04;
+      --badge-bg-gray: #eceff1;
+      --badge-text-gray: #546e7a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Nunito", "Segoe UI", sans-serif;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 0),
+        radial-gradient(circle at 12px 12px, rgba(0, 0, 0, 0.02) 1px, transparent 0);
+      background-size: 18px 18px, 36px 36px;
+      color: #263238;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header.hero {
+      padding: 22px 26px 10px;
+    }
+
+    .hero__title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: #1f3a5f;
+      margin: 0;
+    }
+
+    .hero__subtitle {
+      margin-top: 6px;
+      color: #607d8b;
+      font-size: 14px;
+    }
+
+    #tree-container {
+      flex: 1;
+      min-height: calc(100vh - 100px);
+      padding: 6px 14px 22px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      font-family: "Nunito", "Segoe UI", sans-serif;
+    }
+
+    .link {
+      fill: none;
+      stroke: var(--link);
+      stroke-width: 2px;
+      stroke-linecap: round;
+      opacity: 0.9;
+    }
+
+    .node-fo {
+      overflow: visible;
+    }
+
+    .node-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      padding: 12px 14px;
+      border: 1px solid transparent;
+      width: 230px;
+      min-height: 76px;
+      pointer-events: all;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .node-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+    }
+
+    .node-card.root {
+      background: var(--root-bg);
+      color: var(--root-text);
+      border-color: #006ae0;
+    }
+
+    .node-card.level1 {
+      background: var(--lvl1-bg);
+      color: var(--lvl1-text);
+      border-color: #c2dffc;
+    }
+
+    .node-card.level2 {
+      background: var(--lvl2-bg);
+      color: var(--lvl2-text);
+      border: 1px solid var(--lvl2-border);
+    }
+
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      background: #e0f7fa;
+      border: 1px solid #c5e9ef;
+    }
+
+    .card-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #0056b3;
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+      word-break: break-word;
+      margin: 0;
+    }
+
+    .badge-row {
+      display: inline-flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .tag.primary {
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      border-color: #ffc66d;
+    }
+
+    .tag.neutral {
+      background: var(--badge-bg-gray);
+      color: var(--badge-text-gray);
+      border-color: #d9e0e5;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <h1 class="hero__title">《港口物流》课程知识图谱</h1>
+    <div class="hero__subtitle">现代化教学思维导图 · 点击节点展开/收起 · 左至右布局</div>
+  </header>
+  <div id="tree-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script id="knowledge-json" type="application/json">
+[
+  {
+    "id": "ch6_1",
+    "title": "第六章 港口物流设施与设备",
+    "children": [
+      {
+        "id": "ch6_2",
+        "title": "港口物流设施",
+        "children": [
+          {
+            "id": "ch6_3",
+            "title": "港口设施",
+            "children": []
+          },
+          {
+            "id": "ch6_4",
+            "title": "港口基础性设施",
+            "children": []
+          },
+          {
+            "id": "ch6_5",
+            "title": "港口经营性设施",
+            "children": []
+          },
+          {
+            "id": "ch6_6",
+            "title": "港口水域",
+            "children": [
+              {
+                "id": "ch6_7",
+                "title": "锚地",
+                "children": []
+              },
+              {
+                "id": "ch6_8",
+                "title": "航道",
+                "children": []
+              },
+              {
+                "id": "ch6_9",
+                "title": "航标",
+                "children": []
+              },
+              {
+                "id": "ch6_10",
+                "title": "回转水域",
+                "children": []
+              },
+              {
+                "id": "ch6_11",
+                "title": "港池",
+                "children": []
+              },
+              {
+                "id": "ch6_12",
+                "title": "防波堤",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch6_13",
+            "title": "港口陆域",
+            "children": [
+              {
+                "id": "ch6_14",
+                "title": "码头和泊位",
+                "children": []
+              },
+              {
+                "id": "ch6_15",
+                "title": "仓库和堆场",
+                "children": []
+              },
+              {
+                "id": "ch6_16",
+                "title": "港口铁路",
+                "children": []
+              },
+              {
+                "id": "ch6_17",
+                "title": "港口道路",
+                "children": []
+              },
+              {
+                "id": "ch6_18",
+                "title": "装卸和运输机械",
+                "children": []
+              },
+              {
+                "id": "ch6_19",
+                "title": "港口生产辅助设备",
+                "children": [
+                  {
+                    "id": "ch6_20",
+                    "title": "船舶航行作业系统",
+                    "children": []
+                  },
+                  {
+                    "id": "ch6_21",
+                    "title": "装卸作业系统",
+                    "children": []
+                  },
+                  {
+                    "id": "ch6_22",
+                    "title": "储存作业系统",
+                    "children": []
+                  },
+                  {
+                    "id": "ch6_23",
+                    "title": "集疏运作业系统",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch6_24",
+        "title": "海港码头及其平面设置",
+        "children": [
+          {
+            "id": "ch6_25",
+            "title": "码头规模的确定",
+            "children": [
+              {
+                "id": "ch6_26",
+                "title": "港口通过能力",
+                "children": []
+              },
+              {
+                "id": "ch6_27",
+                "title": "停船吨级",
+                "children": []
+              },
+              {
+                "id": "ch6_28",
+                "title": "泊位数",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch6_29",
+            "title": "码头泊位尺度的确定",
+            "children": [
+              {
+                "id": "ch6_30",
+                "title": "泊位长度",
+                "children": []
+              },
+              {
+                "id": "ch6_31",
+                "title": "泊位宽度",
+                "children": []
+              },
+              {
+                "id": "ch6_32",
+                "title": "泊位水深",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch6_33",
+        "title": "集装箱装卸机械",
+        "children": [
+          {
+            "id": "ch6_34",
+            "title": "固定式吊具",
+            "children": [
+              {
+                "id": "ch6_35",
+                "title": "\\(1\\)直接吊装式吊具",
+                "children": []
+              },
+              {
+                "id": "ch6_36",
+                "title": "\\(2\\)可更换式吊具\\(吊梁式吊具\\)",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch6_37",
+            "title": "组合式吊具",
+            "children": []
+          },
+          {
+            "id": "ch6_38",
+            "title": "伸缩式吊具",
+            "children": []
+          },
+          {
+            "id": "ch6_39",
+            "title": "岸边集装箱起重机",
+            "children": [
+              {
+                "id": "ch6_40",
+                "title": "岸边集装箱起重机的结构种类",
+                "children": [
+                  {
+                    "id": "ch6_41",
+                    "title": "\\(1\\)按门架结构型式分类",
+                    "children": []
+                  },
+                  {
+                    "id": "ch6_42",
+                    "title": "\\(2\\)按前大梁结构型式分类",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ch6_43",
+            "title": "堆场作业机械",
+            "children": [
+              {
+                "id": "ch6_44",
+                "title": "集装箱正面吊运机",
+                "children": []
+              },
+              {
+                "id": "ch6_45",
+                "title": "集装箱龙门起重机",
+                "children": []
+              },
+              {
+                "id": "ch6_46",
+                "title": "集装箱跨运车",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch6_47",
+        "title": "影响港口装卸设备选型的主要因素",
+        "children": [
+          {
+            "id": "ch6_48",
+            "title": "装卸工艺",
+            "children": []
+          },
+          {
+            "id": "ch6_49",
+            "title": "装卸机械化系统",
+            "children": []
+          },
+          {
+            "id": "ch6_50",
+            "title": "货物方面",
+            "children": [
+              {
+                "id": "ch6_51",
+                "title": "货物特性",
+                "children": [
+                  {
+                    "id": "ch6_52",
+                    "title": "\\(1\\) 货物的尺寸、重量、容重、形状和包装形式影响起重量的选择",
+                    "children": []
+                  },
+                  {
+                    "id": "ch6_53",
+                    "title": "\\(2\\) 货物品种的多样性要求机械具有通用性和灵活性",
+                    "children": []
+                  },
+                  {
+                    "id": "ch6_54",
+                    "title": "\\(3\\) 货堆的脆弱性和包皮的牢固性影响装卸方法和货堆高度",
+                    "children": []
+                  },
+                  {
+                    "id": "ch6_55",
+                    "title": "\\(4\\) 货物的冻结性和凝结性对设备的有效应用具有重大影响",
+                    "children": []
+                  },
+                  {
+                    "id": "ch6_56",
+                    "title": "\\(5\\) 货物的磨损性和腐蚀性会加速机件的损坏",
+                    "children": []
+                  },
+                  {
+                    "id": "ch6_57",
+                    "title": "\\(6\\) 货物的易燃、易爆、扬尘性特性",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch6_58",
+                "title": "吞吐量",
+                "children": []
+              },
+              {
+                "id": "ch6_59",
+                "title": "货物流向",
+                "children": []
+              },
+              {
+                "id": "ch6_60",
+                "title": "货物的始发地和目的地",
+                "children": []
+              },
+              {
+                "id": "ch6_61",
+                "title": "订解约日期与装货准备完成日期",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch6_62",
+            "title": "运载工具方面",
+            "children": [
+              {
+                "id": "ch6_63",
+                "title": "船舶类型",
+                "children": []
+              },
+              {
+                "id": "ch6_64",
+                "title": "车辆类型",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch6_65",
+            "title": "自然条件方面",
+            "children": [
+              {
+                "id": "ch6_66",
+                "title": "水位和潮汐",
+                "children": []
+              },
+              {
+                "id": "ch6_67",
+                "title": "地质和地形",
+                "children": []
+              },
+              {
+                "id": "ch6_68",
+                "title": "气象条件",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch6_69",
+            "title": "港口建筑物方面",
+            "children": [
+              {
+                "id": "ch6_70",
+                "title": "岸壁形式和码头结构",
+                "children": [
+                  {
+                    "id": "ch6_71",
+                    "title": "直立式",
+                    "children": []
+                  },
+                  {
+                    "id": "ch6_72",
+                    "title": "混合式",
+                    "children": []
+                  },
+                  {
+                    "id": "ch6_73",
+                    "title": "斜坡式",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "ch6_74",
+                "title": "库场类型及位置",
+                "children": []
+              },
+              {
+                "id": "ch6_75",
+                "title": "铁路和公路与码头的相对位置",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch6_76",
+            "title": "运输组织方面",
+            "children": []
+          },
+          {
+            "id": "ch6_77",
+            "title": "竞争对手方面",
+            "children": []
+          },
+          {
+            "id": "ch6_78",
+            "title": "其他因素",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]
+</script>
+  <script>
+    (function () {
+      const knowledgeData = JSON.parse(document.getElementById('knowledge-json').textContent);
+
+      // Icon set: simple, flat SVGs matched by iconType.
+      const ICON_MAP = {
+        port: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 11h14v2H5v-2zm2-6h10v2H7V5zm2 4h6v2H9V9zm9 7.5-1.6-.9-2.4 4.2H10l-2.4-4.2-1.6.9 2 3.5H6v2h12v-2h-2.1l2.1-3.5z"/>
+          </svg>`,
+        ship: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 16.5 12 20l9-3.5v-2l-2 .8V9l-7-3-7 3v6.8l-2-.8v2zM12 6.7l3 1.3v1L12 8l-3 1v-1l3-1.3zm-4 4.1 3-.9v6.1l-3-1.2V10.8zm10 4.2-3 1.2v-6.1l3 .9v4z"/>
+          </svg>`,
+        global: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.6 9h-2.2a15.3 15.3 0 0 0-.9-4 8 8 0 0 1 3.1 4Zm-4.3 0h-4.6a13 13 0 0 1 1-3.9 7 7 0 0 1 2.6 0 13 13 0 0 1 1 3.9Zm-5.1 2h5.6a13 13 0 0 1-1 3.9 7 7 0 0 1-3.6 0 13 13 0 0 1-1-3.9Zm6.2 0h2.2a8 8 0 0 1-3.1 4 15.3 15.3 0 0 0 .9-4Zm-8.5 0H4.7a8 8 0 0 1 3.1-4 15.3 15.3 0 0 0-.9 4Zm0 2a15.3 15.3 0 0 0 .9 4 8 8 0 0 1-3.1-4h2.2Zm2.1 0a11.3 11.3 0 0 0 .7 2.7 7 7 0 0 1-1.2-.7 8 8 0 0 1-.9-2h1.4Zm5.7 2.7a11.3 11.3 0 0 0 .7-2.7h1.4a8 8 0 0 1-.9 2 7 7 0 0 1-1.2.7ZM12 4a8 8 0 0 1 1.2.1 15.3 15.3 0 0 0-1.2-.1Zm-1.9.3a7 7 0 0 1 1-.2 15.3 15.3 0 0 0-1 .2Zm3.8 0a7 7 0 0 1 1 .2 15.3 15.3 0 0 0-1-.2Z"/>
+          </svg>`,
+        book: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 4h7a3 3 0 0 1 3 3v11.5a2.5 2.5 0 0 0-2-1H6a2 2 0 0 0-2 2V6a2 2 0 0 1 2-2Zm0 2v11.5a3.5 3.5 0 0 1 2.5-1h6.5V7a1 1 0 0 0-1-1H6Zm10 1h2a1 1 0 0 1 1 1v11.5a2.5 2.5 0 0 0-2-1h-1V7Z"/>
+          </svg>`,
+        document: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 3h8l4 4v11a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Zm7 1.4V8h3.6L13 4.4ZM6 7v2h8V7H6Zm0 4v2h10v-2H6Zm0 4v2h6v-2H6Z"/>
+          </svg>`,
+        question: `
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 15.2a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Zm1.9-6.2c-.3.3-.5.4-.7.6-.4.3-.7.6-.7 1.2v.3h-1.8V13c0-1 .5-1.6 1-2 .3-.3.6-.5.9-.7.5-.3.8-.6.8-1.1 0-.7-.6-1.2-1.5-1.2-.8 0-1.4.4-1.6 1.1l-1.7-.5c.4-1.3 1.6-2.3 3.3-2.3 2 0 3.3 1.2 3.3 2.8 0 .9-.4 1.6-1.4 2.1Z"/>
+          </svg>`
+      };
+
+      // Normalize names for layout and build a root wrapper.
+      const normalize = node => {
+        node.name = node.title || node.name || node.id || '未命名';
+        (node.children || []).forEach(normalize);
+        return node;
+      };
+      knowledgeData.forEach(normalize);
+
+      const rootData = {
+        id: 'root',
+        name: '《港口物流》课程知识图谱',
+        type: '主题',
+        children: knowledgeData
+      };
+
+      const container = d3.select('#tree-container');
+      const width = 1600;
+      const margin = { top: 40, right: 260, bottom: 40, left: 200 };
+      const dx = 110; // vertical spacing
+      const dy = 260; // horizontal spacing
+      const tree = d3.tree().nodeSize([dx, dy]);
+      const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
+
+      const svg = container.append('svg')
+        .attr('viewBox', [-margin.left, -margin.top, width + margin.left + margin.right, 900])
+        .attr('role', 'presentation');
+
+      const gLink = svg.append('g').attr('class', 'links');
+      const gNode = svg.append('g').attr('class', 'nodes');
+
+      let nodeId = 0;
+      const root = d3.hierarchy(rootData);
+      root.x0 = 0;
+      root.y0 = 0;
+
+      root.descendants().forEach(d => {
+        d.id = d.data.id || `node-${++nodeId}`;
+        d._children = d.children;
+        if (d.depth > 1) d.children = null; // collapse deeper nodes by default
+      });
+
+      update(root);
+
+      function update(source) {
+        tree(root);
+        const nodes = root.descendants().reverse();
+        const links = root.links();
+
+        let left = root;
+        let right = root;
+        root.eachBefore(node => {
+          if (node.x < left.x) left = node;
+          if (node.x > right.x) right = node;
+        });
+        const height = Math.max(600, right.x - left.x + margin.top + margin.bottom);
+
+        svg.transition().duration(350)
+          .attr('viewBox', [-margin.left, left.x - margin.top, width + margin.left + margin.right, height]);
+
+        const node = gNode.selectAll('g.node')
+          .data(nodes, d => d.id);
+
+        const nodeEnter = node.enter().append('g')
+          .attr('class', 'node')
+          .attr('transform', () => `translate(${source.y0},${source.x0})`)
+          .on('click', (event, d) => {
+            toggle(d);
+            update(d);
+          });
+
+        nodeEnter.append('foreignObject')
+          .attr('class', 'node-fo')
+          .attr('x', d => -getBox(d).width / 2)
+          .attr('y', d => -getBox(d).height / 2)
+          .attr('width', d => getBox(d).width)
+          .attr('height', d => getBox(d).height)
+          .append('xhtml:div')
+          .attr('class', d => `node-card ${getLevelClass(d)}`)
+          .html(d => buildCardHTML(d));
+
+        const nodeUpdate = node.merge(nodeEnter);
+
+        nodeUpdate.select('foreignObject')
+          .attr('x', d => -getBox(d).width / 2)
+          .attr('y', d => -getBox(d).height / 2)
+          .attr('width', d => getBox(d).width)
+          .attr('height', d => getBox(d).height)
+          .select('.node-card')
+          .attr('class', d => `node-card ${getLevelClass(d)}`)
+          .html(d => buildCardHTML(d));
+
+        nodeUpdate.transition()
+          .duration(350)
+          .attr('transform', d => `translate(${d.y},${d.x})`);
+
+        node.exit().transition()
+          .duration(250)
+          .attr('transform', () => `translate(${source.y},${source.x})`)
+          .remove();
+
+        const link = gLink.selectAll('path')
+          .data(links, d => d.target.id);
+
+        const linkEnter = link.enter().append('path')
+          .attr('class', 'link')
+          .attr('d', () => {
+            const o = { x: source.x0, y: source.y0 };
+            return diagonal({ source: o, target: o });
+          });
+
+        link.merge(linkEnter)
+          .transition()
+          .duration(350)
+          .attr('d', diagonal);
+
+        link.exit().transition()
+          .duration(250)
+          .attr('d', () => {
+            const o = { x: source.x, y: source.y };
+            return diagonal({ source: o, target: o });
+          })
+          .remove();
+
+        root.eachBefore(d => {
+          d.x0 = d.x;
+          d.y0 = d.y;
+        });
+      }
+
+      function toggle(d) {
+        if (d.children) {
+          d._children = d.children;
+          d.children = null;
+        } else {
+          d.children = d._children;
+          d._children = null;
+        }
+      }
+
+      // Build HTML for each node card.
+      function buildCardHTML(d) {
+        const title = d.data.name || d.data.title || d.data.id;
+        const tags = getTags(d);
+        const icon = getIconSVG(d);
+        const tagHtml = tags.map(tag => {
+          const cls = tag.isKey ? 'tag primary' : 'tag neutral';
+          return `<span class="${cls}">${tag.label}</span>`;
+        }).join('');
+
+        return `
+          <div class="card-icon">${icon}</div>
+          <div class="card-content">
+            <p class="card-title">${escapeHTML(title)}</p>
+            <div class="badge-row">${tagHtml}</div>
+          </div>
+        `;
+      }
+
+      // Approximate card size from text length for better spacing.
+      function getBox(d) {
+        const title = d.data.name || '';
+        const chars = Array.from(title).length;
+        const lines = Math.max(1, Math.ceil(chars / 16));
+        const baseHeight = 78;
+        const extra = (lines - 1) * 18;
+        const height = baseHeight + extra;
+        const width = 230;
+        d._box = { width, height };
+        return d._box;
+      }
+
+      function getLevelClass(d) {
+        if (d.depth === 0) return 'root';
+        if (d.depth === 1) return 'level1';
+        return 'level2';
+      }
+
+      function getTags(d) {
+        const depth = d.depth;
+        if (depth === 0) return [{ label: '主题', isKey: true }];
+        if (depth === 1) return [{ label: '模块', isKey: true }, { label: '概念', isKey: false }];
+        const hasChildren = (d.children && d.children.length) || (d._children && d._children.length);
+        if (hasChildren) {
+          return [{ label: '摘要', isKey: true }, { label: '重点', isKey: false }];
+        }
+        return [{ label: '条目', isKey: false }];
+      }
+
+      function getIconSVG(d) {
+        const type = (d.data.iconType || 'document').toLowerCase();
+        return ICON_MAP[type] || ICON_MAP.document;
+      }
+
+      function escapeHTML(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+    })();
+  </script>
+</body>
+</html>
