@@ -14,11 +14,7 @@
         extend: {
           fontFamily: { sans: ['"Nunito Sans"', 'system-ui', 'sans-serif'] },
           colors: {
-            ocean: {
-              deep: '#0B3A5A',
-              mid: '#115D8C',
-              light: '#C7E3FF'
-            }
+            ocean: { deep: '#0B3A5A', mid: '#115D8C', light: '#C7E3FF' }
           }
         }
       }
@@ -60,12 +56,6 @@
             <a href="#videos" class="px-5 py-3 rounded-full bg-white text-ocean-deep font-semibold shadow-lg shadow-slate-900/30 hover:-translate-y-0.5 transition">开始学习</a>
             <a href="#graph" class="px-5 py-3 rounded-full border border-white/50 text-white font-semibold hover:bg-white/10 transition">查看知识图谱</a>
           </div>
-          <div class="flex items-center gap-6 text-sm text-slate-100/70">
-            <div class="flex items-center gap-2">
-              <div class="h-2 w-2 rounded-full bg-emerald-400"></div>
-              <span>覆盖案例：港口运营 / 航运计划 / 信息化</span>
-            </div>
-          </div>
         </div>
         <div class="bg-white/5 border border-white/10 rounded-2xl p-6 shadow-2xl shadow-slate-900/40">
           <div class="grid grid-cols-2 gap-4 text-sm">
@@ -91,173 +81,190 @@
       <div class="flex items-center justify-between gap-4">
         <div>
           <p class="text-sm font-semibold text-ocean-mid uppercase tracking-wide">教学视频</p>
-          <h2 class="text-2xl md:text-3xl font-bold text-ocean-deep">课程与案例 · Bilibili 播放列表</h2>
+          <h2 class="text-2xl md:text-3xl font-bold text-ocean-deep">课程与案例 · 播放列表</h2>
         </div>
-        <a href="#videos" class="hidden sm:inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep">共 13 个视频</a>
+        <a href="#videos" class="hidden sm:inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep">共 20 个视频</a>
       </div>
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <!-- video cards -->
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1HWUQBBErr&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1HWUQBBErr"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1HWUQBBErr.jpg" alt="课程讲解：港口的概念与分类" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">课程讲解：港口的概念与分类</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1HWUQBBErr</p>
             <a href="https://www.bilibili.com/video/BV1HWUQBBErr/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1HWUQBBE9c&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1HWUQBBE9c"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1HWUQBBE9c.jpg" alt="课程讲解：港口物流的形成与发展" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">课程讲解：港口物流的形成与发展</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1HWUQBBE9c</p>
             <a href="https://www.bilibili.com/video/BV1HWUQBBE9c/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1oeUbBaEVv&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1oeUbBaEVv"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1oeUbBaEVv.jpg" alt="港口物流案例讲解 1" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 1</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1oeUbBaEVv</p>
             <a href="https://www.bilibili.com/video/BV1oeUbBaEVv/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1oeUbBaEG3&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1oeUbBaEG3"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1oeUbBaEG3.jpg" alt="港口物流案例讲解 2" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 2</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1oeUbBaEG3</p>
             <a href="https://www.bilibili.com/video/BV1oeUbBaEG3/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1jeUbBYE7h&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1jeUbBYE7h"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1jeUbBYE7h.jpg" alt="港口物流案例讲解 3" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 3</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1jeUbBYE7h</p>
             <a href="https://www.bilibili.com/video/BV1jeUbBYE7h/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1deUbBaEm8&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1deUbBaEm8"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1deUbBaEm8.jpg" alt="港口物流案例讲解 4" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 4</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1deUbBaEm8</p>
             <a href="https://www.bilibili.com/video/BV1deUbBaEm8/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1deUbBaEfd&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1deUbBaEfd"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1deUbBaEfd.jpg" alt="港口物流案例讲解 5" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 5</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1deUbBaEfd</p>
             <a href="https://www.bilibili.com/video/BV1deUbBaEfd/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1jeUbBYE24&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1jeUbBYE24"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1jeUbBYE24.jpg" alt="港口物流案例讲解 6" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 6</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1jeUbBYE24</p>
             <a href="https://www.bilibili.com/video/BV1jeUbBYE24/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1oeUbBaEEB&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1oeUbBaEEB"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1oeUbBaEEB.jpg" alt="港口物流案例讲解 7" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 7</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1oeUbBaEEB</p>
             <a href="https://www.bilibili.com/video/BV1oeUbBaEEB/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1oeUbBaEL6&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1oeUbBaEL6"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1oeUbBaEL6.jpg" alt="港口物流案例讲解 8" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 8</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1oeUbBaEL6</p>
             <a href="https://www.bilibili.com/video/BV1oeUbBaEL6/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1E8UbBKERh&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1E8UbBKERh"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1E8UbBKERh.jpg" alt="港口物流案例讲解 9" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 9</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1E8UbBKERh</p>
             <a href="https://www.bilibili.com/video/BV1E8UbBKERh/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1f8UbBNEnz&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1f8UbBNEnz"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1f8UbBNEnz.jpg" alt="港口物流案例讲解 10" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 10</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1f8UbBNEnz</p>
             <a href="https://www.bilibili.com/video/BV1f8UbBNEnz/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1z8UbBKEnb&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1z8UbBKEnb"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1z8UbBKEnb.jpg" alt="港口物流案例讲解 11" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 11</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1z8UbBKEnb</p>
             <a href="https://www.bilibili.com/video/BV1z8UbBKEnb/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV14vU8BDE3H&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV14vU8BDE3H"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV14vU8BDE3H.jpg" alt="港口物流案例讲解 12" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 12</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV14vU8BDE3H</p>
             <a href="https://www.bilibili.com/video/BV14vU8BDE3H/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
-
         <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
-          <div class="relative aspect-video bg-slate-900">
-            <iframe class="absolute inset-0 w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1W6U8B7EdK&autoplay=0&muted=0&high_quality=1" allowfullscreen loading="lazy" title="BV1W6U8B7EdK"></iframe>
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1W6U8B7EdK.jpg" alt="港口物流案例讲解 13" class="absolute inset-0 w-full h-full object-cover">
           </div>
           <div class="p-4 space-y-2">
             <h3 class="font-semibold text-ocean-deep">港口物流案例讲解 13</h3>
-            <p class="text-sm text-slate-600">Bilibili · BV1W6U8B7EdK</p>
             <a href="https://www.bilibili.com/video/BV1W6U8B7EdK/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
+          </div>
+        </article>
+        <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1BuG9zFEsf.jpg" alt="课程案例：智慧港口建设解读" class="absolute inset-0 w-full h-full object-cover">
+          </div>
+          <div class="p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">课程案例：智慧港口建设解读</h3>
+            <a href="https://www.bilibili.com/video/BV1BuG9zFEsf/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
+          </div>
+        </article>
+        <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1Q84y1Q7v1.jpg" alt="课程案例：智慧港口实践分享" class="absolute inset-0 w-full h-full object-cover">
+          </div>
+          <div class="p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">课程案例：智慧港口实践分享</h3>
+            <a href="https://www.bilibili.com/video/BV1Q84y1Q7v1/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
+          </div>
+        </article>
+        <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1yW4y1L7wA.jpg" alt="课程案例：港口物流实务专题" class="absolute inset-0 w-full h-full object-cover">
+          </div>
+          <div class="p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">课程案例：港口物流实务专题</h3>
+            <a href="https://www.bilibili.com/video/BV1yW4y1L7wA/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
+          </div>
+        </article>
+        <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV1Xw41127yp.jpg" alt="课程案例：港口运营与安全" class="absolute inset-0 w-full h-full object-cover">
+          </div>
+          <div class="p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">课程案例：港口运营与安全</h3>
+            <a href="https://www.bilibili.com/video/BV1Xw41127yp/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
+          </div>
+        </article>
+        <article class="bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition">
+          <div class="relative aspect-video bg-slate-200">
+            <img src="assets/covers/BV13PtJz8Eeg.jpg" alt="课程案例：集装箱场站管理" class="absolute inset-0 w-full h-full object-cover">
+          </div>
+          <div class="p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">课程案例：集装箱场站管理</h3>
+            <a href="https://www.bilibili.com/video/BV13PtJz8Eeg/" target="_blank" rel="noopener noreferrer" class="mt-2 w-full inline-flex justify-center py-2 rounded-lg bg-ocean-mid text-white font-semibold hover:bg-ocean-deep transition">前往 Bilibili 观看</a>
           </div>
         </article>
       </div>
@@ -269,16 +276,8 @@
           <p class="text-sm font-semibold text-ocean-mid uppercase tracking-wide">知识图谱</p>
           <h2 class="text-2xl md:text-3xl font-bold text-ocean-deep">从港口节点到全球供应链</h2>
           <p class="text-slate-700 leading-relaxed">本课程以港口为核心，梳理航运、陆侧集疏运、仓储与报关的知识体系，配合数据驱动的分析工具，帮助学生建立系统化的认知结构。</p>
-          <ul class="space-y-2 text-slate-700">
-            <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-ocean-mid"></span>基础模块：港口设施、装备与安全标准</li>
-            <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-ocean-mid"></span>运营模块：船期安排、场桥协同、堆场管理</li>
-            <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-ocean-mid"></span>拓展模块：信息系统、风险管理、绿色港口</li>
-          </ul>
-          <div class="flex flex-wrap gap-3">
-            <a href="思维导图/menu.html" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep">打开知识图谱导航页</a>
-            <a href="思维导图/ch1.html" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep">章节 1：发展概述</a>
-          </div>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
+            <a href="思维导图/ch1.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 1</a>
             <a href="思维导图/ch2.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 2</a>
             <a href="思维导图/ch3.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 3</a>
             <a href="思维导图/ch4.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 4</a>
@@ -288,6 +287,7 @@
             <a href="思维导图/ch9.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 9</a>
             <a href="思维导图/ch10.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 10</a>
             <a href="思维导图/ch12.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">章节 12</a>
+            <a href="思维导图/menu.html" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg border border-ocean-mid/30 text-ocean-deep hover:border-ocean-mid hover:bg-ocean-mid/5">导航页</a>
           </div>
         </div>
         <div class="bg-white border border-slate-100 rounded-2xl shadow-lg overflow-hidden">
@@ -309,51 +309,42 @@
       <div class="space-y-4">
         <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
           <span class="text-xs font-semibold text-ocean-mid">2025-10-31</span>
-          <h3 class="text-lg font-semibold text-ocean-deep">
-            <a href="news/news20251031.html" class="hover:text-ocean-mid">2025年1-9月港口货物、集装箱吞吐量发布</a>
-          </h3>
+          <h3 class="text-lg font-semibold text-ocean-deep"><a href="news/news20251031.html" class="hover:text-ocean-mid">2025年1-9月港口货物、集装箱吞吐量发布</a></h3>
           <p class="text-sm text-slate-700">交通运输部综合规划司发布 1-9 月港口货物与集装箱吞吐量阶段数据，附图表。</p>
         </article>
         <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
           <span class="text-xs font-semibold text-ocean-mid">2025-11-25</span>
-          <h3 class="text-lg font-semibold text-ocean-deep">
-            <a href="news/news20251125.html" class="hover:text-ocean-mid">洋浦港政策创新驱动航运枢纽崛起</a>
-          </h3>
+          <h3 class="text-lg font-semibold text-ocean-deep"><a href="news/news20251125.html" class="hover:text-ocean-mid">洋浦港政策创新驱动航运枢纽崛起</a></h3>
           <p class="text-sm text-slate-700">交通运输部发布洋浦港政策与航线网络进展，突出自贸港口岸开放与枢纽能级提升。</p>
         </article>
         <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
           <span class="text-xs font-semibold text-ocean-mid">2025-11-10</span>
-          <h3 class="text-lg font-semibold text-ocean-deep">
-            <a href="news/news20251110.html" class="hover:text-ocean-mid">雪球文章：2024年全球TOP30集装箱港口</a>
-          </h3>
+          <h3 class="text-lg font-semibold text-ocean-deep"><a href="news/news20251110.html" class="hover:text-ocean-mid">雪球文章：2024年全球TOP30集装箱港口</a></h3>
           <p class="text-sm text-slate-700">雪球平台发布的行业观点与市场观察，建议前往原文查看完整内容。</p>
         </article>
         <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
+          <span class="text-xs font-semibold text-ocean-mid">2023-12-06</span>
+          <h3 class="text-lg font-semibold text-ocean-deep"><a href="news/news20231206.html" class="hover:text-ocean-mid">《关于加快智慧港口和智慧航道建设的意见》解读</a></h3>
+          <p class="text-sm text-slate-700">水运局对智慧港口和智慧航道建设意见进行政策解读，明确任务与实施要点。</p>
+        </article>
+        <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
           <span class="text-xs font-semibold text-ocean-mid">2025-11-07</span>
-          <h3 class="text-lg font-semibold text-ocean-deep">
-            <a href="news/news20251107.html" class="hover:text-ocean-mid">海口海关发布自贸港货物税收征管公告</a>
-          </h3>
+          <h3 class="text-lg font-semibold text-ocean-deep"><a href="news/news20251107.html" class="hover:text-ocean-mid">海口海关发布自贸港货物税收征管公告</a></h3>
           <p class="text-sm text-slate-700">海口海关公布一线、二线及岛内流通货物税收征管办法，为海南自贸港货物流转提供指引。</p>
         </article>
         <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
           <span class="text-xs font-semibold text-ocean-mid">2024-04-16</span>
-          <h3 class="text-lg font-semibold text-ocean-deep">
-            <a href="news/news20240416.html" class="hover:text-ocean-mid">2023年全国港口货物、集装箱吞吐量</a>
-          </h3>
+          <h3 class="text-lg font-semibold text-ocean-deep"><a href="news/news20240416.html" class="hover:text-ocean-mid">2023年全国港口货物、集装箱吞吐量</a></h3>
           <p class="text-sm text-slate-700">官方公布 2023 年港口货物与集装箱吞吐量年度数据，提供 PDF 与图表。</p>
         </article>
         <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
           <span class="text-xs font-semibold text-ocean-mid">2023-01-30</span>
-          <h3 class="text-lg font-semibold text-ocean-deep">
-            <a href="news/news20230130.html" class="hover:text-ocean-mid">2022年12月全国港口货物、集装箱吞吐量</a>
-          </h3>
+          <h3 class="text-lg font-semibold text-ocean-deep"><a href="news/news20230130.html" class="hover:text-ocean-mid">2022年12月全国港口货物、集装箱吞吐量</a></h3>
           <p class="text-sm text-slate-700">12 月全国港口货物与集装箱吞吐量数据发布，附 PDF 与图表。</p>
         </article>
         <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
           <span class="text-xs font-semibold text-ocean-mid">2025-03-26</span>
-          <h3 class="text-lg font-semibold text-ocean-deep">
-            <a href="news/news20250326.html" class="hover:text-ocean-mid">2024年港口货物、集装箱吞吐量发布</a>
-          </h3>
+          <h3 class="text-lg font-semibold text-ocean-deep"><a href="news/news20250326.html" class="hover:text-ocean-mid">2024年港口货物、集装箱吞吐量发布</a></h3>
           <p class="text-sm text-slate-700">交通运输部综合规划司发布 2024 年全国港口货物与集装箱吞吐量年度数据，附官方图表与 PDF 下载。</p>
         </article>
         <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
@@ -378,32 +369,27 @@
       <div class="max-w-6xl mx-auto px-4 py-16 space-y-6">
         <div class="flex items-center justify-between gap-4">
           <div>
-            <p class="text-sm font-semibold text-ocean-mid uppercase tracking-wide">习题区</p>
+            <p class="text-sm font-semibold text-ocean-mid uppercase tracking-wide">习题集</p>
             <h2 class="text-2xl md:text-3xl font-bold text-ocean-deep">巩固知识 · 即刻练习</h2>
           </div>
-          <span class="hidden sm:inline-flex text-sm font-semibold text-ocean-mid">练习题为本地页面</span>
+          <a href="#" class="hidden sm:inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep">提交作业</a>
         </div>
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <a href="practice/port-logistics-single-choice.html" class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2 hover:-translate-y-0.5 transition block">
-            <h3 class="font-semibold text-ocean-deep">单选测验 · 基础概念</h3>
-            <p class="text-sm text-slate-700">10 题 · 港口功能 / 物流流程</p>
-            <span class="inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep">进入练习</span>
-          </a>
-          <a href="practice/port-logistics-multiple-choice.html" class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2 hover:-translate-y-0.5 transition block">
-            <h3 class="font-semibold text-ocean-deep">多选测验 · 运营协同</h3>
-            <p class="text-sm text-slate-700">堆场、船期、信息化协同要点</p>
-            <span class="inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep">进入练习</span>
-          </a>
-          <a href="practice/port-logistics-fill-in.html" class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2 hover:-translate-y-0.5 transition block">
-            <h3 class="font-semibold text-ocean-deep">填空练习 · 术语与流程</h3>
-            <p class="text-sm text-slate-700">补充关键名词与作业步骤</p>
-            <span class="inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep">进入练习</span>
-          </a>
-          <a href="practice/port-logistics-terms.html" class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2 hover:-translate-y-0.5 transition block">
-            <h3 class="font-semibold text-ocean-deep">术语配对 · 港口词汇</h3>
-            <p class="text-sm text-slate-700">熟悉常用港口物流术语</p>
-            <span class="inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep">进入练习</span>
-          </a>
+          <div class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">港口作业流程测验</h3>
+            <p class="text-sm text-slate-700">在线测试 · 15 题 · 20 分钟</p>
+            <a href="#" class="inline-block mt-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep">开始答题</a>
+          </div>
+          <div class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">案例：集装箱船靠泊计划</h3>
+            <p class="text-sm text-slate-700">PDF 下载 · 作业提交截止：本周日</p>
+            <a href="#" class="inline-block mt-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep">下载 PDF</a>
+          </div>
+          <div class="bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2">
+            <h3 class="font-semibold text-ocean-deep">数据分析：堆场周转率</h3>
+            <p class="text-sm text-slate-700">附带 CSV 示例 · 可用 Python 或 Excel</p>
+            <a href="#" class="inline-block mt-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep">获取数据集</a>
+          </div>
         </div>
       </div>
     </section>
@@ -413,7 +399,7 @@
     <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
       <div class="space-y-2">
         <h3 class="text-lg font-semibold">港口物流课程</h3>
-        <p class="text-sm text-slate-100/80">面向未来的港口运营与供应链人才培养。</p>
+        <p class="text-sm text-slate-100/80">聚焦港口与供应链的教学与行业资讯。</p>
       </div>
       <div class="space-y-2 text-sm">
         <p class="font-semibold text-ocean-light">联系方式</p>
@@ -422,9 +408,9 @@
         <p>办公时间：周三 14:00 - 16:00</p>
       </div>
       <div class="space-y-2 text-sm">
-        <p class="font-semibold text-ocean-light">版权信息</p>
+        <p class="font-semibold text-ocean-light">引用说明</p>
+        <p>数据来源：课程与公开资料，仅供教学参考。</p>
         <p>© 2024 港口物流课程. 保留所有权利。</p>
-        <p>课程平台与资料仅供教学使用。</p>
       </div>
     </div>
   </footer>
