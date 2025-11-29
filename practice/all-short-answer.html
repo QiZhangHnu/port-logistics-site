@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>全册 · 简答题综合练习</title>
+    <style>
+
+:root {
+    --bg: #f5f5f5;
+    --card-bg: #ffffff;
+    --primary: #1f2933;
+    --accent: #2563eb;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --border-subtle: #e5e7eb;
+}
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text-main);
+}
+header {
+    background: var(--primary);
+    color: #fff;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+header .brand {
+    font-weight: 600;
+    font-size: 18px;
+}
+header .brand span {
+    opacity: .85;
+    font-size: 14px;
+    margin-left: 8px;
+}
+nav a {
+    color: #e5e7eb;
+    text-decoration: none;
+    margin-left: 16px;
+    font-size: 14px;
+}
+nav a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+main {
+    max-width: 960px;
+    margin: 24px auto 40px;
+    padding: 0 16px;
+}
+.card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    padding: 24px 20px 28px;
+}
+h1 {
+    margin-top: 0;
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+.subtitle {
+    margin: 0 0 16px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+.intro {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+.question {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 16px;
+    margin-top: 16px;
+}
+.question:first-of-type {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+}
+.question h2 {
+    font-size: 16px;
+    margin: 0 0 8px;
+}
+.question p.stem {
+    margin: 0 0 8px;
+    line-height: 1.6;
+}
+.options {
+    margin-left: 4px;
+}
+.option-label {
+    display: block;
+    font-size: 14px;
+    margin: 4px 0;
+    cursor: pointer;
+}
+.option-label input {
+    margin-right: 6px;
+}
+.answer-input {
+    width: 100%;
+    min-height: 48px;
+    padding: 8px 10px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    resize: vertical;
+}
+.answer-btn {
+    margin-top: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    background: #eff6ff;
+    color: var(--accent);
+    cursor: pointer;
+}
+.answer-btn:hover {
+    background: #dbeafe;
+}
+.answer {
+    display: none;
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #eff6ff;
+    border-left: 3px solid var(--accent);
+    font-size: 14px;
+    line-height: 1.6;
+}
+.answer strong {
+    font-weight: 600;
+}
+.analysis {
+    margin-top: 4px;
+}
+.meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 16px;
+}
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    font-size: 11px;
+    margin-left: 6px;
+    color: #4b5563;
+}
+@media (max-width: 600px) {
+    header {
+        align-items: flex-start;
+    }
+    nav {
+        margin-top: 8px;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    nav a {
+        margin: 4px 12px 0 0;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            港口物流课程
+            <span>Port Logistics</span>
+        </div>
+        <nav>
+            <a href="index.html">首页</a>
+            <a href="index.html#videos">教学视频</a>
+            <a href="index.html#knowledge">知识图谱</a>
+            <a href="index.html#news">行业新闻</a>
+            <a href="index.html#exercises">习题集</a>
+        </nav>
+    </header>
+    <main>
+        <article class="card">
+            <h1>全册 · 简答题综合练习</h1>
+            <p class="subtitle">港口物流 · 全章节 · 简答题汇总</p>
+            <div class="intro">本页面汇总了所有章节的简答题，请在文本框中完整作答，点击“查看答案”对照参考答案与解析。</div>
+            <section>
+                <div class="question" id="all-short-1">
+                    <h2>第 1 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">1、简述港口设施的分类及其包含的主要内容。&lt;br&gt;港口基础性设施包括：港口水域设施（航道、锚地、防波堤、助航设施）、系船设施（码头泊位、浮码头、浮筒）、交通和配套设施（道路、铁路、供电）、信息网络设施。&lt;br&gt;港口经营性设施包括：装卸设施、港口库场。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-1-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-1-answer">
+                        <p><strong>参考答案：</strong>港口设施分为港口基础性设施和港口经营性设施。</p>
+                        <p class="analysis"><strong>解析：</strong>根据课件结构图和文字描述进行分类和列举。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.1 港口物流设施</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-2">
+                    <h2>第 2 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">2、什么是港口水域？它主要包括哪些设施？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-2-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-2-answer">
+                        <p><strong>参考答案：</strong>港口水域是指港界线以内的水域面积。主要包括锚地、航道、航标、回转水域、港池、防波堤及导航助航标志。</p>
+                        <p class="analysis"><strong>解析：</strong>港口水域的定义及组成。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.1 港口物流设施</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-3">
+                    <h2>第 3 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">3、简述锚地的定义及其分类。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-3-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-3-answer">
+                        <p><strong>参考答案：</strong>锚地是供船舶抛锚候潮、等候泊位、避风、办理手续、检查或过驳装卸等停泊的水域。按位置可分为港外锚地（口门以外）和港内锚地（口门以内）。</p>
+                        <p class="analysis"><strong>解析：</strong>锚地的功能和分类。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.1 港口物流设施</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-4">
+                    <h2>第 4 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">4、确定码头规模主要包含哪两个指标？并简述其决定因素。&lt;br&gt;停船吨级主要取决于货种、航线运距和吞吐量。&lt;br&gt;泊位数取决于码头装卸效率和船舶周转量（及吞吐量）。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-4-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-4-answer">
+                        <p><strong>参考答案：</strong>码头规模包含泊位停船吨级和泊位数量两个指标。</p>
+                        <p class="analysis"><strong>解析：</strong>码头规模的构成及影响因素。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.2 海港码头及其平面设置</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-5">
+                    <h2>第 5 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">5、岸边集装箱起重机的主要工作机构有哪些？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-5-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-5-answer">
+                        <p><strong>参考答案：</strong>岸边集装箱起重机主要包括起升机构、小车运行机构、前大梁俯仰机构和大车运行机构。</p>
+                        <p class="analysis"><strong>解析：</strong>岸桥的四大机构。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.3 集装箱装卸机械</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-6">
+                    <h2>第 6 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">6、简述集装箱跨运车的主要用途。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-6-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-6-answer">
+                        <p><strong>参考答案：</strong>集装箱跨运车应用于集装箱码头和中转站堆场，主要用途是实现集装箱的水平搬运、堆码（可堆码2-3层）以及对集装箱半挂车进行装卸作业。</p>
+                        <p class="analysis"><strong>解析：</strong>跨运车的功能。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.3 集装箱装卸机械</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-7">
+                    <h2>第 7 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">7、影响港口装卸设备选型的“货物特性”主要体现在哪些方面？&lt;br&gt;(2) 货物品种的多样性；&lt;br&gt;(3) 货堆的脆弱性和包皮的牢固性；&lt;br&gt;(4) 货物的冻结性和凝结性；&lt;br&gt;(5) 货物的磨损性和腐蚀性；&lt;br&gt;(6) 货物的易燃、易爆、扬尘性。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-7-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-7-answer">
+                        <p><strong>参考答案：</strong>(1) 货物的尺寸、重量、容重、形状和包装形式；</p>
+                        <p class="analysis"><strong>解析：</strong>货物特性对设备选型的具体影响点。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.4 影响港口装卸设备选型的主要因素</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-8">
+                    <h2>第 8 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">8、什么是装卸工艺？它与装卸机械化系统有何区别？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-8-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-8-answer">
+                        <p><strong>参考答案：</strong>装卸工艺是指货物装卸的方法。装卸机械化系统是用来实现装卸工作机械化的各种装卸机械及辅助设备的集成。同一个机械化系统可以有不同的装卸工艺方案。</p>
+                        <p class="analysis"><strong>解析：</strong>两个概念的定义及区别。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.4 影响港口装卸设备选型的主要因素</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-9">
+                    <h2>第 9 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">9、港口吞吐量的大小对设备选型有何影响？&lt;br&gt;(2) 吞吐量小时，宜采用构造简单、造价低廉的机械化系统；&lt;br&gt;(3) 产量不足时，专业化生产可能因利用不足提高成本。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-9-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-9-answer">
+                        <p><strong>参考答案：</strong>(1) 吞吐量大时，应设置生产能力较高的专业化机械设备，以获得较高的通过能力；</p>
+                        <p class="analysis"><strong>解析：</strong>吞吐量对设备选型的指导原则。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.4 影响港口装卸设备选型的主要因素</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-10">
+                    <h2>第 10 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">10、简述港口生产的四大作业系统。&lt;br&gt;(2) 装卸作业系统：包括码头、装卸机械等；&lt;br&gt;(3) 储存作业系统：包括仓库、堆场等；&lt;br&gt;(4) 集疏运作业系统：包括铁路、道路、管道、内河水网等。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-10-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-10-answer">
+                        <p><strong>参考答案：</strong>(1) 船舶航行作业系统：包括航道、锚地、导航设施等；</p>
+                        <p class="analysis"><strong>解析：</strong>港口生产系统的构成。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.1 港口物流设施</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-11">
+                    <h2>第 11 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">11、简述港口物流基本生产过程包括哪几个部分？&lt;br&gt;(1) 生产准备过程；&lt;br&gt;(2) 基本生产过程（换装过程）；&lt;br&gt;(3) 辅助生产过程；&lt;br&gt;(4) 生产服务过程。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-11-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-11-answer">
+                        <p><strong>参考答案：</strong>港口物流基本生产过程包括：</p>
+                        <p class="analysis"><strong>解析：</strong>参见课件“1.1 港口物流基本生产过程”的结构图及文字说明。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.1 港口物流生产流程</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-12">
+                    <h2>第 12 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">12、港口物流生产有哪些特点？&lt;br&gt;(1) 港口物流生产过程的高度连续性和比例性；&lt;br&gt;(2) 港口物流生产的复杂性和协作性；&lt;br&gt;(3) 港口生产的不平衡性。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-12-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-12-answer">
+                        <p><strong>参考答案：</strong>港口物流生产的特点主要包括：</p>
+                        <p class="analysis"><strong>解析：</strong>参见课件“1.2 港口物流生产特点”部分。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.1 港口物流生产流程</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-13">
+                    <h2>第 13 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">13、编制港口货物吞吐量计划时，需要做到的“四个平衡”是指什么？&lt;br&gt;(1) 港口吞吐任务与港口通过能力相平衡；&lt;br&gt;(2) 港口货物的集疏运与港口的车、船换装能力相平衡；&lt;br&gt;(3) 港口通过能力与船舶运力相平衡；&lt;br&gt;(4) 内、外贸货物的任务和装卸能力相平衡。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-13-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-13-answer">
+                        <p><strong>参考答案：</strong>“四个平衡”是指：</p>
+                        <p class="analysis"><strong>解析：</strong>参见课件中关于“四个平衡”的详细描述。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.2 港口物流生产计划与作业计划</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-14">
+                    <h2>第 14 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">14、简述港口生产调度工作的基本任务。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-14-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-14-answer">
+                        <p><strong>参考答案：</strong>港口生产调度部门的基本任务是：以客货运输为中心，编制并执行水运生产计划，经济合理地利用港口、船舶的设备能力，做好与有关部门的合作，加速车、船、货周转，努力完成客货运任务，提高港口经济效益。</p>
+                        <p class="analysis"><strong>解析：</strong>参见课件“1. 港口生产调度工作”中关于基本任务的描述。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.3 港口生产调度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-15">
+                    <h2>第 15 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">15、什么是货物吞吐量？其计算单位是什么？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-15-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-15-answer">
+                        <p><strong>参考答案：</strong>货物吞吐量是一年间经由水运输出、输入港区并经过装卸作业的货物总量。包括邮件及办理托运手续的行李、包裹，以及补给船舶的燃料、物料和淡水。计算单位为“吨或TEU”。</p>
+                        <p class="analysis"><strong>解析：</strong>参见课件“4.1 吞吐量统计指标”中的定义。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.4 港口生产统计指标</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-16">
+                    <h2>第 16 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">16、简述装卸自然吨和吞吐量之间的主要差别。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-16-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-16-answer">
+                        <p><strong>参考答案：</strong>装卸自然吨和吞吐量之间的主要差别是：对于水运中转的货物，在港口进行换装作业时，每个装卸自然吨计算为两个吞吐吨，而水陆中转则计算为一个吞吐吨。装卸自然吨不随货物流程的变化而改变数值。</p>
+                        <p class="analysis"><strong>解析：</strong>参见课件“4.2 装卸工作统计指标”中关于装卸自然吨的说明。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.4 港口生产统计指标</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-17">
+                    <h2>第 17 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">17、什么是港口理论通过能力和港口营运通过能力？&lt;br&gt;(2) 港口营运通过能力（实际通过能力）：是在既定条件下，港口各生产要素在得到合理利用（经济效益最好）时所能装卸的货物自然吨数。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-17-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-17-answer">
+                        <p><strong>参考答案：</strong>(1) 港口理论通过能力（饱和通过能力）：是港口本身所固有的生产能力，不考虑港口生产经营经济效益时，在既定条件下最大限度利用生产要素所能装卸的货物自然吨数。</p>
+                        <p class="analysis"><strong>解析：</strong>参见课件“4.5 港口通过能力计算”中的定义。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.4 港口生产统计指标</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-18">
+                    <h2>第 18 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">18、单船作业计划主要包括哪些内容？&lt;br&gt;(1) 装卸作业：合理配置装卸作业线能力和组织平行作业；&lt;br&gt;(2) 船舶技术作业：如靠离码头、补给等；&lt;br&gt;(3) 船舶辅助作业：如开关舱、办理文件、整理工作等。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-18-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-18-answer">
+                        <p><strong>参考答案：</strong>单船作业计划包括：</p>
+                        <p class="analysis"><strong>解析：</strong>参见课件“3. 单船作业计划”的内容。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.2 港口物流生产计划与作业计划</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-19">
+                    <h2>第 19 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">19、港口生产调度工作的特性有哪些？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-19-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-19-answer">
+                        <p><strong>参考答案：</strong>港口生产调度工作的特性包括：计划性、集中性、及时性、经常性、预见性。</p>
+                        <p class="analysis"><strong>解析：</strong>参见课件中关于调度工作特性的列举。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.3 港口生产调度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-20">
+                    <h2>第 20 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">20、什么是操作量？它与装卸自然吨有何关系？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-20-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-20-answer">
+                        <p><strong>参考答案：</strong>操作量是经过操作过程的货物数量，计算单位是操作吨，是反映装卸工作量的主要指标。关系：一吨货物从进港起到出港止，不管经过多少次操作，只计算一吨装卸量（自然吨），但可能产生多个操作量。操作量与装卸自然吨的比值即为操作系数。</p>
+                        <p class="analysis"><strong>解析：</strong>参见课件“4.2 装卸工作统计指标”中关于操作量的说明。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.4 港口生产统计指标</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-21">
+                    <h2>第 21 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">21、简述现代港口对国民经济发展的五大作用。&lt;br&gt;2. 辐射作用：沟通国内外腹地，对“双向”腹地产生辐射。&lt;br&gt;3. 凝聚作用：汇聚资源，形成临港工业区。&lt;br&gt;4. 保证作用：保证国民经济建设和贸易正常进行。&lt;br&gt;5. 调节作用：调节运输方式衔接，作为市场结合点调节商贸。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-21-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-21-answer">
+                        <p><strong>参考答案：</strong>1. 驱动作用：驱动腹地资源开发，推动生产消费。</p>
+                        <p class="analysis"><strong>解析：</strong>对应课件中“1.2 现代港口对国民经济发展的作用”的五个小标题。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.1 港口与经济</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-22">
+                    <h2>第 22 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">22、简述港城关系的演变进程的四个阶段。&lt;br&gt;2. 港城相互关联阶段（港口工业型经济）。&lt;br&gt;3. 港城集聚扩散效应阶段（多元化型经济）。&lt;br&gt;4. 城市自增长效应发展阶段（港口城市外拓，进入新轮回）。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-22-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-22-answer">
+                        <p><strong>参考答案：</strong>1. 港城初始联系阶段（初级商港经济）。</p>
+                        <p class="analysis"><strong>解析：</strong>对应课件“2.1 港城关系的演变进程”。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.2 港口与城市</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-23">
+                    <h2>第 23 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">23、为什么说水路航运具有极高的经济性？&lt;br&gt;2. 规模化程度高：船舶载货量大，远超火车和汽车。&lt;br&gt;3. 具有降低碳排放、污染等优势。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-23-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-23-answer">
+                        <p><strong>参考答案：</strong>1. 燃料成本低：水运油耗成本远低于铁路和公路。</p>
+                        <p class="analysis"><strong>解析：</strong>对应课件“1.1 现代港口对区域经济发展的作用”中“较低的物流运作成本”部分。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.1 港口与经济</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-24">
+                    <h2>第 24 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">24、城市对港口发展的影响主要体现在哪几个方面？&lt;br&gt;2. 城市对港口发展提供经济、政策支持（人力、土地、金融、规划）。&lt;br&gt;3. 城市发展对港区功能的提升（老港区移出/改造）。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-24-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-24-answer">
+                        <p><strong>参考答案：</strong>1. 城市对港口发展的要素支持（如腹地经济、货源）。</p>
+                        <p class="analysis"><strong>解析：</strong>对应课件“2.4 城市对港口发展的影响”。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.2 港口与城市</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-25">
+                    <h2>第 25 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">25、简述物流对区域经济发展的作用。&lt;br&gt;2. 形成新的产业形态，优化区域产业结构。&lt;br&gt;3. 促进以城市为中心的区域市场的形成和发展。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-25-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-25-answer">
+                        <p><strong>参考答案：</strong>1. 降低运行成本，改变区域经济增长方式。</p>
+                        <p class="analysis"><strong>解析：</strong>对应课件“3.1 物流与区域经济发展”。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.3 经济与物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-26">
+                    <h2>第 26 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">26、为什么说港口是综合物流供应链的龙头？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-26-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-26-answer">
+                        <p><strong>参考答案：</strong>现代港口作为物流分拨配送中心，不仅负责储存、分拣、加工等物理作业，还负责整个供应链的情报工作。它在供应链管理中地位重要，是保证供应链持续运作的关键环节。</p>
+                        <p class="analysis"><strong>解析：</strong>对应课件“4.1 港口发展现代物流的优势”第一点。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.4 港口与物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-27">
+                    <h2>第 27 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">27、港口物流对经济的间接贡献主要包括哪些方面？&lt;br&gt;2. 货物及时运送获得的生产与市场效益。&lt;br&gt;3. 减少客运时间创造的时间价值。&lt;br&gt;4. 增加就业及消费带来的经济增长。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-27-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-27-answer">
+                        <p><strong>参考答案：</strong>1. 促进以港口生产为中间产品的其他部门发展带来的效益。</p>
+                        <p class="analysis"><strong>解析：</strong>对应课件“4.2 港口物流对经济的贡献”中“间接贡献”部分。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.4 港口与物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-28">
+                    <h2>第 28 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">28、老港区与城市发展的矛盾主要体现在哪些方面？&lt;br&gt;2. 港在城中导致港区发展空间受限，交通不便。&lt;br&gt;3. 港口运输给城市交通带来压力。&lt;br&gt;4. 码头和工业破坏城市生态环境。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-28-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-28-answer">
+                        <p><strong>参考答案：</strong>1. 港口用地增加与城市土地昂贵之间的矛盾，老港设施占用黄金地段。</p>
+                        <p class="analysis"><strong>解析：</strong>对应课件“2.4 城市对港口发展的影响”中“城市发展对港区功能的提升”部分。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.2 港口与城市</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-29">
+                    <h2>第 29 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">29、港口发展现代物流具备哪些优势？（至少列举四点）&lt;br&gt;2. 港口是最重要的汇集中心。&lt;br&gt;3. 港口是最大的货物集结点。&lt;br&gt;4. 港口具有良好的硬件设施。&lt;br&gt;5. 港口集结大量信息。&lt;br&gt;6. 港口配置资源能力突出。&lt;br&gt;（任选四点即可）</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-29-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-29-answer">
+                        <p><strong>参考答案：</strong>1. 港口是综合物流供应链的龙头。</p>
+                        <p class="analysis"><strong>解析：</strong>对应课件“4.1 港口发展现代物流的优势”。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.4 港口与物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-30">
+                    <h2>第 30 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">30、简述港口对城市社会发展的影响。&lt;br&gt;2. 创造大量就业机会，利于社会安定。&lt;br&gt;3. 提升城市投资环境，促生特色社会文化。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-30-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-30-answer">
+                        <p><strong>参考答案：</strong>1. 为城市公共事业和财政收入提供资金来源。</p>
+                        <p class="analysis"><strong>解析：</strong>对应课件“2.3 港口对城市发展的影响”中“港口对城市社会发展的影响”。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.2 港口与城市</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-31">
+                    <h2>第 31 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">31、简述我国口岸管理系统的四个组成部分。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-31-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-31-answer">
+                        <p><strong>参考答案：</strong>(1) 交通运输分系统；(2) 外贸分系统；(3) 监督分系统；(4) 服务分系统。</p>
+                        <p class="analysis"><strong>解析：</strong>依据课件对口岸管理系统构成的分类。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.1 我国口岸管理制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-32">
+                    <h2>第 32 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">32、国务院口岸办公室的主要职责有哪些？（列举3点即可）</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-32-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-32-answer">
+                        <p><strong>参考答案：</strong>(1) 研究制定口岸工作方针、政策；(2) 负责编制一类口岸开放规划和审理；(3) 协调解决口岸工作中的矛盾和问题；(4) 督促检查口岸工作等。（任答3点）</p>
+                        <p class="analysis"><strong>解析：</strong>参见课件中国务院口岸办职责部分。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.1 我国口岸管理制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-33">
+                    <h2>第 33 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">33、什么是法定检验检疫？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-33-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-33-answer">
+                        <p><strong>参考答案：</strong>法定检验检疫（强制性检验检疫）是指依照国家法律、行政法规规定，对必须经进出境检验检疫机构检验检疫的进出境货物，依照有关规定程序实施的强制性检验检疫。</p>
+                        <p class="analysis"><strong>解析：</strong>定义依据课件内容。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.2 口岸检验检疫制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-34">
+                    <h2>第 34 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">34、进境货物检验检疫报检方式有哪三种？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-34-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-34-answer">
+                        <p><strong>参考答案：</strong>(1) 进境一般报检；(2) 进境流向报检；(3) 异地施检报检。</p>
+                        <p class="analysis"><strong>解析：</strong>课件列出的三种报检方式。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.2 口岸检验检疫制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-35">
+                    <h2>第 35 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">35、海关监管进出境货物的基本制度是什么？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-35-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-35-answer">
+                        <p><strong>参考答案：</strong>接受申报、查验、征税、放行。</p>
+                        <p class="analysis"><strong>解析：</strong>海关监管的四个基本环节。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.3 海关货运监管制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-36">
+                    <h2>第 36 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">36、简述海关查验的三种方法。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-36-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-36-answer">
+                        <p><strong>参考答案：</strong>(1) 彻底检查（逐件）；(2) 抽查（按比例）；(3) 外形查验（包装、标记）。</p>
+                        <p class="analysis"><strong>解析：</strong>查验方法的分类。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.3 海关货运监管制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-37">
+                    <h2>第 37 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">37、检验检疫证书在港口物流中有哪些作用？（列举4点即可）</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-37-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-37-answer">
+                        <p><strong>参考答案：</strong>(1) 通关凭证；(2) 结算货款依据；(3) 计算费用依据；(4) 办理索赔依据；(5) 计算关税依据；(6) 明确责任证明；(7) 仲裁诉讼举证。（任答4点）</p>
+                        <p class="analysis"><strong>解析：</strong>证书的多重作用。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.2 口岸检验检疫制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-38">
+                    <h2>第 38 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">38、简述关税退补中“补征”和“追征”的区别。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-38-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-38-answer">
+                        <p><strong>参考答案：</strong>补征是海关发现少征或漏征时，1年内向纳税义务人补征；追征是因纳税义务人违反规定造成少征或漏征，海关在3年内可以追征。区别在于原因（是否违规）和期限（1年与3年）。</p>
+                        <p class="analysis"><strong>解析：</strong>补征与追征的定义区别。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.3 海关货运监管制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-39">
+                    <h2>第 39 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">39、什么是海关监管货物？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-39-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-39-answer">
+                        <p><strong>参考答案：</strong>凡应受海关监管的进出境货物和物品，统称为海关监管货物。包括进出口贸易货物、保税货物、转运货物等。</p>
+                        <p class="analysis"><strong>解析：</strong>海关监管货物的定义。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.3 海关货运监管制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-40">
+                    <h2>第 40 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">40、进出境运输工具检疫后通常签发哪些证书？（列举3种）</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-40-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-40-answer">
+                        <p><strong>参考答案：</strong>船舶卫生证书、除鼠证书、免予除鼠证书、进境检疫证、运输工具消毒证书等。（任答3种）</p>
+                        <p class="analysis"><strong>解析：</strong>运输工具检疫相关证书。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.2 口岸检验检疫制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-41">
+                    <h2>第 41 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">41、简述理货的概念及其主要内容。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-41-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-41-answer">
+                        <p><strong>参考答案：</strong>理货是指货物承运人将托运的货物运到目的地交于收货人或收货人代理，在货物交接过程中，按照货物标志进行分唛、验残、计数、制单、编制记录，公正地、实事求是地分清港贸、港航之间数字和残损责任而设立的一种专业性工作。主要内容包括分唛、验残、计数、制单等。</p>
+                        <p class="analysis"><strong>解析：</strong>定义及主要工作内容。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.1 船舶理货业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-42">
+                    <h2>第 42 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">42、什么是“原残”和“工残”？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-42-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-42-answer">
+                        <p><strong>参考答案：</strong>原残是指进口货物起卸前在船上发现的残损。工残是指在作业过程中造成的残损。</p>
+                        <p class="analysis"><strong>解析：</strong>残损的分类定义。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.1 船舶理货业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-43">
+                    <h2>第 43 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">43、简述船舶代理的定义。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-43-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-43-answer">
+                        <p><strong>参考答案：</strong>船舶代理是指船舶代理机构或代理人接受船舶所有人、船舶经营人、承租人或货主的委托，在授权范围内代表委托人办理与在港船有关的业务、提供有关的服务或完成与在港船舶有关的其他经济法律行为的代理行为。</p>
+                        <p class="analysis"><strong>解析：</strong>船舶代理的定义。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.2 船舶代理业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-44">
+                    <h2>第 44 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">44、国际货运代理的基本性质是什么？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-44-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-44-answer">
+                        <p><strong>参考答案：</strong>国际货运代理的基本性质是作为中间人行事的代理人，属于货物运输关系人的代理人，是联系发货人、收货人和承运人的货物运输中介人。</p>
+                        <p class="analysis"><strong>解析：</strong>货运代理的性质。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.3 国际货运代理</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-45">
+                    <h2>第 45 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">45、简述第三方物流的特点。&lt;br&gt;(2) 提供合同导向的一系列服务；&lt;br&gt;(3) 提供个性化物流服务；&lt;br&gt;(4) 企业之间是联盟关系。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-45-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-45-answer">
+                        <p><strong>参考答案：</strong>(1) 建立在现代信息技术的基础上；</p>
+                        <p class="analysis"><strong>解析：</strong>第三方物流的四个主要特点。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.4 第三方、第四方国际物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-46">
+                    <h2>第 46 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">46、什么是第四方物流？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-46-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-46-answer">
+                        <p><strong>参考答案：</strong>第四方物流供应商是一个供应链的集成商，它对公司内部和具有互补性的服务供应商所拥有的不同资源、能力和技术进行整合与管理，提供一整套供应链解决方案。</p>
+                        <p class="analysis"><strong>解析：</strong>第四方物流的定义。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.4 第三方、第四方国际物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-47">
+                    <h2>第 47 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">47、船舶进港手续中，海关法规规定的手续有哪些？&lt;br&gt;(2) 不在港装卸货物的进港船舶须办理的手续；&lt;br&gt;(3) 交船舶吨税手续；&lt;br&gt;(4) 申请准予装供物的手续；&lt;br&gt;(5) 在海关办公时间以外的时间进行装卸货物时须办理的手续。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-47-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-47-answer">
+                        <p><strong>参考答案：</strong>(1) 填报、交验和提交有关的单证；</p>
+                        <p class="analysis"><strong>解析：</strong>海关相关手续。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.2 船舶代理业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-48">
+                    <h2>第 48 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">48、国际货运代理为发货人提供的服务有哪些？（列举3点）&lt;br&gt;(2) 提取货物并签发有关单证；&lt;br&gt;(3) 包装；&lt;br&gt;(4) 储存；&lt;br&gt;(5) 称重和量尺码；&lt;br&gt;(6) 安排保险；&lt;br&gt;(7) 办理报关手续等。（任选3点）</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-48-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-48-answer">
+                        <p><strong>参考答案：</strong>(1) 向承运人揽货、订舱；</p>
+                        <p class="analysis"><strong>解析：</strong>货代为发货人服务的具体内容。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.3 国际货运代理</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-49">
+                    <h2>第 49 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">49、理货工作程序中，工班结束时要做哪些工作？&lt;br&gt;(2) 检查各舱理货单证，根据计数单注销进口舱单，核对出口装货清单，绘制出口货物积载草图，汇总编制待时记录，填写单船记录，编制日报单；&lt;br&gt;(3) 做好交接班工作。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-49-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-49-answer">
+                        <p><strong>参考答案：</strong>(1) 检查装卸沿途有无掉件，与仓库或收发货人办理交接签证手续；</p>
+                        <p class="analysis"><strong>解析：</strong>工班结束时的理货工作内容。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.1 船舶理货业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-50">
+                    <h2>第 50 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">50、第四方物流的三种基本运作模式是什么？&lt;br&gt;(2) 方案集成商模式；&lt;br&gt;(3) 行业创新者模式。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-50-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-50-answer">
+                        <p><strong>参考答案：</strong>(1) 超能力组合协同运作模式；</p>
+                        <p class="analysis"><strong>解析：</strong>第四方物流的运作模式。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.4 第三方、第四方国际物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-51">
+                    <h2>第 51 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">51、请列举我国沿海布局的五大区域港口群。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-51-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-51-answer">
+                        <p><strong>参考答案：</strong>环渤海地区港口群、长江三角洲地区港口群、东南沿海地区港口群、珠江三角洲地区港口群、西南沿海地区港口群。</p>
+                        <p class="analysis"><strong>解析：</strong>课件4.1章节中明确列出了这五大港口群。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.1 中国沿海港口布局形态</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-52">
+                    <h2>第 52 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">52、简述《全国沿海港口布局规划》确定的八大运输系统。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-52-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-52-answer">
+                        <p><strong>参考答案：</strong>煤炭运输系统、石油运输系统、铁矿石运输系统、集装箱运输系统、粮食运输系统、商品汽车运输系统、陆岛滚装运输系统、旅客运输系统。</p>
+                        <p class="analysis"><strong>解析：</strong>课件4.1章节详细介绍了这八大运输系统。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.1 中国沿海港口布局形态</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-53">
+                    <h2>第 53 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">53、简述大连港的地理位置优势。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-53-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-53-answer">
+                        <p><strong>参考答案：</strong>大连港位居西北太平洋的中枢，是东北亚经济圈的中心；位于辽东半岛南端的大连湾内，港阔水深，冬季不冻；是东北的门户和最重要的综合性外贸口岸。</p>
+                        <p class="analysis"><strong>解析：</strong>课件中关于大连港的介绍部分。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.2 沿海主要港口情况简介</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-54">
+                    <h2>第 54 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">54、我国港口物流目前存在的主要问题有哪些？（列举4点即可）</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-54-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-54-answer">
+                        <p><strong>参考答案：</strong>(1) 国际化、市场化、现代化程度低；(2) 港口的集疏运有待提升，结构性矛盾比较突出；(3) 信息化服务水平较低；(4) 港口间发展缺乏协调性，联盟程度低；(5) 专业人才匮乏。</p>
+                        <p class="analysis"><strong>解析：</strong>课件4.3章节归纳的港口物流存在的问题。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.3 我国港口物流的现状</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-55">
+                    <h2>第 55 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">55、简述上海港在我国港口体系中的地位。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-55-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-55-answer">
+                        <p><strong>参考答案：</strong>上海港是中国沿海的主要枢纽港，是我国对外开放的重要口岸；集装箱吞吐量世界第一；是我国内地首个国际航运中心；是长三角地区乃至全国经济贸易、金融及航运的引擎。</p>
+                        <p class="analysis"><strong>解析：</strong>课件中关于上海港的介绍及数据支撑。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.2 沿海主要港口情况简介</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-56">
+                    <h2>第 56 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">56、什么是“北煤南运”煤炭运输系统？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-56-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-56-answer">
+                        <p><strong>参考答案：</strong>由北方沿海的秦皇岛港、唐山港、天津港、黄骅港、青岛港、日照港、连云港港等七大装船港，以及华东、华南等沿海地区电力企业的专用卸船码头和公用港区煤炭转运设施组成的运输系统。</p>
+                        <p class="analysis"><strong>解析：</strong>课件4.3章节关于专业化运输系统的描述。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.3 我国港口物流的现状</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-57">
+                    <h2>第 57 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">57、简述宁波-舟山港的自然条件优势。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-57-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-57-answer">
+                        <p><strong>参考答案：</strong>地理位置适中（海岸线中部，长江T型交汇点）；水深流顺、风浪小，深水岸线资源丰富；北仑港区有舟山群岛为天然屏障，无须修防浪堤，陆域宽阔。</p>
+                        <p class="analysis"><strong>解析：</strong>课件中关于宁波-舟山港的介绍。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.2 沿海主要港口情况简介</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-58">
+                    <h2>第 58 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">58、港口发展战略中，“完善集疏运体系”的具体措施有哪些？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-58-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-58-answer">
+                        <p><strong>参考答案：</strong>按照“强化铁路、完善公路、发展内河”的思路；加大铁路集疏运设施建设，推进“港站一体化”；完善公路集疏运体系，建立客货分离的集疏运公路体系。</p>
+                        <p class="analysis"><strong>解析：</strong>课件4.4章节战略重点中的第三点。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.4 港口发展战略</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-59">
+                    <h2>第 59 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">59、简述我国港口发展“强化绿色环保”战略的内容。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-59-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-59-answer">
+                        <p><strong>参考答案：</strong>在规划、设计、生产全领域实施绿色安全标准；节约高效利用资源；实施严格环境保护制度（如排放控制区）；综合防治粉尘，推进污染物处理设施建设；推广岸电和清洁能源应用；强化安全应急体系。</p>
+                        <p class="analysis"><strong>解析：</strong>课件4.4章节战略重点中的第五点。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.4 港口发展战略</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-60">
+                    <h2>第 60 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">60、简述广州港的历史地位。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-60-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-60-answer">
+                        <p><strong>参考答案：</strong>从3世纪30年代开始成为海上丝绸之路的主港；唐宋时期成为中国第一大港；明清两代是中国唯一的对外贸易大港；是世界海上交通史上唯一一个2000多年长盛不衰的大港。</p>
+                        <p class="analysis"><strong>解析：</strong>课件中关于广州港的历史描述。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.2 沿海主要港口情况简介</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-61">
+                    <h2>第 61 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">61、请简述港口物流的概念。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-61-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-61-answer">
+                        <p><strong>参考答案：</strong>港口物流是指以港口作为整个物流过程中的一个重要节点，依托在这个节点上所形成的服务平台上所进行的物流活动；将运输、仓储、装卸搬运、代理、包装加工、配送、信息处理等物流环节有机结合，形成完整的供应链，能为用户提供多功能、一体化的综合物流服务。</p>
+                        <p class="analysis"><strong>解析：</strong>依据课件中关于港口物流定义的描述。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.1 港口物流的概念</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-62">
+                    <h2>第 62 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">62、港口物流活动具备哪三个最基本的要素？请简要说明。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-62-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-62-answer">
+                        <p><strong>参考答案：</strong>三个基本要素是流体、载体和流向。流体指经过港口的货物；载体指流体借以流动的设施（如航道、码头）和设备（如装卸机械）；流向指港内流体从起点到终点的流动方向。</p>
+                        <p class="analysis"><strong>解析：</strong>考察港口物流的三要素及其定义。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.1 港口物流的概念</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-63">
+                    <h2>第 63 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">63、简述港内物流流向的四种类型。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-63-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-63-answer">
+                        <p><strong>参考答案：</strong>(1)自然流向：由货物进出口不同决定，自然选择的合理路线；(2)指定流向：为了平衡任务由管理机构人为指定；(3)市场流向：根据货主或承运人意图指定；(4)实际流向：港内物流过程中实际发生的流向。</p>
+                        <p class="analysis"><strong>解析：</strong>考察四种流向的定义和区别。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.1 港口物流的概念</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-64">
+                    <h2>第 64 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">64、现代港口物流发展具有哪五个主要特点？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-64-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-64-answer">
+                        <p><strong>参考答案：</strong>(1)国际化（领域特征）；(2)多功能化（职能特征）；(3)系统化（要素整合特征）；(4)信息化（运动特征）；(5)标准化（国际特征）。</p>
+                        <p class="analysis"><strong>解析：</strong>考察现代港口物流的五个特征及其对应的属性。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.2 现代港口物流发展的特点</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-65">
+                    <h2>第 65 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">65、简述第四代港口的主要特征。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-65-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-65-answer">
+                        <p><strong>参考答案：</strong>第四代港口在物理空间上分离但通过逻辑连接；是港航联盟与港际联盟的信息化、柔性化港口；能够提供灵活、敏捷、准时的服务功能；生产精细化、敏捷化。</p>
+                        <p class="analysis"><strong>解析：</strong>考察第四代港口的核心定义和特征。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.3 港口的功能</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-66">
+                    <h2>第 66 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">66、港口物流系统的物质基础要素包括哪些方面？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-66-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-66-answer">
+                        <p><strong>参考答案：</strong>包括：(1)物流设施（如仓库、道路）；(2)物流装备（如装卸机械）；(3)物流工具（如包装工具）；(4)信息技术及网络；(5)组织和管理（软件）。</p>
+                        <p class="analysis"><strong>解析：</strong>考察物质基础要素的五个组成部分。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.4 港口物流系统的构成</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-67">
+                    <h2>第 67 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">67、为什么说劳动者是港口物流系统的核心要素？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-67-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-67-answer">
+                        <p><strong>参考答案：</strong>劳动者是现代物流系统的核心要素和第一要素。因为提高劳动者的素质，是建立一个合理化的港口物流系统并使它有效运转的根本。</p>
+                        <p class="analysis"><strong>解析：</strong>强调劳动者在系统中的核心地位。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.4 港口物流系统的构成</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-68">
+                    <h2>第 68 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">68、简述港口物流的集散效应。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-68-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-68-answer">
+                        <p><strong>参考答案：</strong>港口作为节点，因货物装卸转运产生相关运输公司；因船舶停靠产生供应维修服务；在货主和船公司间形成中介；发展出物流园区和中心。港口对依托城市的经济发展和外向型经济起到了重要作用。</p>
+                        <p class="analysis"><strong>解析：</strong>考察集散效应的具体表现。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.2 港口物流的基本特征</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-69">
+                    <h2>第 69 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">69、什么是上海自贸区“境内关外”的监管制度？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-69-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-69-answer">
+                        <p><strong>参考答案：</strong>即“一线”放开，“二线”管住。“一线”指境外和区内之间，货物可自由出入；“二线”指区内和境内之间，货物出入非自由贸易区要征税。</p>
+                        <p class="analysis"><strong>解析：</strong>考察自贸区监管制度的核心内容。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.2 港口物流的基本特征</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-70">
+                    <h2>第 70 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">70、港口物流的信息处理功能主要包括哪些方面？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-70-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-70-answer">
+                        <p><strong>参考答案：</strong>主要包括物流信息处理、贸易信息处理、金融信息处理和政务信息处理等。</p>
+                        <p class="analysis"><strong>解析：</strong>考察信息处理功能的具体内容。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.3 港口物流的功能</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-71">
+                    <h2>第 71 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">71、简述整箱货（FCL）和拼箱货（LCL）的定义。&lt;br&gt;拼箱货（LCL）指由集装箱货运站负责装箱，通常涉及多个发货人或收货人，货物不足装满一箱时进行拼装。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-71-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-71-answer">
+                        <p><strong>参考答案：</strong>整箱货（FCL）指由发货人自行装箱，填写装箱单并加铅封，通常是一个发货人对应一个收货人。</p>
+                        <p class="analysis"><strong>解析：</strong>考核基本概念的理解。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.2 集装箱货物的交接方式和流转程序</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-72">
+                    <h2>第 72 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">72、集装箱设备交接单（EIR）的主要作用是什么？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-72-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-72-answer">
+                        <p><strong>参考答案：</strong>EIR是集装箱进出港口时，用箱人（如拖车司机）与管箱人（如码头）之间交接集装箱的凭证。它记录了集装箱交接时的箱体状况（如有无残损）、附件情况等，用于划分责任。</p>
+                        <p class="analysis"><strong>解析：</strong>EIR在流转中的核心作用。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.3 集装箱出口业务与单证流转</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-73">
+                    <h2>第 73 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">73、简述CY（集装箱堆场）与CFS（集装箱货运站）的区别。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-73-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-73-answer">
+                        <p><strong>参考答案：</strong>CY主要负责整箱货（FCL）的交接、保管和堆存；CFS主要负责拼箱货（LCL）的拆箱、装箱、分拨和保管。</p>
+                        <p class="analysis"><strong>解析：</strong>两个场所的功能区分。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.2 集装箱货物的交接方式和流转程序</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-74">
+                    <h2>第 74 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">74、简述集装箱出口货运的基本业务流程。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-74-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-74-answer">
+                        <p><strong>参考答案：</strong>1. 订舱；2. 申请空箱；3. 提空箱装货；4. 重箱进场；5. 报关报验；6. 码头装船；7. 换取提单；8. 结汇。</p>
+                        <p class="analysis"><strong>解析：</strong>出口流程的关键节点。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.3 集装箱出口业务与单证流转</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-75">
+                    <h2>第 75 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">75、简述集装箱进口货运的基本业务流程。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-75-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-75-answer">
+                        <p><strong>参考答案：</strong>1. 接收到货通知；2. 换取提货单（D/O）；3. 报关报验；4. 凭D/O提运重箱；5. 拆箱卸货；6. 归还空箱。</p>
+                        <p class="analysis"><strong>解析：</strong>进口流程的关键节点。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.4 集装箱进口业务与单证流转</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-76">
+                    <h2>第 76 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">76、什么是“门到门”（Door to Door）运输方式？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-76-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-76-answer">
+                        <p><strong>参考答案：</strong>指货物在发货人的工厂或仓库装箱后，由承运人负责全程运输，直到收货人的工厂或仓库交箱。中间不涉及货物的倒载，最适宜于整箱交、整箱接。</p>
+                        <p class="analysis"><strong>解析：</strong>门到门的概念。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.2 集装箱货物的交接方式和流转程序</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-77">
+                    <h2>第 77 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">77、集装箱码头检查口的主要功能有哪些？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-77-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-77-answer">
+                        <p><strong>参考答案：</strong>1. 检验集装箱箱体状况，办理交接；2. 审核相关单证；3. 称重（出口箱）；4. 指定堆场箱位；5. 信息汇总与录入。</p>
+                        <p class="analysis"><strong>解析：</strong>检查口的功能点。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.5 集装箱码头的检查口业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-78">
+                    <h2>第 78 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">78、解释集装箱堆场的“贝-排-层”（Bay-Row-Tier）箱位表示法。</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-78-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-78-answer">
+                        <p><strong>参考答案：</strong>贝（Bay）表示集装箱在堆场纵向的位置（20&#x27;为奇数，40&#x27;为偶数）；排（Row）表示横向的位置；层（Tier）表示堆叠的高度层数。例如210533表示21区05贝3排3层。</p>
+                        <p class="analysis"><strong>解析：</strong>堆场管理的基础知识。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.6 集装箱码头箱务管理</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-79">
+                    <h2>第 79 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">79、集装箱运输相比传统件杂货运输有哪些优势？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-79-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-79-answer">
+                        <p><strong>参考答案：</strong>1. 提高装卸效率；2. 减少货损货差，提高安全性；3. 缩短在途时间；4. 节省包装费用；5. 降低运输成本；6. 便于多式联运。</p>
+                        <p class="analysis"><strong>解析：</strong>集装箱运输的优越性。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.1 集装箱运输概述</p>
+                    </div>
+                </div>
+                <div class="question" id="all-short-80">
+                    <h2>第 80 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">80、什么是电放（Telex Release）？</p>
+                    <textarea class="answer-input" placeholder="在此填写你的答案。"></textarea>
+                    <button class="answer-btn" onclick="toggleAnswer('all-short-80-answer', this)">查看答案</button>
+                    <div class="answer" id="all-short-80-answer">
+                        <p><strong>参考答案：</strong>电放是指在装货港装船后，承运人收回正本提单，通过电讯方式通知目的港代理，允许收货人在不出示正本提单的情况下提取货物的一种操作方式。</p>
+                        <p class="analysis"><strong>解析：</strong>电放的定义及操作特点。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.4 集装箱进口业务与单证流转</p>
+                    </div>
+                </div>
+            </section>
+            <p class="meta">说明：本页面汇总了全书所有对应题型的试题，用于集中练习与自测。</p>
+        </article>
+    </main>
+    <script>
+
+function toggleAnswer(id, btn) {
+    var box = document.getElementById(id);
+    if (!box) return;
+    var hidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = hidden ? "block" : "none";
+    if (btn) {
+        btn.textContent = hidden ? "隐藏答案" : "查看答案";
+    }
+}
+
+    </script>
+</body>
+</html>

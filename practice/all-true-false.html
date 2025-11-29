@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>全册 · 判断题综合练习</title>
+    <style>
+
+:root {
+    --bg: #f5f5f5;
+    --card-bg: #ffffff;
+    --primary: #1f2933;
+    --accent: #2563eb;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --border-subtle: #e5e7eb;
+}
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text-main);
+}
+header {
+    background: var(--primary);
+    color: #fff;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+header .brand {
+    font-weight: 600;
+    font-size: 18px;
+}
+header .brand span {
+    opacity: .85;
+    font-size: 14px;
+    margin-left: 8px;
+}
+nav a {
+    color: #e5e7eb;
+    text-decoration: none;
+    margin-left: 16px;
+    font-size: 14px;
+}
+nav a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+main {
+    max-width: 960px;
+    margin: 24px auto 40px;
+    padding: 0 16px;
+}
+.card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    padding: 24px 20px 28px;
+}
+h1 {
+    margin-top: 0;
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+.subtitle {
+    margin: 0 0 16px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+.intro {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+.question {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 16px;
+    margin-top: 16px;
+}
+.question:first-of-type {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+}
+.question h2 {
+    font-size: 16px;
+    margin: 0 0 8px;
+}
+.question p.stem {
+    margin: 0 0 8px;
+    line-height: 1.6;
+}
+.options {
+    margin-left: 4px;
+}
+.option-label {
+    display: block;
+    font-size: 14px;
+    margin: 4px 0;
+    cursor: pointer;
+}
+.option-label input {
+    margin-right: 6px;
+}
+.answer-input {
+    width: 100%;
+    min-height: 48px;
+    padding: 8px 10px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    resize: vertical;
+}
+.answer-btn {
+    margin-top: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    background: #eff6ff;
+    color: var(--accent);
+    cursor: pointer;
+}
+.answer-btn:hover {
+    background: #dbeafe;
+}
+.answer {
+    display: none;
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #eff6ff;
+    border-left: 3px solid var(--accent);
+    font-size: 14px;
+    line-height: 1.6;
+}
+.answer strong {
+    font-weight: 600;
+}
+.analysis {
+    margin-top: 4px;
+}
+.meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 16px;
+}
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    font-size: 11px;
+    margin-left: 6px;
+    color: #4b5563;
+}
+@media (max-width: 600px) {
+    header {
+        align-items: flex-start;
+    }
+    nav {
+        margin-top: 8px;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    nav a {
+        margin: 4px 12px 0 0;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            港口物流课程
+            <span>Port Logistics</span>
+        </div>
+        <nav>
+            <a href="index.html">首页</a>
+            <a href="index.html#videos">教学视频</a>
+            <a href="index.html#knowledge">知识图谱</a>
+            <a href="index.html#news">行业新闻</a>
+            <a href="index.html#exercises">习题集</a>
+        </nav>
+    </header>
+    <main>
+        <article class="card">
+            <h1>全册 · 判断题综合练习</h1>
+            <p class="subtitle">港口物流 · 全章节 · 判断题汇总</p>
+            <div class="intro">本页面汇总了所有章节的判断题，请判断每个说法的正误，再点击“查看答案”对照。</div>
+            <section>
+                <div class="question" id="all-tf-1">
+                    <h2>第 1 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">1、港口基础性设施包括码头、航道、锚地、堆场等。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-1-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-1-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>堆场属于港口经营性设施。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.1 港口物流设施</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-2">
+                    <h2>第 2 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">2、港口水域必须有足够的深度和面积，水流平缓，水面稳静。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-2-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-2-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>港口水域的基本要求。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.1 港口物流设施</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-3">
+                    <h2>第 3 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">3、泊位数是一个港口可同时停靠码头进行装卸作业的船舶数量。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-3-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-3-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>泊位数的定义。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.2 海港码头及其平面设置</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-4">
+                    <h2>第 4 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">4、码头停船吨级主要取决于货种、航线运距和吞吐量。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-4-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-4-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>停船吨级的影响因素。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.2 海港码头及其平面设置</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-5">
+                    <h2>第 5 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">5、单个泊位“一”字型布置时，泊位长度只取决于船舶长度。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-5-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-5-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>泊位长度取决于船舶长度和富裕长度（安全系缆要求），公式为 $L_b = L + 2d$。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.2 海港码头及其平面设置</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-6">
+                    <h2>第 6 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">6、港口库场和码头的相对位置决定着货物的搬运距离。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-6-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-6-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>库场位置影响搬运距离和机械选择。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.4 影响港口装卸设备选型的主要因素</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-7">
+                    <h2>第 7 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">7、轮胎式集装箱龙门起重机在货场上可以随意转向，不需要特殊装置。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-7-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-7-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>轮胎式集装箱龙门起重机只能直线行走，转移堆场需装设转向装置。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.3 集装箱装卸机械</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-8">
+                    <h2>第 8 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">8、货物特性对港口机械设备的选择没有影响。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-8-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-8-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>货物特性（尺寸、重量、易燃性等）对设备选择有重大影响。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.4 影响港口装卸设备选型的主要因素</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-9">
+                    <h2>第 9 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">9、港口铁路不属于港口设施的一部分。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-9-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-9-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>港口铁路是港口陆域设施的重要组成部分。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.1 港口物流设施</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-10">
+                    <h2>第 10 题 <span class="badge">第六章</span></h2>
+                    <p class="stem">10、直立式岸壁造价通常低于斜坡式岸壁。（ ）&lt;br&gt;---</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-10-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-10-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>直立式岸壁造价高于混合式，混合式高于斜坡式。</p>
+                        <p class="analysis"><strong>知识点：</strong>6.4 影响港口装卸设备选型的主要因素</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-11">
+                    <h2>第 11 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">11、港口物流生产过程是随货物和船舶在港口的流向而进行的。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-11-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-11-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>港口物流围绕船舶和货物展开，随其流向进行。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.1 港口物流生产流程</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-12">
+                    <h2>第 12 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">12、生产准备过程是指港口在基本生产活动之后所进行的总结工作。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-12-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-12-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>生产准备过程是在基本生产活动之前进行的。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.1 港口物流生产流程</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-13">
+                    <h2>第 13 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">13、港口生产的不平衡性主要是由于港口内部管理不善造成的。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-13-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-13-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>不平衡性主要受货物到港时间、种类、数量的不平衡等客观因素影响。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.1 港口物流生产流程</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-14">
+                    <h2>第 14 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">14、港口吞吐量计划编制中，长短结合是指年度计划要与长远计划相结合。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-14-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-14-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>编制计划要做到长短结合，即年度计划与长远计划结合。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.2 港口物流生产计划与作业计划</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-15">
+                    <h2>第 15 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">15、港口生产调度是港口生产指挥的中心。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-15-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-15-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>生产调度是港口生产指挥的中心，是实行集中统一指挥的工具。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.3 港口生产调度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-16">
+                    <h2>第 16 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">16、由水运运进港区的建港物资，在港内消耗的，不计算吞吐量。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-16-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-16-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>由水运运进港区并在港内消耗的建港物资，计算为进口吞吐量。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.4 港口生产统计指标</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-17">
+                    <h2>第 17 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">17、一吨货物从进港到出港，不管经过多少次操作，只计算一个装卸自然吨。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-17-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-17-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>装卸自然吨的定义：进出港区并经过装卸的货物数量，不论操作次数，只计一个。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.4 港口生产统计指标</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-18">
+                    <h2>第 18 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">18、操作量是反映装卸工作量的主要指标，其计算单位是自然吨。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-18-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-18-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>操作量的计算单位是操作吨。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.4 港口生产统计指标</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-19">
+                    <h2>第 19 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">19、港口营运通过能力通常大于港口理论通过能力。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-19-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-19-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>理论通过能力是最大能力（饱和能力），营运通过能力是实际通过能力，通常小于理论能力。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.4 港口生产统计指标</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-20">
+                    <h2>第 20 题 <span class="badge">第七章</span></h2>
+                    <p class="stem">20、集装箱换算系数等于集装箱自然长度英尺除以40英尺。 ( )&lt;br&gt;---</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-20-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-20-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>换算系数=集装箱自然长度英尺/20英尺。</p>
+                        <p class="analysis"><strong>知识点：</strong>7.4 港口生产统计指标</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-21">
+                    <h2>第 21 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">21、水路运输在降低碳排放、温室气体排放等方面具有很大优势。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-21-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-21-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>水运具有绿色环保优势。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.1 港口与经济</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-22">
+                    <h2>第 22 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">22、港口城市的经济发展完全依赖于港口，港口衰落则城市必亡。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-22-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-22-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>课件指出，港城关系分离后，城市可能继续发展，如威尼斯和伦敦，港衰而城市成功转型。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.2 港口与城市</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-23">
+                    <h2>第 23 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">23、港口物流的发展只能带来直接的经济效益，没有间接贡献。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-23-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-23-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>港口物流既有直接贡献，也有巨大的间接贡献和社会效益。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.4 港口与物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-24">
+                    <h2>第 24 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">24、在港城初始联系阶段，城市对港口有很强的依赖性。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-24-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-24-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>初始阶段港口区位优势决定发展，城市依赖港口。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.2 港口与城市</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-25">
+                    <h2>第 25 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">25、全社会流通费用每降低1%，就可以节约大量资金。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-25-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-25-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>课件引用数据：全社会流通费用每降低1%，就可以节约178亿元。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.3 经济与物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-26">
+                    <h2>第 26 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">26、港口仅仅是货物的换装点，不具备信息中心的功能。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-26-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-26-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>港口集结大量信息，是重要的信息汇集中心。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.4 港口与物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-27">
+                    <h2>第 27 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">27、我国所有沿海港口城市的港城互动发展水平是均衡的。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-27-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-27-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>课件明确指出“港城经济互动发展具有不均衡性”。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.2 港口与城市</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-28">
+                    <h2>第 28 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">28、港口的发展会推动外向型经济的发展。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-28-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-28-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>港口促进了对外经济联系，推动外向型经济。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.4 港口与物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-29">
+                    <h2>第 29 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">29、城市土地价格上升是老港区移出城区的原因之一。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-29-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-29-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>随着经济发展，城市地价上升，老港区占用宝贵土地成为更新障碍。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.2 港口与城市</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-30">
+                    <h2>第 30 题 <span class="badge">第三章</span></h2>
+                    <p class="stem">30、港口配置资源的能力较弱，主要靠内陆运输。 ( )&lt;br&gt;---</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-30-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-30-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>港口配置资源的能力突出，通过运输网沟通国内外腹地。</p>
+                        <p class="analysis"><strong>知识点：</strong>3.4 港口与物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-31">
+                    <h2>第 31 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">31、口岸仅指沿海的港口。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-31-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-31-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>口岸包括港口、机场、车站通道等。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.1 我国口岸管理制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-32">
+                    <h2>第 32 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">32、进出口货物未经检验检疫机构检验合格的，一律不准进出口。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-32-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-32-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>法定检验检疫货物必须合格才准进出口。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.2 口岸检验检疫制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-33">
+                    <h2>第 33 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">33、海关只负责征收关税，不负责查缉走私。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-33-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-33-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>海关既负责征税也负责查缉走私。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.1 我国口岸管理制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-34">
+                    <h2>第 34 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">34、进境流向报检是指在卸货口岸完成所有检验检疫手续。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-34-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-34-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>进境流向报检是口岸清关后转异地进行检验检疫。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.2 口岸检验检疫制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-35">
+                    <h2>第 35 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">35、彻底检查是对货物按一定比例进行开箱查验。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-35-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-35-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>彻底检查是逐件开箱查验，抽查是按比例。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.3 海关货运监管制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-36">
+                    <h2>第 36 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">36、海关多征的税款，纳税义务人无权要求退还。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-36-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-36-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>纳税义务人自交纳税款之日起1年内可以要求退还。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.3 海关货运监管制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-37">
+                    <h2>第 37 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">37、申报与否是区别走私与非走私的重要界限之一。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-37-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-37-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>申报是合法进出的前提。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.3 海关货运监管制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-38">
+                    <h2>第 38 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">38、检验检疫证书是仲裁、诉讼举证的有效文件。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-38-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-38-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>证书具有法律效力，可用作证明文件。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.2 口岸检验检疫制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-39">
+                    <h2>第 39 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">39、外贸分系统的主要任务是完成进出口物资的装卸工作。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-39-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-39-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>外贸分系统主要任务是完成外贸成交、货源组织；装卸是交通运输分系统的任务。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.1 我国口岸管理制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-40">
+                    <h2>第 40 题 <span class="badge">第十二章</span></h2>
+                    <p class="stem">40、进口货物自进境起，到海关放行止，都受海关监管。（ ）&lt;br&gt;---</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-40-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-40-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>这是进口货物的海关监管期限。</p>
+                        <p class="analysis"><strong>知识点：</strong>12.3 海关货运监管制度</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-41">
+                    <h2>第 41 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">41、理货工作仅是计数而已，不涉及货物的残损检查。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-41-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-41-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>理货包括计数、分唛、验残等工作。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.1 船舶理货业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-42">
+                    <h2>第 42 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">42、船方承运的货物，在卸货港以装货单数字为准。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-42-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-42-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>在卸货港以舱单数字为准。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.1 船舶理货业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-43">
+                    <h2>第 43 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">43、船舶代理人必须是法人，不能是公民。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-43-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-43-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>船舶代理人可以是法人，也可以是公民。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.2 船舶代理业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-44">
+                    <h2>第 44 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">44、一艘船舶的代理只有一个委托方。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-44-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-44-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>一艘船舶只有一个主要委托方，但可以有第二委托方。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.2 船舶代理业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-45">
+                    <h2>第 45 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">45、国际货运代理本身就是承运人。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-45-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-45-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>国际货运代理的基本性质是代理人，本身不是承运人，但在扩展性质中可能作为承运人行事。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.3 国际货运代理</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-46">
+                    <h2>第 46 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">46、第三方物流是建立在现代信息技术基础上的。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-46-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-46-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>第三方物流特点之一是建立在现代信息技术基础上。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.4 第三方、第四方国际物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-47">
+                    <h2>第 47 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">47、第四方物流拥有大量的自有资产。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-47-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-47-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>第四方物流通常是虚拟物流，依靠整合社会资源，不一定拥有大量资产。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.4 第三方、第四方国际物流</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-48">
+                    <h2>第 48 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">48、在理货过程中，如发现出口货物残损，理货员可以直接接受发货人保函。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-48-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-48-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>不得接受发货人保函，应由单船理货长如实批注。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.1 船舶理货业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-49">
+                    <h2>第 49 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">49、船舶出港手续比进港手续更为简便。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-49-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-49-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>课件指出船舶出港手续较进港手续更为简便。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.2 船舶代理业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-50">
+                    <h2>第 50 题 <span class="badge">第十章</span></h2>
+                    <p class="stem">50、国际货运代理可以作为发货人的代理，也可以作为收货人的代理。（ ）&lt;br&gt;---</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-50-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-50-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>货代可以为发货人、收货人、承运人等提供服务。</p>
+                        <p class="analysis"><strong>知识点：</strong>10.3 国际货运代理</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-51">
+                    <h2>第 51 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">51、我国港口吞吐量和集装箱吞吐量连续多年位居世界第一。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-51-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-51-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>课件指出我国已成为港口大国，吞吐量连续6年位居世界第一。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.3 我国港口物流的现状</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-52">
+                    <h2>第 52 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">52、环渤海港口群主要服务于长江流域经济发展。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-52-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-52-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>长江三角洲港口群服务于长江流域，环渤海服务于东北、华北、西北。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.1 中国沿海港口布局形态</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-53">
+                    <h2>第 53 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">53、天津港是自然条件优越的天然深水良港。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-53-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-53-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>天津港是人工深水港，是在淤泥质浅滩上挖海建港形成的。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.2 沿海主要港口情况简介</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-54">
+                    <h2>第 54 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">54、上海港既是河口港也是海港，是世界著名的枢纽港。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-54-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-54-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>上海港位于长江入海口，拥有洋山深水港区，兼具河海功能。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.2 沿海主要港口情况简介</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-55">
+                    <h2>第 55 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">55、我国集装箱铁路运输占铁路货运量的比重已达到发达国家水平。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-55-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-55-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>发达国家比重为30%~50%，我国计划2020年达到20%，差距较大。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.3 我国港口物流的现状</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-56">
+                    <h2>第 56 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">56、港口信息化服务水平低是我国港口物流存在的问题之一。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-56-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-56-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>课件明确指出我国港口信息化服务水平不高，难以满足国际客户需求。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.3 我国港口物流的现状</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-57">
+                    <h2>第 57 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">57、港口发展应完全依赖市场调节，政府不需要进行规划。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-57-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-57-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>发展手段包括市场导向、政府规划扶持、企业运作，需要政府统筹规划。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.4 港口发展战略</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-58">
+                    <h2>第 58 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">58、绿色环保战略要求推广船舶使用岸电。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-58-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-58-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>推广船舶使用岸电是绿色环保战略的具体措施之一。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.4 港口发展战略</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-59">
+                    <h2>第 59 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">59、厦门港是西南沿海港口群的核心港口。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-59-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-59-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>厦门港属于东南沿海港口群，西南沿海港口群以湛江、防城、海口为主。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.1 中国沿海港口布局形态</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-60">
+                    <h2>第 60 题 <span class="badge">第四章</span></h2>
+                    <p class="stem">60、“无水港”网络化布局是港口转型升级的重要方向。（ ）&lt;br&gt;---</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-60-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-60-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>推进“无水港”网络化布局有助于拓展港口腹地，促进转型升级。</p>
+                        <p class="analysis"><strong>知识点：</strong>4.4 港口发展战略</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-61">
+                    <h2>第 61 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">61、港口作为全球综合运输网络的节点，是一个临时节点。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-61-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-61-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>港口是稀缺节点，而非临时节点。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.1 港口物流的概念</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-62">
+                    <h2>第 62 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">62、在港口物流中，流体仅仅指液体货物。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-62-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-62-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>流体指经过港口的货物，不限于液体。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.1 港口物流的概念</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-63">
+                    <h2>第 63 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">63、第三代港口的主要特征是作为国际物流中心。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-63-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-63-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>第三代港口定位为国际物流中心和国际商贸后勤基地。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.3 港口的功能</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-64">
+                    <h2>第 64 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">64、联合国贸易和发展会议提出第四代港口概念的时间是1990年。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-64-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-64-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>提出时间是1999年。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.3 港口的功能</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-65">
+                    <h2>第 65 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">65、资金是现代物流系统的核心要素和第一要素。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-65-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-65-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>劳动者是核心要素和第一要素，资金是重要要素但不是第一要素。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.4 港口物流系统的构成</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-66">
+                    <h2>第 66 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">66、装卸机械属于港口物流系统的支撑要素。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-66-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-66-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>装卸机械属于物质基础要素中的物流装备，不是支撑要素。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.4 港口物流系统的构成</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-67">
+                    <h2>第 67 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">67、上海自贸区的“一线放开”是指境外和区内之间的关系。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-67-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-67-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>“一线”指境外和区内，货物可自由出入；“二线”指区内和境内。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.2 港口物流的基本特征</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-68">
+                    <h2>第 68 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">68、港口物流竞争的核心已从物流服务转向传统的腹地货源竞争。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-68-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-68-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>竞争核心是从货源转向物流服务水平。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.2 港口物流的基本特征</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-69">
+                    <h2>第 69 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">69、港口物流系统的“系统化”特征意味着将单一功能扩展为多种功能。（ ）</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-69-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-69-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>系统化特征确实包含了从单一功能向多种功能的扩展和统筹协调。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.2 现代港口物流发展的特点</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-70">
+                    <h2>第 70 题 <span class="badge">第二章</span></h2>
+                    <p class="stem">70、国际货物运输是港口物流系统的核心功能。（ ）&lt;br&gt;---</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-70-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-70-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>国际货物运输是港口物流系统的核心。</p>
+                        <p class="analysis"><strong>知识点：</strong>2.4 港口物流系统的构成</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-71">
+                    <h2>第 71 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">71、CFS（集装箱货运站）主要负责整箱货的交接和保管。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-71-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-71-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>CFS主要负责拼箱货（LCL）的拆装箱和交接；CY负责整箱货（FCL）。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.2 集装箱货物的交接方式和流转程序</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-72">
+                    <h2>第 72 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">72、设备交接单（EIR）是集装箱进出港口时交接箱体状况的凭证。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-72-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-72-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>EIR用于记录集装箱交接时的状态。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.5 集装箱码头的检查口业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-73">
+                    <h2>第 73 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">73、D/O（提货单）是出口业务中使用的单证。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-73-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-73-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>D/O是进口提货凭证。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.4 集装箱进口业务与单证流转</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-74">
+                    <h2>第 74 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">74、在堆场中，40英尺集装箱的箱位号通常为奇数。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-74-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-74-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>40英尺为偶数，20英尺为奇数。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.6 集装箱码头箱务管理</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-75">
+                    <h2>第 75 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">75、集装箱码头检查口需要核对单证上的箱号与实际箱号是否一致。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-75-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-75-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>核对信息是检查口的基本职责。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.5 集装箱码头的检查口业务</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-76">
+                    <h2>第 76 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">76、LCL（拼箱货）意味着一个发货人对应一个收货人。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-76-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-76-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>LCL通常涉及多个发货人或多个收货人；FCL是一个发货人一个收货人。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.2 集装箱货物的交接方式和流转程序</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-77">
+                    <h2>第 77 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">77、冷藏箱在进场时必须检查冷冻机设备和设定温度。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-77-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-77-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>冷藏箱管理要求严格检查温度和设备。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.6 集装箱码头箱务管理</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-78">
+                    <h2>第 78 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">78、承运人拖运（Carrier Haulage）是指由货主自己负责安排集装箱的内陆运输。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-78-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-78-answer">
+                        <p><strong>参考答案：</strong>错</p>
+                        <p class="analysis"><strong>解析：</strong>承运人拖运是由承运人负责安排；货主自己负责叫货主拖运（Merchant Haulage）。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.2 集装箱货物的交接方式和流转程序</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-79">
+                    <h2>第 79 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">79、1956年被认为是现代集装箱运输的开端。 ( )</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-79-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-79-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>1956年马尔科姆·麦克莱恩的试航标志着现代集装箱运输开始。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.1 集装箱运输概述</p>
+                    </div>
+                </div>
+                <div class="question" id="all-tf-80">
+                    <h2>第 80 题 <span class="badge">第九章</span></h2>
+                    <p class="stem">80、场站收据（D/R）正本在货物装船后可用于换取提单（B/L）。 ( )&lt;br&gt;---</p>
+                    <div class="options">
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('all-tf-80-answer', this)">查看答案</button>
+                    <div class="answer" id="all-tf-80-answer">
+                        <p><strong>参考答案：</strong>对</p>
+                        <p class="analysis"><strong>解析：</strong>发货人凭签收的场站收据正本向船公司换取提单。</p>
+                        <p class="analysis"><strong>知识点：</strong>9.3 集装箱出口业务与单证流转</p>
+                    </div>
+                </div>
+            </section>
+            <p class="meta">说明：本页面汇总了全书所有对应题型的试题，用于集中练习与自测。</p>
+        </article>
+    </main>
+    <script>
+
+function toggleAnswer(id, btn) {
+    var box = document.getElementById(id);
+    if (!box) return;
+    var hidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = hidden ? "block" : "none";
+    if (btn) {
+        btn.textContent = hidden ? "隐藏答案" : "查看答案";
+    }
+}
+
+    </script>
+</body>
+</html>
