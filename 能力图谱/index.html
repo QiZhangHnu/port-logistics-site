@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>港口物流 | 能力图谱 & 知识图谱</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --panel: #ffffff;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --accent: #2563eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: radial-gradient(circle at 20% 20%, #e8f0ff, transparent 35%),
+                  radial-gradient(circle at 80% 0%, #e7f5ff, transparent 28%),
+                  var(--bg);
+      font-family: "Manrope", "Noto Sans SC", "Segoe UI", system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+    }
+    header {
+      max-width: 1200px;
+      margin: 0 auto 24px auto;
+    }
+    h1 {
+      margin: 4px 0 8px 0;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    p.lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #e0e7ff;
+      color: #1e3a8a;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    section {
+      background: var(--panel);
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+    }
+    .graph-wrap {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+    svg {
+      width: 100%;
+      height: 480px;
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f8fafc 0%, #ffffff 60%);
+    }
+    .info-panel {
+      background: #0b1021;
+      color: #e5e7eb;
+      padding: 14px;
+      border-radius: 12px;
+      min-height: 120px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .info-panel h3 {
+      margin: 0 0 6px 0;
+      font-size: 16px;
+      color: #f8fafc;
+    }
+    .info-panel .muted {
+      color: #cbd5e1;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .info-panel ul {
+      padding-left: 18px;
+      margin: 4px 0 0 0;
+      line-height: 1.5;
+    }
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      font-size: 12px;
+      color: #0f172a;
+      border: 1px solid #e2e8f0;
+    }
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      border: 1px solid #cbd5e1;
+      flex-shrink: 0;
+    }
+    .node-label {
+      pointer-events: none;
+      font-size: 11px;
+      fill: #334155;
+      paint-order: stroke;
+      stroke: #ffffff;
+      stroke-width: 3px;
+      stroke-linejoin: round;
+    }
+    .error {
+      color: #b91c1c;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    @media (max-width: 900px) {
+      body { padding: 16px; }
+      .graph-wrap { grid-template-columns: 1fr; }
+      svg { height: 360px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="pill">课程代码 <span id="course-code">-</span></div>
+    <h1 id="course-title">港口物流能力 & 知识图谱</h1>
+    <p class="lead">基于 知识图谱与问题图谱  动态绘制。</p>
+  </header>
+
+  <main>
+    <section>
+      <div class="section-head">
+        <h2>能力图谱</h2>
+        <div class="legend" id="ability-legend"></div>
+      </div>
+      <div class="graph-wrap">
+        <svg id="ability-graph" role="img" aria-label="能力图谱"></svg>
+        <div class="info-panel" id="ability-info">
+          <h3>能力详情</h3>
+          <div class="muted">点击节点查看描述、目标与支撑要点。</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>知识图谱 / 问题图谱映射</h2>
+        <div class="legend" id="knowledge-legend"></div>
+      </div>
+      <div class="graph-wrap">
+        <svg id="knowledge-graph" role="img" aria-label="知识图谱"></svg>
+        <div class="info-panel" id="knowledge-info">
+          <h3>题目详情</h3>
+          <div class="muted">点击题目节点或能力节点查看题干与关联信息。</div>
+        </div>
+      </div>
+    </section>
+
+    <div id="error-box"></div>
+  </main>
+
+  <script>
+    const abilityUrl = "./src/gangkou_wuliu_ability_map.json";
+    const questionUrl = "./src/gangkou_wuliu_question_map.json";
+
+    const levelColors = {
+      L1: "#22c55e",
+      L2: "#3b82f6",
+      L3: "#f59e0b",
+      L4: "#f97316",
+      L5: "#ef4444"
+    };
+
+    const typeColors = {
+      course: "#0f172a",
+      module: "#2563eb",
+      ability: "#06b6d4",
+      question: "#f97316"
+    };
+
+    function buildLegend(containerId, items) {
+      const wrap = document.getElementById(containerId);
+      wrap.innerHTML = "";
+      items.forEach(item => {
+        const el = document.createElement("div");
+        el.className = "legend-item";
+        const sw = document.createElement("span");
+        sw.className = "swatch";
+        sw.style.background = item.color;
+        el.appendChild(sw);
+        const text = document.createElement("span");
+        text.textContent = item.label;
+        el.appendChild(text);
+        wrap.appendChild(el);
+      });
+    }
+
+    function formatList(items) {
+      if (!items || !items.length) return null;
+      const ul = document.createElement("ul");
+      items.forEach(text => {
+        const li = document.createElement("li");
+        li.textContent = text;
+        ul.appendChild(li);
+      });
+      return ul;
+    }
+
+    function renderInfo(panelId, node) {
+      const panel = document.getElementById(panelId);
+      panel.innerHTML = "";
+      const h3 = document.createElement("h3");
+      h3.textContent = node.label || "详情";
+      const meta = document.createElement("div");
+      meta.className = "muted";
+      meta.textContent = node.meta || "";
+      panel.appendChild(h3);
+      panel.appendChild(meta);
+
+      const blocks = [];
+      if (node.description) blocks.push({ title: "描述", text: node.description });
+      if (node.goal) blocks.push({ title: "目标", text: node.goal });
+      if (node.supportingPoints) blocks.push({ title: "支撑要点", list: node.supportingPoints });
+      if (node.questions) blocks.push({ title: "题目", list: node.questions });
+      if (node.extraList) blocks.push({ title: node.extraTitle || "信息", list: node.extraList });
+
+      blocks.forEach(block => {
+        const title = document.createElement("div");
+        title.style.fontWeight = "700";
+        title.style.marginTop = "8px";
+        title.textContent = block.title;
+        panel.appendChild(title);
+        if (block.text) {
+          const p = document.createElement("div");
+          p.textContent = block.text;
+          p.style.lineHeight = "1.5";
+          panel.appendChild(p);
+        }
+        if (block.list) {
+          const arr = Array.isArray(block.list) ? block.list : String(block.list).split(/[；;。]/).filter(Boolean);
+          const ul = formatList(arr);
+          if (ul) panel.appendChild(ul);
+        }
+      });
+    }
+
+    function drawForceGraph({ svgId, nodes, links, onNodeClick, colorFn }) {
+      const svg = d3.select(svgId);
+      const { width, height } = svg.node().getBoundingClientRect();
+
+      const simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.distance || 110).strength(0.7))
+        .force("charge", d3.forceManyBody().strength(-350))
+        .force("collide", d3.forceCollide().radius(d => d.r + 6))
+        .force("center", d3.forceCenter(width / 2, height / 2));
+
+      svg.selectAll("*").remove();
+      const g = svg.append("g");
+
+      const link = g.append("g")
+        .attr("stroke", "#cbd5e1")
+        .attr("stroke-width", 1.4)
+        .selectAll("line")
+        .data(links)
+        .join("line")
+        .attr("stroke-opacity", 0.9);
+
+      const node = g.append("g")
+        .selectAll("circle")
+        .data(nodes)
+        .join("circle")
+        .attr("r", d => d.r)
+        .attr("fill", d => colorFn(d))
+        .attr("stroke", "#0f172a")
+        .attr("stroke-width", 1.2)
+        .attr("cursor", "pointer")
+        .call(drag(simulation));
+
+      const label = g.append("g")
+        .selectAll("text")
+        .data(nodes)
+        .join("text")
+        .attr("class", "node-label")
+        .text(d => d.shortLabel || d.label);
+
+      node.append("title").text(d => d.label);
+
+      node.on("click", (_, d) => onNodeClick(d));
+      node.on("mouseover", function(_, d) {
+        node.attr("opacity", o => o.id === d.id ? 1 : 0.35);
+        link.attr("stroke", l => (l.source.id === d.id || l.target.id === d.id) ? "#94a3b8" : "#e2e8f0")
+            .attr("stroke-width", l => (l.source.id === d.id || l.target.id === d.id) ? 2.2 : 1.2)
+            .attr("stroke-opacity", l => (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.5);
+      }).on("mouseout", () => {
+        node.attr("opacity", 1);
+        link.attr("stroke", "#cbd5e1").attr("stroke-width", 1.4).attr("stroke-opacity", 0.9);
+      });
+
+      simulation.on("tick", () => {
+        link
+          .attr("x1", d => d.source.x)
+          .attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x)
+          .attr("y2", d => d.target.y);
+        node
+          .attr("cx", d => d.x = Math.max(d.r, Math.min(width - d.r, d.x)))
+          .attr("cy", d => d.y = Math.max(d.r, Math.min(height - d.r, d.y)));
+        label
+          .attr("x", d => d.x + d.r + 2)
+          .attr("y", d => d.y + 3);
+      });
+
+      window.addEventListener("resize", () => {
+        const rect = svg.node().getBoundingClientRect();
+        svg.attr("width", rect.width).attr("height", rect.height);
+        simulation.force("center", d3.forceCenter(rect.width / 2, rect.height / 2));
+        simulation.alpha(0.4).restart();
+      });
+
+      function drag(sim) {
+        function dragstarted(event, d) {
+          if (!event.active) sim.alphaTarget(0.2).restart();
+          d.fx = d.x;
+          d.fy = d.y;
+        }
+        function dragged(event, d) {
+          d.fx = event.x;
+          d.fy = event.y;
+        }
+        function dragended(event, d) {
+          if (!event.active) sim.alphaTarget(0);
+          d.fx = null;
+          d.fy = null;
+        }
+        return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
+      }
+    }
+
+    function prepareAbilityData(data) {
+      const nodes = [];
+      const links = [];
+      const rootId = data.courseId || "Course";
+      nodes.push({
+        id: rootId,
+        label: data.courseName || "课程",
+        shortLabel: "课程",
+        type: "course",
+        r: 26,
+        meta: "课程总体",
+        description: data.overview?.overallObjectives?.join("；")
+      });
+
+      data.modules.forEach(mod => {
+        const modNode = {
+          id: mod.id,
+          label: `${mod.id} ${mod.name}`,
+          shortLabel: mod.id,
+          type: "module",
+          r: 20,
+          meta: `章节：${mod.chapters || "-"}`,
+          goal: mod.goal
+        };
+        nodes.push(modNode);
+        links.push({ source: rootId, target: mod.id, distance: 160 });
+
+        (mod.abilities || []).forEach(ability => {
+          nodes.push({
+            id: ability.id,
+            label: `${ability.id} ${ability.levelName}`,
+            shortLabel: ability.id,
+            type: "ability",
+            level: ability.levelCode,
+            r: 14,
+            meta: `${mod.name} · ${ability.levelName}`,
+            description: ability.description,
+            supportingPoints: ability.supportingPoints
+          });
+          links.push({ source: mod.id, target: ability.id, distance: 110 });
+        });
+      });
+
+      return { nodes, links };
+    }
+
+    function prepareKnowledgeData(data) {
+      const nodes = [];
+      const links = [];
+      const rootId = `${data.courseId || "Course"}-Q`;
+      nodes.push({
+        id: rootId,
+        label: data.courseName || "课程",
+        shortLabel: "课程",
+        type: "course",
+        r: 24,
+        meta: "题库映射"
+      });
+
+      data.modules.forEach(mod => {
+        const modNode = {
+          id: `${mod.id}-Q`,
+          label: `${mod.id} ${mod.name}`,
+          shortLabel: mod.id,
+          type: "module",
+          r: 18,
+          meta: `覆盖范围：${mod.abilityRange || "—"}`
+        };
+        nodes.push(modNode);
+        links.push({ source: rootId, target: modNode.id, distance: 150 });
+
+        (mod.abilities || []).forEach(ab => {
+          const abilityId = `${ab.id}-Q`;
+          nodes.push({
+            id: abilityId,
+            label: `${ab.id} ${ab.title}`,
+            shortLabel: ab.id,
+            type: "ability",
+            level: ab.level,
+            r: 13,
+            meta: `${mod.name} · 能力点`,
+            description: ab.title
+          });
+          links.push({ source: modNode.id, target: abilityId, distance: 110 });
+
+          (ab.questions || []).forEach(q => {
+            nodes.push({
+              id: q.id,
+              label: `${q.label}`,
+              shortLabel: q.label,
+              type: "question",
+              r: 11,
+              meta: `${q.type}`,
+              description: q.header,
+              supportingPoints: null,
+              extraList: [q.stem],
+              extraTitle: "题干"
+            });
+            links.push({ source: abilityId, target: q.id, distance: 80 });
+          });
+        });
+      });
+
+      return { nodes, links };
+    }
+
+    function init() {
+      Promise.all([d3.json(abilityUrl), d3.json(questionUrl)])
+        .then(([abilityData, questionData]) => {
+          document.getElementById("course-title").textContent = abilityData.courseName || "课程";
+          document.getElementById("course-code").textContent = abilityData.courseId || "-";
+
+          buildLegend("ability-legend", [
+            { label: "课程", color: typeColors.course },
+            { label: "模块", color: typeColors.module },
+            { label: "L1 记忆", color: levelColors.L1 },
+            { label: "L2 理解", color: levelColors.L2 },
+            { label: "L3 应用", color: levelColors.L3 },
+            { label: "L4 分析", color: levelColors.L4 },
+            { label: "L5 综合/评价", color: levelColors.L5 }
+          ]);
+
+          buildLegend("knowledge-legend", [
+            { label: "课程", color: typeColors.course },
+            { label: "模块", color: typeColors.module },
+            { label: "能力点", color: "#0ea5e9" },
+            { label: "题目", color: typeColors.question }
+          ]);
+
+          const abilityPrepared = prepareAbilityData(abilityData);
+          drawForceGraph({
+            svgId: "#ability-graph",
+            nodes: abilityPrepared.nodes,
+            links: abilityPrepared.links,
+            onNodeClick: d => renderInfo("ability-info", d),
+            colorFn: d => d.type === "ability" ? (levelColors[d.level] || typeColors.ability) : (typeColors[d.type] || "#94a3b8")
+          });
+
+          const knowledgePrepared = prepareKnowledgeData(questionData);
+          drawForceGraph({
+            svgId: "#knowledge-graph",
+            nodes: knowledgePrepared.nodes,
+            links: knowledgePrepared.links,
+            onNodeClick: d => renderInfo("knowledge-info", d),
+            colorFn: d => {
+              if (d.type === "ability") return levelColors[d.level] || "#0ea5e9";
+              if (d.type === "question") return typeColors.question;
+              return typeColors[d.type] || "#94a3b8";
+            }
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          const box = document.getElementById("error-box");
+          box.innerHTML = `<div class="error">加载数据失败：${err.message}</div>`;
+        });
+    }
+
+    init();
+  </script>
+</body>
+</html>
