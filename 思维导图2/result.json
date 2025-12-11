@@ -1,0 +1,928 @@
+[
+  {
+    "id": "gangkou_wuliu_root",
+    "title": "港口物流",
+    "children": [
+      {
+        "id": "ch1_1",
+        "title": "港口物流发展史",
+        "children": [
+          {
+            "id": "ch1_2",
+            "title": "港口的概念与分类",
+            "children": [
+              {
+                "id": "ch1_3",
+                "title": "港口定义",
+                "children": []
+              },
+              {
+                "id": "ch1_5",
+                "title": "港口的分类",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch1_20",
+            "title": "海上运输与港口发展的历史考察",
+            "children": [
+              {
+                "id": "ch1_21",
+                "title": "世界海上运输及港口的发展历程",
+                "children": []
+              },
+              {
+                "id": "ch1_24",
+                "title": "我国海上运输及港口的发展",
+                "children": []
+              },
+              {
+                "id": "ch1_36",
+                "title": "目前全球海上航运业现状与港口发展趋势",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch1_54",
+            "title": "港口物流的形成与发展",
+            "children": [
+              {
+                "id": "ch1_55",
+                "title": "现代港口物流的形成",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch2_1",
+        "title": "港口物流的基本规定",
+        "children": [
+          {
+            "id": "ch2_2",
+            "title": "港口物流的概念",
+            "children": [
+              {
+                "id": "ch2_3",
+                "title": "港口物流",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch2_10",
+            "title": "港口物流的基本特征",
+            "children": [
+              {
+                "id": "ch2_11",
+                "title": "港口物流的特点",
+                "children": []
+              },
+              {
+                "id": "ch2_20",
+                "title": "现代港口物流发展的特点",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch2_26",
+            "title": "港口物流的功能",
+            "children": [
+              {
+                "id": "ch2_27",
+                "title": "现代港口在物流系统中的地位和作用",
+                "children": []
+              },
+              {
+                "id": "ch2_32",
+                "title": "港口的功能",
+                "children": []
+              },
+              {
+                "id": "ch2_41",
+                "title": "现代港口物流的基本功能",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch2_49",
+            "title": "港口物流系统的构成",
+            "children": [
+              {
+                "id": "ch2_50",
+                "title": "港口物流系统的一般要素",
+                "children": []
+              },
+              {
+                "id": "ch2_54",
+                "title": "港口物流系统的功能要素",
+                "children": []
+              },
+              {
+                "id": "ch2_63",
+                "title": "港口物流系统的支撑要素",
+                "children": []
+              },
+              {
+                "id": "ch2_69",
+                "title": "港口物流系统的物质基础要素",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch3_1",
+        "title": "现代物流与港口发展",
+        "children": [
+          {
+            "id": "ch3_2",
+            "title": "港口与经济",
+            "children": [
+              {
+                "id": "ch3_3",
+                "title": "现代港口对区域经济发展的作用",
+                "children": []
+              },
+              {
+                "id": "ch3_7",
+                "title": "现代港口对国民经济发展的作用",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch3_13",
+            "title": "港口与城市",
+            "children": [
+              {
+                "id": "ch3_14",
+                "title": "港城关系的演变进程",
+                "children": []
+              },
+              {
+                "id": "ch3_19",
+                "title": "港口与城市的互动关系",
+                "children": []
+              },
+              {
+                "id": "ch3_24",
+                "title": "港口对城市发展的影响",
+                "children": []
+              },
+              {
+                "id": "ch3_29",
+                "title": "城市对港口发展的影响",
+                "children": []
+              },
+              {
+                "id": "ch3_33",
+                "title": "我国港城互动发展的主要特征",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch3_37",
+            "title": "经济与物流",
+            "children": [
+              {
+                "id": "ch3_38",
+                "title": "物流与区域经济发展",
+                "children": []
+              },
+              {
+                "id": "ch3_42",
+                "title": "现代物流与国民经济发展",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch3_47",
+            "title": "港口与物流",
+            "children": [
+              {
+                "id": "ch3_48",
+                "title": "港口发展现代物流的优势",
+                "children": []
+              },
+              {
+                "id": "ch3_55",
+                "title": "港口物流对经济的贡献",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch4_1",
+        "title": "中国港口物流现状分析",
+        "children": [
+          {
+            "id": "ch4_2",
+            "title": "中国沿海港口布局形态",
+            "children": [
+              {
+                "id": "ch4_3",
+                "title": "中国港口物流现状分析",
+                "children": []
+              },
+              {
+                "id": "ch4_34",
+                "title": "大运输系统",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch4_43",
+            "title": "我国港口物流的现状",
+            "children": [
+              {
+                "id": "ch4_44",
+                "title": "我国港口物流现状",
+                "children": []
+              },
+              {
+                "id": "ch4_49",
+                "title": "我国港口物流存在的问题",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch4_56",
+            "title": "港口发展战略",
+            "children": [
+              {
+                "id": "ch4_57",
+                "title": "发展原则",
+                "children": []
+              },
+              {
+                "id": "ch4_62",
+                "title": "战略目标定位",
+                "children": []
+              },
+              {
+                "id": "ch4_65",
+                "title": "战略重点",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch5_1",
+        "title": "世界典型港口物流发展状况",
+        "children": [
+          {
+            "id": "ch5_2",
+            "title": "世界典型港口物流发展状况",
+            "children": [
+              {
+                "id": "ch5_3",
+                "title": "世界主要航线",
+                "children": []
+              },
+              {
+                "id": "ch5_12",
+                "title": "世界主要海峡与运河",
+                "children": []
+              },
+              {
+                "id": "ch5_19",
+                "title": "中国主要海运航线",
+                "children": []
+              },
+              {
+                "id": "ch5_24",
+                "title": "带一路倡议",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch5_26",
+            "title": "世界主要港口物流的基本情况",
+            "children": [
+              {
+                "id": "ch5_27",
+                "title": "鹿特丹港",
+                "children": []
+              },
+              {
+                "id": "ch5_28",
+                "title": "安特卫普港",
+                "children": []
+              },
+              {
+                "id": "ch5_29",
+                "title": "汉堡港",
+                "children": []
+              },
+              {
+                "id": "ch5_30",
+                "title": "纽约/新泽西港",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch5_31",
+            "title": "世界典型港口的管理模式",
+            "children": [
+              {
+                "id": "ch5_32",
+                "title": "港口管理模式的比较分析",
+                "children": []
+              },
+              {
+                "id": "ch5_37",
+                "title": "世界典型港口的管理模式",
+                "children": []
+              },
+              {
+                "id": "ch5_42",
+                "title": "总结国外港口管理模式，地主港模式效果凸显",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch5_50",
+            "title": "世界典型港口物流经营发展模式",
+            "children": [
+              {
+                "id": "ch5_51",
+                "title": "鹿特丹港的物流发展模式",
+                "children": []
+              },
+              {
+                "id": "ch5_57",
+                "title": "安特卫普港的物流发展模式",
+                "children": []
+              },
+              {
+                "id": "ch5_62",
+                "title": "香港港物流发展模式",
+                "children": []
+              },
+              {
+                "id": "ch5_68",
+                "title": "新加坡港的物流发展模式",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch5_74",
+            "title": "世界典型港口物流发展的启示",
+            "children": [
+              {
+                "id": "ch5_75",
+                "title": "加强政府政策引导，充分发挥政府的宏观指导与协调",
+                "children": []
+              },
+              {
+                "id": "ch5_80",
+                "title": "加强港口信息化、标准化建设，提高港口物流运作经营效率",
+                "children": []
+              },
+              {
+                "id": "ch5_81",
+                "title": "科学合理地进行港口物流发展定位",
+                "children": []
+              },
+              {
+                "id": "ch5_82",
+                "title": "加强与班轮公司的合作，大力发展集装箱业务",
+                "children": []
+              },
+              {
+                "id": "ch5_83",
+                "title": "注重加强港口物流专业人才建设",
+                "children": []
+              },
+              {
+                "id": "ch5_84",
+                "title": "要从我国的实际情况出发，建设有中国特色的保税区",
+                "children": []
+              },
+              {
+                "id": "ch5_85",
+                "title": "海关监管方式应向着更简便、手续更简化的方向努力",
+                "children": []
+              },
+              {
+                "id": "ch5_86",
+                "title": "重视研究港口与城市发展的关系",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch6_1",
+        "title": "港口物流设施与设备",
+        "children": [
+          {
+            "id": "ch6_2",
+            "title": "港口物流设施",
+            "children": [
+              {
+                "id": "ch6_3",
+                "title": "港口设施",
+                "children": []
+              },
+              {
+                "id": "ch6_4",
+                "title": "港口基础性设施",
+                "children": []
+              },
+              {
+                "id": "ch6_5",
+                "title": "港口经营性设施",
+                "children": []
+              },
+              {
+                "id": "ch6_6",
+                "title": "港口水域",
+                "children": []
+              },
+              {
+                "id": "ch6_13",
+                "title": "港口陆域",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch6_24",
+            "title": "海港码头及其平面设置",
+            "children": [
+              {
+                "id": "ch6_25",
+                "title": "码头规模的确定",
+                "children": []
+              },
+              {
+                "id": "ch6_29",
+                "title": "码头泊位尺度的确定",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch6_33",
+            "title": "集装箱装卸机械",
+            "children": [
+              {
+                "id": "ch6_34",
+                "title": "固定式吊具",
+                "children": []
+              },
+              {
+                "id": "ch6_37",
+                "title": "组合式吊具",
+                "children": []
+              },
+              {
+                "id": "ch6_38",
+                "title": "伸缩式吊具",
+                "children": []
+              },
+              {
+                "id": "ch6_39",
+                "title": "岸边集装箱起重机",
+                "children": []
+              },
+              {
+                "id": "ch6_43",
+                "title": "堆场作业机械",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch6_47",
+            "title": "影响港口装卸设备选型的主要因素",
+            "children": [
+              {
+                "id": "ch6_48",
+                "title": "装卸工艺",
+                "children": []
+              },
+              {
+                "id": "ch6_49",
+                "title": "装卸机械化系统",
+                "children": []
+              },
+              {
+                "id": "ch6_50",
+                "title": "货物方面",
+                "children": []
+              },
+              {
+                "id": "ch6_62",
+                "title": "运载工具方面",
+                "children": []
+              },
+              {
+                "id": "ch6_65",
+                "title": "自然条件方面",
+                "children": []
+              },
+              {
+                "id": "ch6_69",
+                "title": "港口建筑物方面",
+                "children": []
+              },
+              {
+                "id": "ch6_76",
+                "title": "运输组织方面",
+                "children": []
+              },
+              {
+                "id": "ch6_77",
+                "title": "竞争对手方面",
+                "children": []
+              },
+              {
+                "id": "ch6_78",
+                "title": "其他因素",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch7_1",
+        "title": "港口物流生产及统计",
+        "children": [
+          {
+            "id": "ch7_2",
+            "title": "港口物流生产流程",
+            "children": [
+              {
+                "id": "ch7_3",
+                "title": "港口物流基本生产过程",
+                "children": []
+              },
+              {
+                "id": "ch7_7",
+                "title": "港口物流基本生产过程",
+                "children": []
+              },
+              {
+                "id": "ch7_12",
+                "title": "港口物流生产特点",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch7_16",
+            "title": "港口物流生产计划与作业计划",
+            "children": [
+              {
+                "id": "ch7_17",
+                "title": "港口的年度计划",
+                "children": []
+              },
+              {
+                "id": "ch7_22",
+                "title": "港口生产作业计划",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch7_29",
+            "title": "港口生产调度",
+            "children": [
+              {
+                "id": "ch7_30",
+                "title": "港口生产调度工作",
+                "children": []
+              },
+              {
+                "id": "ch7_34",
+                "title": "港口生产调度工作的职责和要求",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch7_40",
+            "title": "港口生产统计指标",
+            "children": [
+              {
+                "id": "ch7_41",
+                "title": "港口生产统计指标",
+                "children": []
+              },
+              {
+                "id": "ch7_45",
+                "title": "装卸工作统计指标",
+                "children": []
+              },
+              {
+                "id": "ch7_51",
+                "title": "船停时及在港作业指标",
+                "children": []
+              },
+              {
+                "id": "ch7_62",
+                "title": "生产率的概念",
+                "children": []
+              },
+              {
+                "id": "ch7_66",
+                "title": "港口通过能力计算",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch9_1",
+        "title": "港口集装箱运输业务管理",
+        "children": [
+          {
+            "id": "ch9_2",
+            "title": "集装箱运输概述",
+            "children": [
+              {
+                "id": "ch9_3",
+                "title": "集装箱运输的起源",
+                "children": []
+              },
+              {
+                "id": "ch9_9",
+                "title": "集装箱与集装箱运输的定义",
+                "children": []
+              },
+              {
+                "id": "ch9_10",
+                "title": "集装箱运输的特点和优缺点",
+                "children": []
+              },
+              {
+                "id": "ch9_26",
+                "title": "集装箱运输系统",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch9_40",
+            "title": "集装箱货物的交接方式和流转程序",
+            "children": [
+              {
+                "id": "ch9_41",
+                "title": "典型的集装箱货物运输流程",
+                "children": []
+              },
+              {
+                "id": "ch9_46",
+                "title": "集装箱运输的交接地点与方式",
+                "children": []
+              },
+              {
+                "id": "ch9_67",
+                "title": "整箱货与拼箱货的一般流转程序",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch9_73",
+            "title": "集装箱出口业务与单证流转",
+            "children": [
+              {
+                "id": "ch9_74",
+                "title": "出口货运的业务流程",
+                "children": []
+              },
+              {
+                "id": "ch9_84",
+                "title": "出口货运主要单证及其流转",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch9_95",
+            "title": "集装箱进口业务与单证流转",
+            "children": [
+              {
+                "id": "ch9_96",
+                "title": "进口货运的业务流程",
+                "children": []
+              },
+              {
+                "id": "ch9_106",
+                "title": "主要进口单证及其流转",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch9_116",
+            "title": "主要进口单证及其流转",
+            "children": [
+              {
+                "id": "ch9_117",
+                "title": "检查口的含义和基本职责",
+                "children": []
+              },
+              {
+                "id": "ch9_124",
+                "title": "检查口业务及其流程",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch9_133",
+            "title": "集装箱码头箱务管理",
+            "children": [
+              {
+                "id": "ch9_134",
+                "title": "集装箱码头箱务管理的内容",
+                "children": []
+              },
+              {
+                "id": "ch9_141",
+                "title": "集装箱码头堆场管理",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch10_1",
+        "title": "港口物流服务",
+        "children": [
+          {
+            "id": "ch10_2",
+            "title": "船舶理货业务",
+            "children": [
+              {
+                "id": "ch10_3",
+                "title": "船舶理货概述",
+                "children": []
+              },
+              {
+                "id": "ch10_11",
+                "title": "船舶理货业务",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch10_57",
+            "title": "船舶代理业务",
+            "children": [
+              {
+                "id": "ch10_58",
+                "title": "船舶代理关系及其形式",
+                "children": []
+              },
+              {
+                "id": "ch10_63",
+                "title": "船舶代理的主要业务",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch10_93",
+            "title": "国际货运代理",
+            "children": [
+              {
+                "id": "ch10_94",
+                "title": "国际货运代理的性质",
+                "children": []
+              },
+              {
+                "id": "ch10_97",
+                "title": "国际货运代理的服务内容",
+                "children": []
+              },
+              {
+                "id": "ch10_112",
+                "title": "国际货运代理的种类",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch10_126",
+            "title": "第三方、第四方国际物流",
+            "children": [
+              {
+                "id": "ch10_127",
+                "title": "第三方国际物流",
+                "children": []
+              },
+              {
+                "id": "ch10_142",
+                "title": "第四方国际物流",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch12_1",
+        "title": "港口口岸管理",
+        "children": [
+          {
+            "id": "ch12_2",
+            "title": "我国口岸管理制度",
+            "children": [
+              {
+                "id": "ch12_3",
+                "title": "口岸管理系统的组成",
+                "children": []
+              },
+              {
+                "id": "ch12_8",
+                "title": "口岸管理机构及其职责",
+                "children": []
+              },
+              {
+                "id": "ch12_29",
+                "title": "口岸检查检验机构",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch12_34",
+            "title": "口岸检验检疫制度",
+            "children": [
+              {
+                "id": "ch12_35",
+                "title": "检验检疫",
+                "children": []
+              },
+              {
+                "id": "ch12_44",
+                "title": "我国的进出境货物检验检疫模式",
+                "children": []
+              },
+              {
+                "id": "ch12_57",
+                "title": "检验检疫在港口物流中的作用",
+                "children": []
+              },
+              {
+                "id": "ch12_67",
+                "title": "出境货物报检的一般规定",
+                "children": []
+              },
+              {
+                "id": "ch12_68",
+                "title": "进境货物报检的一般规定",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ch12_74",
+            "title": "海关货运监管制度",
+            "children": [
+              {
+                "id": "ch12_75",
+                "title": "海关监管进出境货物的范围",
+                "children": []
+              },
+              {
+                "id": "ch12_104",
+                "title": "海关对港口物流的监控",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
