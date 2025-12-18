@@ -946,7 +946,13 @@
       }
     };
 
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user && !user.emailVerified) {
+        updateAccountPanel(null);
+        setMessage('邮箱尚未验证，请先完成邮箱验证后再登录。', 'error');
+        await signOut(auth).catch(() => {});
+        return;
+      }
       updateAccountPanel(user);
     });
 

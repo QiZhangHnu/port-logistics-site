@@ -36,7 +36,7 @@
         <div class="w-full max-w-md rounded-3xl bg-white/95 backdrop-blur border border-white/30 shadow-2xl shadow-slate-900/40 p-6 md:p-8">
           <div class="space-y-2">
             <h1 class="text-2xl md:text-3xl font-bold text-ocean-deep">会员注册</h1>
-            <p class="text-sm text-slate-600">使用邮箱创建账号，注册后将自动登录并返回首页。</p>
+            <p class="text-sm text-slate-600">使用邮箱创建账号，注册后需完成邮箱验证，验证通过后将自动登录并返回首页。</p>
           </div>
 
           <form id="register-form" class="mt-6 space-y-4">
@@ -50,6 +50,22 @@
             </div>
             <button type="submit" class="w-full rounded-lg bg-ocean-deep text-white font-semibold py-3 hover:bg-ocean-mid transition">注册</button>
             <p id="register-message" class="text-sm text-slate-600" aria-live="polite"></p>
+
+            <div id="verification-panel" class="hidden rounded-2xl border border-slate-200 bg-slate-50 p-4 space-y-3">
+              <div class="space-y-1">
+                <p class="text-sm font-semibold text-slate-800">邮箱验证</p>
+                <p class="text-xs text-slate-600">
+                  已向 <span id="verification-email" class="font-semibold text-slate-800"></span> 发送验证邮件（包含验证链接）。
+                  请前往邮箱完成验证后，再点击下方按钮继续。
+                </p>
+              </div>
+              <p id="verification-cooldown" class="text-xs text-slate-500"></p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button id="resend-verification" type="button" class="rounded-lg bg-white border border-slate-200 text-slate-700 font-semibold py-2.5 hover:bg-slate-100 transition">重新发送验证邮件</button>
+                <button id="check-verification" type="button" class="rounded-lg bg-ocean-mid text-white font-semibold py-2.5 hover:bg-ocean-deep transition">我已完成验证</button>
+              </div>
+              <a href="login.html" class="block text-center text-sm font-semibold text-ocean-mid hover:text-ocean-deep transition">已验证？去登录</a>
+            </div>
           </form>
 
           <div class="mt-6 flex items-center justify-between text-sm">
@@ -64,7 +80,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
-    import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCZQkYOqqrYVoh7em3vqa2_cQGTl54mDwY",
@@ -86,13 +102,56 @@
     const emailEl = document.getElementById('register-email');
     const passwordEl = document.getElementById('register-password');
     const messageEl = document.getElementById('register-message');
+    const verificationPanel = document.getElementById('verification-panel');
+    const verificationEmailEl = document.getElementById('verification-email');
+    const resendVerificationBtn = document.getElementById('resend-verification');
+    const checkVerificationBtn = document.getElementById('check-verification');
+    const verificationCooldownEl = document.getElementById('verification-cooldown');
+
+    const RESEND_COOLDOWN_SECONDS = 60;
+    let resendCooldownRemaining = 0;
+    let resendCooldownTimer = null;
+    let suppressUnverifiedAutoSignOut = false;
+
+    const PENDING_EMAIL_KEY = 'pendingVerificationEmail';
+    const getPendingEmail = () => {
+      try {
+        return localStorage.getItem(PENDING_EMAIL_KEY) || '';
+      } catch (error) {
+        return '';
+      }
+    };
+    const setPendingEmail = (email) => {
+      try {
+        const value = (email || '').trim();
+        if (!value) return;
+        localStorage.setItem(PENDING_EMAIL_KEY, value);
+      } catch (error) {}
+    };
+    const clearPendingEmail = () => {
+      try {
+        localStorage.removeItem(PENDING_EMAIL_KEY);
+      } catch (error) {}
+    };
+
+    const pendingEmailFromStorage = getPendingEmail();
+    if (pendingEmailFromStorage && emailEl && !emailEl.value) {
+      emailEl.value = pendingEmailFromStorage;
+    }
 
     const errorMessages = {
       'auth/email-already-in-use': '该邮箱已注册，请直接登录。',
       'auth/invalid-email': '邮箱格式不正确。',
       'auth/weak-password': '密码至少 6 位。',
+      'auth/user-not-found': '用户不存在，请先注册。',
+      'auth/wrong-password': '密码不正确，请重试。',
+      'auth/invalid-credential': '邮箱或密码不正确。',
+      'auth/invalid-login-credentials': '邮箱或密码不正确。',
+      'auth/user-disabled': '该账号已被禁用。',
       'auth/too-many-requests': '请求过多，请稍后再试。',
-      'auth/network-request-failed': '网络异常，请检查连接。'
+      'auth/network-request-failed': '网络异常，请检查连接。',
+      'auth/invalid-continue-uri': '验证链接跳转地址无效，请使用已部署的网页地址进行验证。',
+      'auth/unauthorized-continue-uri': '验证链接跳转地址未授权，请在 Firebase Authentication 的“授权的域名”中添加当前域名。'
     };
 
     const setMessage = (message, tone = 'info') => {
@@ -117,27 +176,173 @@
       window.location.href = 'index.html#member';
     };
 
-    onAuthStateChanged(auth, (user) => {
+    const showVerificationPanel = (email) => {
+      const value = (email || '').trim();
+      if (value) setPendingEmail(value);
+      if (verificationEmailEl) verificationEmailEl.textContent = value;
+      verificationPanel?.classList.remove('hidden');
+    };
+
+    const hideVerificationPanel = () => {
+      verificationPanel?.classList.add('hidden');
+      if (verificationCooldownEl) verificationCooldownEl.textContent = '';
+    };
+
+    const updateResendCooldownUI = () => {
+      const disabled = resendCooldownRemaining > 0;
+      resendVerificationBtn?.toggleAttribute('disabled', disabled);
+      resendVerificationBtn?.classList.toggle('opacity-60', disabled);
+      resendVerificationBtn?.classList.toggle('cursor-not-allowed', disabled);
+      if (verificationCooldownEl) {
+        verificationCooldownEl.textContent = disabled ? `可在 ${resendCooldownRemaining}s 后重新发送` : '';
+      }
+    };
+
+    const startResendCooldown = (seconds = RESEND_COOLDOWN_SECONDS) => {
+      resendCooldownRemaining = Math.max(0, Number(seconds) || 0);
+      if (resendCooldownTimer) clearInterval(resendCooldownTimer);
+      updateResendCooldownUI();
+      if (resendCooldownRemaining <= 0) return;
+      resendCooldownTimer = setInterval(() => {
+        resendCooldownRemaining = Math.max(0, resendCooldownRemaining - 1);
+        updateResendCooldownUI();
+        if (resendCooldownRemaining <= 0 && resendCooldownTimer) {
+          clearInterval(resendCooldownTimer);
+          resendCooldownTimer = null;
+        }
+      }, 1000);
+    };
+
+    const buildVerificationActionCodeSettings = () => {
+      const protocol = window.location?.protocol || '';
+      if (protocol !== 'http:' && protocol !== 'https:') return null;
+      const url = new URL('login.html', window.location.href);
+      url.search = '';
+      url.hash = '';
+      url.searchParams.set('verified', '1');
+      return { url: url.toString() };
+    };
+
+    const sendVerificationEmail = async (user) => {
+      const actionCodeSettings = buildVerificationActionCodeSettings();
+      try {
+        if (actionCodeSettings) {
+          await sendEmailVerification(user, actionCodeSettings);
+        } else {
+          await sendEmailVerification(user);
+        }
+      } catch (error) {
+        const code = error?.code || '';
+        const shouldFallback = actionCodeSettings && (code === 'auth/unauthorized-continue-uri' || code === 'auth/invalid-continue-uri');
+        if (!shouldFallback) throw error;
+        await sendEmailVerification(user);
+      }
+    };
+
+    const handleVerifiedParam = () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('verified') !== '1') return;
+      setMessage('邮箱验证成功！请使用邮箱和密码登录。', 'success');
+    };
+
+    handleVerifiedParam();
+
+    onAuthStateChanged(auth, async (user) => {
       if (!user) return;
-      setMessage('已登录，正在返回首页…', 'success');
-      setTimeout(redirectToHome, 600);
+      if (user.emailVerified) {
+        clearPendingEmail();
+        hideVerificationPanel();
+        setMessage('邮箱已验证，正在返回首页…', 'success');
+        setTimeout(redirectToHome, 600);
+        return;
+      }
+      showVerificationPanel(user.email || '');
+      if (suppressUnverifiedAutoSignOut) return;
+      setMessage('邮箱尚未验证，请先前往邮箱完成验证（如未收到可点击重新发送）。', 'info');
+      await signOut(auth).catch(() => {});
     });
 
     form?.addEventListener('submit', async (event) => {
       event.preventDefault();
-      setMessage('正在注册…', 'info');
+      setMessage('正在创建账号…', 'info');
       const email = emailEl?.value.trim();
       const password = passwordEl?.value;
       if (!email || !password) {
         setMessage('请填写邮箱和密码。', 'error');
         return;
       }
+      suppressUnverifiedAutoSignOut = true;
+      let credential = null;
       try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        setMessage('注册成功，正在返回首页…', 'success');
+        credential = await createUserWithEmailAndPassword(auth, email, password);
+        showVerificationPanel(email);
+        setMessage('正在发送验证邮件…', 'info');
+        await sendVerificationEmail(credential.user);
+        startResendCooldown();
+        setMessage('验证邮件已发送，请前往邮箱完成验证（可能在垃圾箱）。验证完成后回到此页面点击“我已完成验证”即可完成注册。', 'success');
+        await signOut(auth).catch(() => {});
+      } catch (error) {
+        if (credential?.user) {
+          await deleteUser(credential.user).catch(() => {});
+          await signOut(auth).catch(() => {});
+        }
+        setMessage(getErrorMessage(error), 'error');
+      } finally {
+        suppressUnverifiedAutoSignOut = false;
+      }
+    });
+
+    resendVerificationBtn?.addEventListener('click', async () => {
+      if (resendCooldownRemaining > 0) return;
+      const email = emailEl?.value.trim();
+      const password = passwordEl?.value;
+      if (!email || !password) {
+        setMessage('请先填写邮箱和密码（用于发送验证邮件）。', 'error');
+        return;
+      }
+      suppressUnverifiedAutoSignOut = true;
+      setMessage('正在重新发送验证邮件…', 'info');
+      try {
+        const loginCredential = await signInWithEmailAndPassword(auth, email, password);
+        showVerificationPanel(email);
+        await sendVerificationEmail(loginCredential.user);
+        await signOut(auth).catch(() => {});
+        startResendCooldown();
+        setMessage('验证邮件已发送，请查收（可能在垃圾箱）。', 'success');
+      } catch (error) {
+        setMessage(getErrorMessage(error), 'error');
+      } finally {
+        suppressUnverifiedAutoSignOut = false;
+      }
+    });
+
+    checkVerificationBtn?.addEventListener('click', async () => {
+      const email = emailEl?.value.trim();
+      const password = passwordEl?.value;
+      if (!email || !password) {
+        setMessage('请先填写邮箱和密码（用于检查验证状态）。', 'error');
+        return;
+      }
+      setMessage('正在检查邮箱验证状态…', 'info');
+      suppressUnverifiedAutoSignOut = true;
+      try {
+        const loginCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = loginCredential.user;
+        await user.reload();
+        if (!user.emailVerified) {
+          await signOut(auth).catch(() => {});
+          showVerificationPanel(email);
+          setMessage('邮箱尚未验证，请先完成邮箱中的验证操作（如未收到可点击重新发送）。', 'error');
+          return;
+        }
+        clearPendingEmail();
+        hideVerificationPanel();
+        setMessage('邮箱验证完成，注册成功！正在返回首页…', 'success');
         setTimeout(redirectToHome, 600);
       } catch (error) {
         setMessage(getErrorMessage(error), 'error');
+      } finally {
+        suppressUnverifiedAutoSignOut = false;
       }
     });
   </script>

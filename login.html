@@ -64,7 +64,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, sendEmailVerification, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCZQkYOqqrYVoh7em3vqa2_cQGTl54mDwY",
@@ -95,7 +95,9 @@
       'auth/invalid-login-credentials': '邮箱或密码不正确。',
       'auth/user-disabled': '该账号已被禁用。',
       'auth/too-many-requests': '请求过多，请稍后再试。',
-      'auth/network-request-failed': '网络异常，请检查连接。'
+      'auth/network-request-failed': '网络异常，请检查连接。',
+      'auth/invalid-continue-uri': '验证链接跳转地址无效，请使用已部署的网页地址进行验证。',
+      'auth/unauthorized-continue-uri': '验证链接跳转地址未授权，请在 Firebase Authentication 的“授权的域名”中添加当前域名。'
     };
 
     const setMessage = (message, tone = 'info') => {
@@ -120,10 +122,56 @@
       window.location.href = 'index.html#member';
     };
 
-    onAuthStateChanged(auth, (user) => {
+    const buildVerificationActionCodeSettings = () => {
+      const protocol = window.location?.protocol || '';
+      if (protocol !== 'http:' && protocol !== 'https:') return null;
+      const url = new URL('login.html', window.location.href);
+      url.search = '';
+      url.hash = '';
+      url.searchParams.set('verified', '1');
+      return { url: url.toString() };
+    };
+
+    const sendVerificationEmail = async (user) => {
+      const actionCodeSettings = buildVerificationActionCodeSettings();
+      try {
+        if (actionCodeSettings) {
+          await sendEmailVerification(user, actionCodeSettings);
+        } else {
+          await sendEmailVerification(user);
+        }
+      } catch (error) {
+        const code = error?.code || '';
+        const shouldFallback = actionCodeSettings && (code === 'auth/unauthorized-continue-uri' || code === 'auth/invalid-continue-uri');
+        if (!shouldFallback) throw error;
+        await sendEmailVerification(user);
+      }
+    };
+
+    const handleVerifiedParam = () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('verified') !== '1') return;
+      setMessage('邮箱验证成功！请使用邮箱和密码登录。', 'success');
+    };
+
+    handleVerifiedParam();
+
+    onAuthStateChanged(auth, async (user) => {
       if (!user) return;
-      setMessage('已登录，正在返回首页…', 'success');
-      setTimeout(redirectToHome, 600);
+      if (user.emailVerified) {
+        setMessage('已登录，正在返回首页…', 'success');
+        setTimeout(redirectToHome, 600);
+        return;
+      }
+      setMessage('登录成功，但邮箱尚未验证。正在发送验证邮件…', 'info');
+      try {
+        await sendVerificationEmail(user);
+        setMessage('验证邮件已发送，请前往邮箱完成验证后再登录。', 'success');
+      } catch (error) {
+        setMessage(getErrorMessage(error), 'error');
+      } finally {
+        await signOut(auth).catch(() => {});
+      }
     });
 
     form?.addEventListener('submit', async (event) => {
@@ -137,8 +185,6 @@
       }
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        setMessage('登录成功，正在返回首页…', 'success');
-        setTimeout(redirectToHome, 600);
       } catch (error) {
         setMessage(getErrorMessage(error), 'error');
       }
