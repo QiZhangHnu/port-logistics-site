@@ -37,14 +37,52 @@
           <a class="hover:text-ocean-mid" href="#news">行业新闻</a>
           <a class="hover:text-ocean-mid" href="#exercises">习题集</a>
         </div>
-        <button class="md:hidden text-ocean-deep" aria-label="菜单">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
+        <div class="flex items-center gap-3">
+          <button id="account-menu-btn" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-ocean-light text-ocean-deep font-bold shadow-sm ring-1 ring-slate-200 hover:bg-ocean-light/70 hover:ring-ocean-mid/40 transition" aria-label="账号菜单" aria-controls="account-menu" aria-expanded="false">
+            <span id="account-btn-avatar" class="text-sm">访</span>
+          </button>
+          <button class="md:hidden text-ocean-deep" aria-label="菜单">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
       </nav>
     </div>
   </header>
+
+  <div id="account-menu-overlay" class="hidden fixed inset-0 z-40 bg-black/10 backdrop-blur-sm"></div>
+  <div id="account-menu" class="hidden fixed z-50 top-4 right-4 w-[min(22rem,calc(100vw-2rem))] rounded-3xl bg-white/95 backdrop-blur border border-slate-200 shadow-2xl shadow-slate-900/20 p-4">
+    <div class="flex items-start justify-between gap-3">
+      <div class="min-w-0">
+        <p id="account-menu-email" class="text-sm font-semibold text-slate-900 break-all">未登录</p>
+        <p class="text-xs text-slate-500 mt-0.5">港口物流课程账号</p>
+      </div>
+      <button id="account-menu-close" type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition" aria-label="关闭账号菜单">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18" />
+          <path d="M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="mt-4 flex items-center gap-4">
+      <div id="account-menu-avatar" class="h-14 w-14 rounded-full bg-gradient-to-br from-fuchsia-600 to-ocean-mid flex items-center justify-center text-white text-2xl font-bold select-none">访</div>
+      <div class="min-w-0">
+        <p id="account-menu-greeting" class="text-lg font-semibold text-slate-900">您好，欢迎访问！</p>
+        <a id="account-menu-member-link" href="#member" class="text-sm font-semibold text-ocean-mid hover:text-ocean-deep transition">进入会员中心</a>
+      </div>
+    </div>
+
+    <div class="mt-4 grid gap-2">
+      <a id="account-menu-register" href="register.html" class="inline-flex items-center justify-center rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-800 hover:border-ocean-mid/50 hover:bg-ocean-light/30 transition">注册</a>
+      <a id="account-menu-login" href="login.html" class="inline-flex items-center justify-center rounded-xl bg-ocean-mid text-white px-4 py-2.5 text-sm font-semibold hover:bg-ocean-deep transition">登录</a>
+      <a id="account-menu-switch" href="login.html" class="hidden inline-flex items-center justify-center rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-800 hover:border-ocean-mid/50 hover:bg-ocean-light/30 transition">切换账号</a>
+      <button id="account-menu-signout" type="button" class="hidden inline-flex items-center justify-center rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-800 hover:border-red-300 hover:bg-red-50 transition">退出登录</button>
+    </div>
+
+    <p id="account-menu-message" class="mt-3 text-xs text-slate-600" aria-live="polite"></p>
+  </div>
 
   <main>
     <section id="hero" class="bg-gradient-to-br from-ocean-deep via-slate-900 to-ocean-mid text-white">
@@ -888,23 +926,41 @@
     const loginLink = document.getElementById('login-link');
     const switchAccountBtn = document.getElementById('switch-account-btn');
     const signOutBtn = document.getElementById('signout-btn');
+    const accountMenuBtn = document.getElementById('account-menu-btn');
+    const accountBtnAvatarEl = document.getElementById('account-btn-avatar');
+    const accountMenuOverlay = document.getElementById('account-menu-overlay');
+    const accountMenuEl = document.getElementById('account-menu');
+    const accountMenuCloseBtn = document.getElementById('account-menu-close');
+    const accountMenuEmailEl = document.getElementById('account-menu-email');
+    const accountMenuAvatarEl = document.getElementById('account-menu-avatar');
+    const accountMenuGreetingEl = document.getElementById('account-menu-greeting');
+    const accountMenuRegisterLink = document.getElementById('account-menu-register');
+    const accountMenuLoginLink = document.getElementById('account-menu-login');
+    const accountMenuSwitchLink = document.getElementById('account-menu-switch');
+    const accountMenuSignOutBtn = document.getElementById('account-menu-signout');
+    const accountMenuMemberLink = document.getElementById('account-menu-member-link');
+    const accountMenuMessageEl = document.getElementById('account-menu-message');
 
     const errorMessages = {
-      'auth/too-many-requests': '请求过多，请稍后再试。',
+      'auth/too-many-requests': '请求过多，可能触发 Firebase 限流；请等待 10-30 分钟后再试。',
       'auth/network-request-failed': '网络异常，请检查连接。'
     };
 
     const setMessage = (message, tone = 'info') => {
-      if (!messageEl) return;
-      messageEl.textContent = message || '';
-      messageEl.classList.remove('text-red-600', 'text-emerald-600', 'text-slate-600');
-      if (!message) {
-        messageEl.classList.add('text-slate-600');
-        return;
-      }
-      if (tone === 'error') messageEl.classList.add('text-red-600');
-      else if (tone === 'success') messageEl.classList.add('text-emerald-600');
-      else messageEl.classList.add('text-slate-600');
+      const apply = (el) => {
+        if (!el) return;
+        el.textContent = message || '';
+        el.classList.remove('text-red-600', 'text-emerald-600', 'text-slate-600');
+        if (!message) {
+          el.classList.add('text-slate-600');
+          return;
+        }
+        if (tone === 'error') el.classList.add('text-red-600');
+        else if (tone === 'success') el.classList.add('text-emerald-600');
+        else el.classList.add('text-slate-600');
+      };
+      apply(messageEl);
+      apply(accountMenuMessageEl);
     };
 
     const getErrorMessage = (error) => {
@@ -923,6 +979,28 @@
       const first = (name || '').trim().slice(0, 1);
       return first ? first.toUpperCase() : 'U';
     };
+
+    const isAccountMenuOpen = () => {
+      return !!accountMenuEl && !accountMenuEl.classList.contains('hidden');
+    };
+
+    const setAccountMenuOpen = (open) => {
+      if (!accountMenuEl || !accountMenuOverlay || !accountMenuBtn) return;
+      accountMenuEl.classList.toggle('hidden', !open);
+      accountMenuOverlay.classList.toggle('hidden', !open);
+      accountMenuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) accountMenuCloseBtn?.focus();
+    };
+
+    accountMenuBtn?.addEventListener('click', () => {
+      setAccountMenuOpen(!isAccountMenuOpen());
+    });
+    accountMenuCloseBtn?.addEventListener('click', () => setAccountMenuOpen(false));
+    accountMenuOverlay?.addEventListener('click', () => setAccountMenuOpen(false));
+    accountMenuMemberLink?.addEventListener('click', () => setAccountMenuOpen(false));
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setAccountMenuOpen(false);
+    });
 
     const updateAccountPanel = (user) => {
       if (!statusEl || !greetingEl || !avatarEl) return;
@@ -946,14 +1024,31 @@
       }
     };
 
+    const updateAccountMenu = (user) => {
+      const avatarText = user ? getAvatarText(user) : '访';
+      if (accountBtnAvatarEl) accountBtnAvatarEl.textContent = avatarText;
+      if (accountMenuAvatarEl) accountMenuAvatarEl.textContent = avatarText;
+      if (accountMenuEmailEl) accountMenuEmailEl.textContent = user?.email || '未登录';
+      if (accountMenuGreetingEl) {
+        accountMenuGreetingEl.textContent = user ? `${getUserName(user)}，您好！` : '您好，欢迎访问！';
+      }
+      const loggedIn = !!user;
+      accountMenuRegisterLink?.classList.toggle('hidden', loggedIn);
+      accountMenuLoginLink?.classList.toggle('hidden', loggedIn);
+      accountMenuSwitchLink?.classList.toggle('hidden', !loggedIn);
+      accountMenuSignOutBtn?.classList.toggle('hidden', !loggedIn);
+    };
+
     onAuthStateChanged(auth, async (user) => {
       if (user && !user.emailVerified) {
         updateAccountPanel(null);
+        updateAccountMenu(null);
         setMessage('邮箱尚未验证，请先完成邮箱验证后再登录。', 'error');
         await signOut(auth).catch(() => {});
         return;
       }
       updateAccountPanel(user);
+      updateAccountMenu(user);
     });
 
     switchAccountBtn?.addEventListener('click', async () => {
@@ -971,6 +1066,32 @@
       try {
         await signOut(auth);
         setMessage('已退出登录。', 'success');
+      } catch (error) {
+        setMessage(getErrorMessage(error), 'error');
+      }
+    });
+
+    accountMenuRegisterLink?.addEventListener('click', () => setAccountMenuOpen(false));
+    accountMenuLoginLink?.addEventListener('click', () => setAccountMenuOpen(false));
+
+    accountMenuSwitchLink?.addEventListener('click', async (event) => {
+      event.preventDefault();
+      setMessage('正在退出并跳转到登录页…', 'info');
+      try {
+        await signOut(auth);
+        setAccountMenuOpen(false);
+        window.location.href = 'login.html';
+      } catch (error) {
+        setMessage(getErrorMessage(error), 'error');
+      }
+    });
+
+    accountMenuSignOutBtn?.addEventListener('click', async () => {
+      setMessage('正在退出登录…', 'info');
+      try {
+        await signOut(auth);
+        setMessage('已退出登录。', 'success');
+        setAccountMenuOpen(false);
       } catch (error) {
         setMessage(getErrorMessage(error), 'error');
       }
