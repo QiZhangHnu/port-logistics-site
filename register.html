@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>会员注册 | 港口物流课程</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Nunito Sans"', '"Noto Sans SC"', '"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'] },
+          colors: { ocean: { deep: '#0B3A5A', mid: '#115D8C', light: '#C7E3FF' } }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-ocean-deep via-slate-900 to-ocean-mid font-sans">
+  <header class="max-w-6xl mx-auto px-4 py-6">
+    <nav class="flex items-center justify-between text-white">
+      <a href="index.html" class="flex items-center gap-2 hover:opacity-90 transition">
+        <span class="h-9 w-9 rounded-full bg-white/15 flex items-center justify-center font-bold">港</span>
+        <span class="text-lg font-semibold">港口物流课程</span>
+      </a>
+      <a href="index.html#member" class="text-sm font-semibold bg-white/10 hover:bg-white/15 transition px-4 py-2 rounded-full">返回首页</a>
+    </nav>
+  </header>
+
+  <main class="px-4 pb-16">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-center justify-center">
+        <div class="w-full max-w-md rounded-3xl bg-white/95 backdrop-blur border border-white/30 shadow-2xl shadow-slate-900/40 p-6 md:p-8">
+          <div class="space-y-2">
+            <h1 class="text-2xl md:text-3xl font-bold text-ocean-deep">会员注册</h1>
+            <p class="text-sm text-slate-600">使用邮箱创建账号，注册后将自动登录并返回首页。</p>
+          </div>
+
+          <form id="register-form" class="mt-6 space-y-4">
+            <div class="space-y-2">
+              <label for="register-email" class="text-sm font-semibold text-slate-700">邮箱</label>
+              <input id="register-email" type="email" required autocomplete="email" placeholder="name@example.com" class="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm focus:border-ocean-mid focus:outline-none focus:ring-2 focus:ring-ocean-mid/20" />
+            </div>
+            <div class="space-y-2">
+              <label for="register-password" class="text-sm font-semibold text-slate-700">密码</label>
+              <input id="register-password" type="password" required minlength="6" autocomplete="new-password" placeholder="至少 6 位" class="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm focus:border-ocean-mid focus:outline-none focus:ring-2 focus:ring-ocean-mid/20" />
+            </div>
+            <button type="submit" class="w-full rounded-lg bg-ocean-deep text-white font-semibold py-3 hover:bg-ocean-mid transition">注册</button>
+            <p id="register-message" class="text-sm text-slate-600" aria-live="polite"></p>
+          </form>
+
+          <div class="mt-6 flex items-center justify-between text-sm">
+            <a href="login.html" class="font-semibold text-ocean-mid hover:text-ocean-deep transition">已有账号？去登录</a>
+            <a href="index.html#member" class="text-slate-600 hover:text-slate-800 transition">返回会员中心</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
+    import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCZQkYOqqrYVoh7em3vqa2_cQGTl54mDwY",
+      authDomain: "port-logistics-website.firebaseapp.com",
+      projectId: "port-logistics-website",
+      storageBucket: "port-logistics-website.firebasestorage.app",
+      messagingSenderId: "408055072268",
+      appId: "1:408055072268:web:ecafc91d732134028a9029",
+      measurementId: "G-LBWF59BH23"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    try {
+      getAnalytics(app);
+    } catch (error) {}
+    const auth = getAuth(app);
+
+    const form = document.getElementById('register-form');
+    const emailEl = document.getElementById('register-email');
+    const passwordEl = document.getElementById('register-password');
+    const messageEl = document.getElementById('register-message');
+
+    const errorMessages = {
+      'auth/email-already-in-use': '该邮箱已注册，请直接登录。',
+      'auth/invalid-email': '邮箱格式不正确。',
+      'auth/weak-password': '密码至少 6 位。',
+      'auth/too-many-requests': '请求过多，请稍后再试。',
+      'auth/network-request-failed': '网络异常，请检查连接。'
+    };
+
+    const setMessage = (message, tone = 'info') => {
+      if (!messageEl) return;
+      messageEl.textContent = message || '';
+      messageEl.classList.remove('text-red-600', 'text-emerald-600', 'text-slate-600');
+      if (!message) {
+        messageEl.classList.add('text-slate-600');
+        return;
+      }
+      if (tone === 'error') messageEl.classList.add('text-red-600');
+      else if (tone === 'success') messageEl.classList.add('text-emerald-600');
+      else messageEl.classList.add('text-slate-600');
+    };
+
+    const getErrorMessage = (error) => {
+      const code = error?.code || '';
+      return errorMessages[code] || '注册失败，请稍后再试。';
+    };
+
+    const redirectToHome = () => {
+      window.location.href = 'index.html#member';
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) return;
+      setMessage('已登录，正在返回首页…', 'success');
+      setTimeout(redirectToHome, 600);
+    });
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      setMessage('正在注册…', 'info');
+      const email = emailEl?.value.trim();
+      const password = passwordEl?.value;
+      if (!email || !password) {
+        setMessage('请填写邮箱和密码。', 'error');
+        return;
+      }
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        setMessage('注册成功，正在返回首页…', 'success');
+        setTimeout(redirectToHome, 600);
+      } catch (error) {
+        setMessage(getErrorMessage(error), 'error');
+      }
+    });
+  </script>
+</body>
+</html>
