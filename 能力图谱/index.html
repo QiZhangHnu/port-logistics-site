@@ -277,6 +277,7 @@
       if (node.supportingPoints) blocks.push({ title: "支撑要点", list: node.supportingPoints });
       if (node.questions) blocks.push({ title: "题目", list: node.questions });
       if (node.extraList) blocks.push({ title: node.extraTitle || "信息", list: node.extraList });
+      if (node.answerList || node.answer) blocks.push({ title: node.answerTitle || "答案", list: node.answerList || [node.answer] });
 
       blocks.forEach(block => {
         const title = document.createElement("div");
@@ -514,7 +515,9 @@
               description: q.header,
               supportingPoints: null,
               extraList: [q.stem],
-              extraTitle: "题干"
+              extraTitle: "题干",
+              answerList: q.answerList || (q.answer ? [q.answer] : null),
+              answerTitle: q.answerTitle || "答案"
             });
             links.push({ source: abilityId, target: q.id, distance: 80 });
           });
