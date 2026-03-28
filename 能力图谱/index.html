@@ -243,6 +243,23 @@
       return ul;
     }
 
+    function splitLabel(text, maxChars = 8) {
+      const chars = Array.from(String(text || "").trim().replace(/\s+/g, " "));
+      if (!chars.length) return [""];
+
+      const lines = [];
+      for (let i = 0; i < chars.length; i += maxChars) {
+        lines.push(chars.slice(i, i + maxChars).join(""));
+      }
+      return lines;
+    }
+
+    function getNodeLabelLines(node) {
+      const labelText = node.displayLabel || node.shortLabel || node.label || "";
+      if (!node.displayLabelMaxChars) return [labelText];
+      return splitLabel(labelText, node.displayLabelMaxChars);
+    }
+
     function renderInfo(panelId, node) {
       const panel = document.getElementById(panelId);
       panel.innerHTML = "";
@@ -318,7 +335,17 @@
         .data(nodes)
         .join("text")
         .attr("class", "node-label")
-        .text(d => d.shortLabel || d.label);
+        .attr("font-weight", d => d.type === "module" ? 700 : 500)
+        .each(function(d) {
+          const lines = getNodeLabelLines(d);
+          d3.select(this)
+            .selectAll("tspan")
+            .data(lines)
+            .join("tspan")
+            .attr("x", 0)
+            .attr("dy", (_, i) => i === 0 ? `${-(lines.length - 1) * 0.55}em` : "1.1em")
+            .text(line => line);
+        });
 
       node.append("title").text(d => d.label);
 
@@ -343,8 +370,7 @@
           .attr("cx", d => d.x = Math.max(d.r, Math.min(width - d.r, d.x)))
           .attr("cy", d => d.y = Math.max(d.r, Math.min(height - d.r, d.y)));
         label
-          .attr("x", d => d.x + d.r + 2)
-          .attr("y", d => d.y + 3);
+          .attr("transform", d => `translate(${d.x + d.r + 4}, ${d.y})`);
       });
 
       window.addEventListener("resize", () => {
@@ -373,7 +399,17 @@
       }
     }
 
-    function prepareAbilityData(data) {
+    function buildAbilityTitleMap(questionData) {
+      const titleMap = {};
+      (questionData.modules || []).forEach(mod => {
+        (mod.abilities || []).forEach(ab => {
+          if (ab.id && ab.title) titleMap[ab.id] = ab.title;
+        });
+      });
+      return titleMap;
+    }
+
+    function prepareAbilityData(data, abilityTitleMap = {}) {
       const nodes = [];
       const links = [];
       const rootId = data.courseId || "Course";
@@ -391,7 +427,9 @@
         const modNode = {
           id: mod.id,
           label: `${mod.id} ${mod.name}`,
-          shortLabel: mod.id,
+          shortLabel: mod.name,
+          displayLabel: mod.name,
+          displayLabelMaxChars: 8,
           type: "module",
           r: 20,
           meta: `章节：${mod.chapters || "-"}`,
@@ -401,14 +439,17 @@
         links.push({ source: rootId, target: mod.id, distance: 160 });
 
         (mod.abilities || []).forEach(ability => {
+          const abilityTitle = abilityTitleMap[ability.id] || ability.description || ability.id;
           nodes.push({
             id: ability.id,
-            label: `${ability.id} ${ability.levelName}`,
-            shortLabel: ability.id,
+            label: abilityTitle,
+            shortLabel: abilityTitle,
+            displayLabel: abilityTitle,
+            displayLabelMaxChars: 10,
             type: "ability",
             level: ability.levelCode,
             r: 14,
-            meta: `${mod.name} · ${ability.levelName}`,
+            meta: `${ability.id} · ${mod.name} · ${ability.levelName}`,
             description: ability.description,
             supportingPoints: ability.supportingPoints
           });
@@ -436,7 +477,9 @@
         const modNode = {
           id: `${mod.id}-Q`,
           label: `${mod.id} ${mod.name}`,
-          shortLabel: mod.id,
+          shortLabel: mod.name,
+          displayLabel: mod.name,
+          displayLabelMaxChars: 8,
           type: "module",
           r: 18,
           meta: `覆盖范围：${mod.abilityRange || "—"}`
@@ -448,12 +491,14 @@
           const abilityId = `${ab.id}-Q`;
           nodes.push({
             id: abilityId,
-            label: `${ab.id} ${ab.title}`,
-            shortLabel: ab.id,
+            label: ab.title,
+            shortLabel: ab.title,
+            displayLabel: ab.title,
+            displayLabelMaxChars: 10,
             type: "ability",
             level: ab.level,
             r: 13,
-            meta: `${mod.name} · 能力点`,
+            meta: `${ab.id} · ${mod.name} · 能力点`,
             description: ab.title
           });
           links.push({ source: modNode.id, target: abilityId, distance: 110 });
@@ -502,7 +547,8 @@
             { label: "题目", color: typeColors.question }
           ]);
 
-          const abilityPrepared = prepareAbilityData(abilityData);
+          const abilityTitleMap = buildAbilityTitleMap(questionData);
+          const abilityPrepared = prepareAbilityData(abilityData, abilityTitleMap);
           drawForceGraph({
             svgId: "#ability-graph",
             nodes: abilityPrepared.nodes,
