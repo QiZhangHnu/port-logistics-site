@@ -137,13 +137,64 @@
     
     
     <section id="videos" class="max-w-6xl mx-auto px-4 py-16 space-y-6">
-      <div class="flex items-center justify-between gap-4 flex-wrap">
+      <div class="flex items-end justify-between gap-4 flex-wrap">
         <div>
           <p class="text-sm font-semibold text-ocean-mid uppercase tracking-wide">教学视频</p>
           <h2 class="text-2xl md:text-3xl font-bold text-ocean-deep">课程与案例</h2>
           <p class="text-sm text-slate-600 mt-1">包含课程讲解与案例视频</p>
         </div>
-        <span class="text-sm font-semibold text-ocean-mid">共 35 个视频</span>
+        <div class="rounded-2xl border border-ocean-mid/15 bg-white/80 backdrop-blur px-4 py-3 text-sm shadow-sm">
+          <p id="videos-summary" class="font-semibold text-ocean-deep">共 35 个视频</p>
+          <p class="mt-1 text-slate-500">课程微视频可按需展开或隐藏</p>
+        </div>
+      </div>
+      <div class="relative overflow-hidden rounded-[28px] border border-ocean-mid/15 bg-gradient-to-br from-ocean-deep via-[#0b6aa8] to-[#5fb5e7] shadow-2xl">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.24),transparent_36%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.14),transparent_30%)]"></div>
+        <div class="relative grid items-center gap-8 px-6 py-7 md:px-8 md:py-8 lg:grid-cols-[1.4fr_0.9fr]">
+          <div class="space-y-5">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="inline-flex items-center gap-2 rounded-full bg-white/16 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-6 4h2a2 2 0 002-2V8a2 2 0 00-2-2H9a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                课程微视频
+              </span>
+              <span id="micro-videos-pill" class="inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-ocean-deep shadow-lg shadow-slate-950/10">
+                默认隐藏 15 个
+              </span>
+            </div>
+            <div class="space-y-3">
+              <h3 class="text-2xl md:text-3xl font-bold text-white leading-tight">《港口物流》微课程视频</h3>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button id="toggle-micro-videos" type="button" aria-expanded="false" class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-ocean-deep shadow-lg shadow-slate-950/20 transition hover:-translate-y-0.5 hover:bg-slate-50">
+                <span id="toggle-micro-videos-label">展开课程微视频</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+              <p id="micro-videos-status" class="text-sm text-white/85"></p>
+            </div>
+          </div>
+          <div class="relative hidden min-h-[220px] md:block">
+            <div class="absolute right-10 top-0 h-36 w-56 overflow-hidden rounded-3xl border border-white/20 bg-white/10 shadow-2xl rotate-[-7deg]">
+              <img src="assets/covers/BV1SmwAesEiX.jpg" alt="港口航运网络" class="h-full w-full object-cover">
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 py-3 text-sm font-semibold text-white">港口航运网络</div>
+            </div>
+            <div class="absolute right-0 top-16 h-32 w-48 overflow-hidden rounded-3xl border border-white/20 bg-white/10 shadow-2xl rotate-[6deg]">
+              <img src="assets/covers/BV1Qw4m1Y7Js.jpg" alt="港口主航道" class="h-full w-full object-cover">
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 py-3 text-sm font-semibold text-white">港口主航道</div>
+            </div>
+            <div class="absolute left-10 top-10 h-28 w-44 overflow-hidden rounded-3xl border border-white/20 bg-white/10 shadow-2xl rotate-[-14deg]">
+              <img src="assets/covers/BV14H8Vz6ESR.jpg" alt="集装箱码头" class="h-full w-full object-cover">
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-3 py-2 text-xs font-semibold text-white">集装箱码头</div>
+            </div>
+            <div class="absolute left-4 bottom-0 rounded-3xl border border-white/15 bg-white/12 px-5 py-4 text-white shadow-xl backdrop-blur">
+              <p class="text-xs uppercase tracking-[0.28em] text-white/70">港口主题场景</p>
+              <p class="mt-2 text-lg font-semibold leading-snug">港口、航道与集装箱作业图像</p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <button type="button" class="group bg-white border border-slate-100 rounded-xl shadow-md overflow-hidden hover:-translate-y-1 transition text-left js-video-card" data-bvid="BV1HWUQBBErr" data-title="1.1 港口的概念与分类">
@@ -632,14 +683,16 @@
       </div>
     </section>
 
-    <section id="news" class="max-w-6xl mx-auto px-4 py-16 space-y-6">
-      <div class="flex items-center justify-between gap-4">
-        <div>
-          <p class="text-sm font-semibold text-ocean-mid uppercase tracking-wide">行业新闻</p>
-          <h2 class="text-2xl md:text-3xl font-bold text-ocean-deep">港口物流 · 最新观察</h2>
-        </div>
-        <a href="#" class="hidden sm:inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep">订阅周报</a>
-      </div>
+        <section id="news" class="max-w-6xl mx-auto px-4 py-16">
+      <div class="grid gap-8 xl:grid-cols-[1.45fr_0.95fr] items-start">
+        <div class="space-y-6">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <p class="text-sm font-semibold text-ocean-mid uppercase tracking-wide">行业新闻</p>
+              <h2 class="text-2xl md:text-3xl font-bold text-ocean-deep">港口物流 · 最新观察</h2>
+            </div>
+            <a href="#" class="hidden sm:inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep">订阅周报</a>
+          </div>
       <div class="space-y-4">
         <article class="p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition">
           <span class="text-xs font-semibold text-ocean-mid">2025-10-31</span>
@@ -696,6 +749,27 @@
           <h3 class="text-lg font-semibold text-ocean-deep">多式联运示范项目落地，铁路集装箱中心站与港口联动</h3>
           <p class="text-sm text-slate-700">通过电子提单与实时轨迹共享，海铁联运效率显著提升，周转时间缩短。</p>
         </article>
+      </div>
+        </div>
+        <div class="space-y-6 xl:sticky xl:top-24">
+          <div>
+            <p class="text-sm font-semibold text-ocean-mid uppercase tracking-wide">随笔记录</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-ocean-deep">课程思考 · 随笔观察</h2>
+          </div>
+          <article class="rounded-2xl border border-ocean-mid/15 bg-gradient-to-br from-white via-slate-50 to-ocean-light/25 shadow-sm overflow-hidden">
+            <div class="p-6 space-y-4">
+              <span class="inline-flex items-center rounded-full bg-ocean-deep px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white">课程随笔</span>
+              <h3 class="text-xl md:text-2xl font-bold text-ocean-deep leading-snug"><a href="notes/hainan-yangpu.html" class="hover:text-ocean-mid">海南自由贸易港背景下的洋浦港发展</a></h3>
+              <p class="text-sm text-slate-700 leading-relaxed">从自由贸易港制度、港产联动与功能升级三个维度，讨论洋浦港如何从传统运输节点走向开放平台与产业平台。</p>
+              <a href="notes/hainan-yangpu.html" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ocean-deep text-white font-semibold shadow hover:bg-ocean-mid transition">
+                阅读全文
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -783,12 +857,66 @@
 
     <script>
     (() => {
-      const cards = document.querySelectorAll('.js-video-card');
+      const cards = Array.from(document.querySelectorAll('.js-video-card'));
       const modal = document.getElementById('video-modal');
       const player = document.getElementById('modal-player');
       const titleEl = document.getElementById('modal-title');
       const closeBtn = document.getElementById('close-modal');
+      const toggleMicroVideosBtn = document.getElementById('toggle-micro-videos');
+      const toggleMicroVideosLabelEl = document.getElementById('toggle-micro-videos-label');
+      const videosSummaryEl = document.getElementById('videos-summary');
+      const microVideosStatusEl = document.getElementById('micro-videos-status');
+      const microVideosPillEl = document.getElementById('micro-videos-pill');
       const defaultTitle = '教学视频';
+      const microVideoPattern = /^\d/;
+      const microCards = cards.filter(card => microVideoPattern.test((card.dataset.title || '').trim()));
+      const collapsedButtonClasses = ['bg-white', 'text-ocean-deep', 'hover:bg-slate-50'];
+      const expandedButtonClasses = ['bg-ocean-deep/25', 'text-white', 'ring-1', 'ring-white/35', 'hover:bg-ocean-deep/35'];
+      let showMicroVideos = false;
+
+      const syncToggleButtonState = () => {
+        if (!toggleMicroVideosBtn) return;
+        toggleMicroVideosBtn.classList.remove(...collapsedButtonClasses, ...expandedButtonClasses);
+        toggleMicroVideosBtn.classList.add(...(showMicroVideos ? expandedButtonClasses : collapsedButtonClasses));
+        toggleMicroVideosBtn.setAttribute('aria-expanded', showMicroVideos ? 'true' : 'false');
+        if (toggleMicroVideosLabelEl) {
+          toggleMicroVideosLabelEl.textContent = showMicroVideos ? '隐藏课程微视频' : '展开课程微视频';
+        }
+      };
+
+      const syncMicroVideoVisibility = () => {
+        const visibleCount = showMicroVideos ? cards.length : cards.length - microCards.length;
+
+        microCards.forEach(card => {
+          card.hidden = !showMicroVideos;
+        });
+
+        if (videosSummaryEl) {
+          videosSummaryEl.textContent = `当前展示 ${visibleCount} / ${cards.length} 个视频`;
+        }
+
+        if (microVideosPillEl) {
+          microVideosPillEl.textContent = microCards.length
+            ? (showMicroVideos ? `已展开 ${microCards.length} 个微视频` : `默认隐藏 ${microCards.length} 个微视频`)
+            : '未识别到课程微视频';
+        }
+
+        if (!toggleMicroVideosBtn) return;
+
+        if (!microCards.length) {
+          toggleMicroVideosBtn.hidden = true;
+          if (microVideosStatusEl) microVideosStatusEl.textContent = '当前没有需要折叠的课程微视频';
+          return;
+        }
+
+        toggleMicroVideosBtn.hidden = false;
+        syncToggleButtonState();
+        if (microVideosStatusEl) {
+          microVideosStatusEl.textContent = showMicroVideos
+            ? '章节微视频已全部展开，主页正在显示完整课程视频列表。'
+            : '';
+        }
+      };
 
       const openModal = (bvid, title) => {
         if (!bvid) return;
@@ -804,6 +932,13 @@
         modal.classList.add('hidden');
         modal.classList.remove('flex');
       };
+
+      syncMicroVideoVisibility();
+
+      toggleMicroVideosBtn?.addEventListener('click', () => {
+        showMicroVideos = !showMicroVideos;
+        syncMicroVideoVisibility();
+      });
 
       cards.forEach(card => {
         card.addEventListener('click', () => {
