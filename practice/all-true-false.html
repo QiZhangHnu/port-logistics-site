@@ -1162,18 +1162,24 @@ h1 {
             <p class="meta">说明：本页面汇总了全书所有对应题型的试题，用于集中练习与自测。</p>
         </article>
     </main>
-    <script>
+    
+<script type="module">
+import { initPracticeRecorder } from '../assets/js/practice-recorder.js';
 
-function toggleAnswer(id, btn) {
+const practiceRecorder = initPracticeRecorder({ pageId: 'all-true-false' });
+
+window.toggleAnswer = function toggleAnswer(id, btn) {
     var box = document.getElementById(id);
     if (!box) return;
     var hidden = (box.style.display === "" || box.style.display === "none");
     box.style.display = hidden ? "block" : "none";
     if (btn) {
-        btn.textContent = hidden ? "隐藏答案" : "查看答案";
+        btn.textContent = hidden ? "Hide Answer" : "Show Answer";
+    }
+    if (practiceRecorder && typeof practiceRecorder.onAnswerToggle === 'function') {
+        practiceRecorder.onAnswerToggle(id, hidden);
     }
 }
-
-    </script>
+</script>
 </body>
 </html>

@@ -46,6 +46,10 @@ export function buildAttemptId(assignmentId, uid) {
   return `${assignmentId}__${uid}`;
 }
 
+export function buildPracticeAttemptId(pageId, uid) {
+  return `practice__${pageId}__${uid}`;
+}
+
 function requireCurrentUid() {
   const uid = auth.currentUser?.uid || '';
   if (!uid) {
@@ -536,6 +540,70 @@ export async function saveAttemptAnswer({ assignmentId, profile, question, respo
   }, { merge: true });
   await updateDoc(doc(db, 'courses', COURSE_ID, 'attempts', attemptId), { lastSavedAt: serverTimestamp() });
   return attemptId;
+}
+
+
+export async function ensurePracticeAttempt({ pageId, profile }) {
+  const normalizedPageId = compactText(pageId);
+  if (!normalizedPageId) {
+    throw new Error('Missing practice page id.');
+  }
+  const attemptId = buildPracticeAttemptId(normalizedPageId, profile.id);
+  const ref = doc(db, 'courses', COURSE_ID, 'practice_attempts', attemptId);
+  const snapshot = await getDoc(ref);
+  if (snapshot.exists()) {
+    return { id: snapshot.id, ...snapshot.data() };
+  }
+
+  await setDoc(ref, {
+    attemptId,
+    pageId: normalizedPageId,
+    uid: profile.id,
+    studentNo: profile.studentNo || '',
+    studentName: profile.name || '',
+    classId: profile.classId || '',
+    status: 'in_progress',
+    startedAt: serverTimestamp(),
+    lastSavedAt: null,
+    updatedAt: serverTimestamp(),
+  });
+
+  const created = await getDoc(ref);
+  return { id: created.id, ...created.data() };
+}
+
+export async function listPracticeAnswers(attemptId) {
+  const snapshot = await getDocs(collection(db, 'courses', COURSE_ID, 'practice_attempts', attemptId, 'answers'));
+  return mergeSnapshotDocs(snapshot);
+}
+
+export async function savePracticeAnswer({
+  attemptId,
+  questionId,
+  questionType,
+  responsePayload,
+  answerRevealed = false,
+}) {
+  const normalizedAttemptId = compactText(attemptId);
+  const normalizedQuestionId = compactText(questionId);
+  if (!normalizedAttemptId || !normalizedQuestionId) {
+    throw new Error('Missing attemptId or questionId.');
+  }
+
+  await setDoc(doc(db, 'courses', COURSE_ID, 'practice_attempts', normalizedAttemptId, 'answers', normalizedQuestionId), {
+    questionId: normalizedQuestionId,
+    questionType: compactText(questionType) || 'short_answer',
+    responsePayload: responsePayload || {},
+    answerRevealed: Boolean(answerRevealed),
+    answerRevealedAt: answerRevealed ? serverTimestamp() : null,
+    savedAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  }, { merge: true });
+
+  await updateDoc(doc(db, 'courses', COURSE_ID, 'practice_attempts', normalizedAttemptId), {
+    lastSavedAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
 }
 
 export async function listStudentAttempts(profile) {
