@@ -102,6 +102,274 @@ function setToneMessage(target, message, tone = 'info') {
   else target.classList.add('text-slate-600');
 }
 
+function formatPercent(value) {
+  return `${Number(value || 0).toFixed(2)}%`;
+}
+
+function formatMetricNumber(value) {
+  return Number(value || 0).toFixed(Number.isInteger(Number(value || 0)) ? 0 : 2);
+}
+
+function masteryTone(level) {
+  if (level === 'strong') {
+    return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+  }
+  if (level === 'warning') {
+    return 'bg-amber-50 text-amber-700 border-amber-200';
+  }
+  return 'bg-rose-50 text-rose-700 border-rose-200';
+}
+
+function masteryLabel(level) {
+  if (level === 'strong') return '掌握稳定';
+  if (level === 'warning') return '需要巩固';
+  return '重点补强';
+}
+
+function renderAnalyticsEmpty(message = '请选择作业后查看提交、批改和知识掌握分析。') {
+  analyticsPanel.innerHTML = `
+    <div class="rounded-[1.75rem] border border-dashed border-slate-300 bg-gradient-to-br from-slate-50 via-white to-slate-100 px-6 py-10 text-center">
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Teacher Insights</p>
+      <h3 class="mt-3 text-2xl font-bold text-ocean-deep">作业分析面板</h3>
+      <p class="mt-3 text-sm leading-7 text-slate-600">${message}</p>
+    </div>
+  `;
+}
+
+function buildTeachingSuggestions(analytics) {
+  const suggestions = [];
+  const weakestKnowledge = analytics.weakKnowledgeMasteryTopN?.[0];
+  const weakestAbility = analytics.weakAbilityMasteryTopN?.[0];
+
+  if (analytics.unsubmittedStudents > 0) {
+    suggestions.push(`当前仍有 ${analytics.unsubmittedStudents} 名学生未提交，建议优先按班级追踪缺交名单。`);
+  }
+  if (analytics.pendingManualReview > 0) {
+    suggestions.push(`仍有 ${analytics.pendingManualReview} 份作答存在主观题待批改，最终掌握画像会继续变化。`);
+  }
+  if (weakestKnowledge && weakestKnowledge.masteryRate < 60) {
+    suggestions.push(`知识点“${weakestKnowledge.label}”掌握率仅 ${formatPercent(weakestKnowledge.masteryRate)}，建议安排针对性讲解和同类题再练。`);
+  }
+  if (weakestAbility && weakestAbility.masteryRate < 60) {
+    suggestions.push(`${weakestAbility.label}表现偏弱，说明学生在迁移应用或分析判断上还有明显短板。`);
+  }
+  if (!suggestions.length) {
+    suggestions.push('当前整体表现平稳，可优先关注中等掌握区间的知识点，把“会做”提升为“稳定会做”。');
+  }
+  return suggestions.slice(0, 3);
+}
+
+function renderDistributionBars(items = []) {
+  const maxCount = Math.max(...items.map((item) => item.count), 1);
+  return items.map((item) => `
+    <div class="space-y-2">
+      <div class="flex items-center justify-between text-sm text-slate-600">
+        <span>${item.label}</span>
+        <span class="font-semibold text-ocean-deep">${item.count} 人</span>
+      </div>
+      <div class="h-2 overflow-hidden rounded-full bg-slate-200">
+        <div class="h-full rounded-full bg-gradient-to-r from-sky-400 via-cyan-500 to-ocean-deep" style="width:${Math.max((item.count / maxCount) * 100, item.count ? 12 : 0)}%"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderKnowledgeCards(items = []) {
+  if (!items.length) {
+    return '<div class="rounded-2xl border border-dashed border-slate-300 bg-white/70 px-4 py-6 text-sm text-slate-500">暂无可分析的客观题知识点数据。</div>';
+  }
+  return items.map((item) => `
+    <article class="rounded-2xl border ${masteryTone(item.level)} bg-white/80 p-4 shadow-sm">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">${item.chapterLabel || item.chapterCode || '课程知识'}</p>
+          <h4 class="mt-2 text-base font-semibold text-slate-800">${item.label}</h4>
+        </div>
+        <span class="rounded-full border px-3 py-1 text-xs font-semibold ${masteryTone(item.level)}">${masteryLabel(item.level)}</span>
+      </div>
+      <div class="mt-4">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-slate-500">掌握率</span>
+          <span class="font-semibold text-ocean-deep">${formatPercent(item.masteryRate)}</span>
+        </div>
+        <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-200">
+          <div class="h-full rounded-full bg-gradient-to-r from-ocean-deep via-cyan-500 to-sky-400" style="width:${Math.max(item.masteryRate, 6)}%"></div>
+        </div>
+      </div>
+      <dl class="mt-4 grid gap-3 text-sm sm:grid-cols-3">
+        <div>
+          <dt class="text-slate-500">涉及学生</dt>
+          <dd class="mt-1 font-semibold text-slate-800">${item.studentCount}</dd>
+        </div>
+        <div>
+          <dt class="text-slate-500">作答次数</dt>
+          <dd class="mt-1 font-semibold text-slate-800">${item.totalCount}</dd>
+        </div>
+        <div>
+          <dt class="text-slate-500">失分次数</dt>
+          <dd class="mt-1 font-semibold text-slate-800">${item.incorrectCount}</dd>
+        </div>
+      </dl>
+    </article>
+  `).join('');
+}
+
+function renderAbilityChips(items = []) {
+  if (!items.length) {
+    return '<p class="text-sm text-slate-500">暂无能力维度数据。</p>';
+  }
+  return items.map((item) => `
+    <div class="rounded-2xl border ${masteryTone(item.level)} bg-white/80 px-4 py-3 shadow-sm">
+      <div class="flex items-center justify-between gap-3">
+        <span class="text-sm font-semibold text-slate-800">${item.label}</span>
+        <span class="text-sm font-semibold text-ocean-deep">${formatPercent(item.masteryRate)}</span>
+      </div>
+      <p class="mt-2 text-xs text-slate-500">共 ${item.totalCount} 次客观题作答，失分 ${item.incorrectCount} 次</p>
+    </div>
+  `).join('');
+}
+
+function renderRiskStudents(items = []) {
+  if (!items.length) {
+    return '<p class="text-sm text-slate-500">暂无风险学生画像。</p>';
+  }
+  return items.map((item) => {
+    const isMissing = item.status === 'missing';
+    const tagClasses = isMissing
+      ? 'bg-rose-50 text-rose-700 border-rose-200'
+      : item.scoreRate < 60
+        ? 'bg-amber-50 text-amber-700 border-amber-200'
+        : 'bg-slate-100 text-slate-700 border-slate-200';
+    const detail = isMissing
+      ? '未提交本次作业'
+      : `得分率 ${formatPercent(item.scoreRate)}，客观题错 ${item.incorrectObjectiveCount}/${item.objectiveCount || 0}`;
+    return `
+      <div class="rounded-2xl border border-slate-200 bg-white/85 px-4 py-4 shadow-sm">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="text-base font-semibold text-slate-800">${item.studentName}</p>
+            <p class="mt-1 text-sm text-slate-500">${item.studentNo} · ${item.classId}</p>
+          </div>
+          <span class="rounded-full border px-3 py-1 text-xs font-semibold ${tagClasses}">${isMissing ? '缺交' : item.pendingManualReview > 0 ? '待批改' : '需关注'}</span>
+        </div>
+        <p class="mt-3 text-sm leading-6 text-slate-600">${detail}</p>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderAnalyticsPanel(analytics, assignment) {
+  const suggestions = buildTeachingSuggestions(analytics);
+  analyticsPanel.innerHTML = `
+    <div class="space-y-5">
+      <section class="overflow-hidden rounded-[1.9rem] border border-slate-200 bg-gradient-to-br from-ocean-deep via-[#0d4f78] to-[#3b82b8] px-6 py-6 text-white shadow-lg">
+        <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.32em] text-white/65">Teacher Insights</p>
+            <h3 class="mt-3 text-3xl font-bold">${analytics.assignmentTitle}</h3>
+            <p class="mt-3 max-w-3xl text-sm leading-7 text-white/80">目标班级：${(assignment?.targetClassIds || []).join('、') || '未配置'}。该面板仅在教师或管理员登录状态下展示，用于查看提交概况、知识点掌握和风险学生。</p>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2 lg:min-w-[20rem]">
+            <div class="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
+              <p class="text-xs uppercase tracking-wide text-white/60">提交率</p>
+              <p class="mt-2 text-2xl font-bold">${formatPercent(analytics.submissionRate)}</p>
+            </div>
+            <div class="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
+              <p class="text-xs uppercase tracking-wide text-white/60">知识掌握均值</p>
+              <p class="mt-2 text-2xl font-bold">${formatPercent(analytics.masteryRate)}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <article class="rounded-3xl border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">学生覆盖</p>
+          <p class="mt-3 text-3xl font-bold text-ocean-deep">${analytics.submissionCount}<span class="ml-2 text-base font-medium text-slate-400">/ ${analytics.totalStudents}</span></p>
+          <p class="mt-2 text-sm text-slate-600">未提交 ${analytics.unsubmittedStudents} 人</p>
+        </article>
+        <article class="rounded-3xl border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">平均分</p>
+          <p class="mt-3 text-3xl font-bold text-ocean-deep">${formatMetricNumber(analytics.avgScore)}</p>
+          <p class="mt-2 text-sm text-slate-600">折算得分率 ${formatPercent(analytics.avgScoreRate)}</p>
+        </article>
+        <article class="rounded-3xl border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">客观题正确率</p>
+          <p class="mt-3 text-3xl font-bold text-ocean-deep">${formatPercent(analytics.correctRate)}</p>
+          <p class="mt-2 text-sm text-slate-600">适合判断共性薄弱知识点</p>
+        </article>
+        <article class="rounded-3xl border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">待人工批改</p>
+          <p class="mt-3 text-3xl font-bold text-ocean-deep">${analytics.pendingManualReview}</p>
+          <p class="mt-2 text-sm text-slate-600">已批改均分 ${formatMetricNumber(analytics.gradedAvgScore)}</p>
+        </article>
+      </section>
+
+      <section class="grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
+        <article class="rounded-[1.75rem] border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h4 class="text-xl font-bold text-ocean-deep">成绩分布</h4>
+              <p class="mt-1 text-sm text-slate-500">按得分率查看本次作业的班级分层。</p>
+            </div>
+            <div class="rounded-full bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-600">
+              强项 ${analytics.masteryBucketSummary.strong} · 预警 ${analytics.masteryBucketSummary.warning} · 薄弱 ${analytics.masteryBucketSummary.weak}
+            </div>
+          </div>
+          <div class="mt-5 space-y-4">
+            ${renderDistributionBars(analytics.scoreDistribution)}
+          </div>
+        </article>
+
+        <article class="rounded-[1.75rem] border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <h4 class="text-xl font-bold text-ocean-deep">教学提示</h4>
+          <div class="mt-4 space-y-3">
+            ${suggestions.map((item, index) => `
+              <div class="rounded-2xl bg-slate-50 px-4 py-4 text-sm leading-7 text-slate-600">
+                <span class="mr-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-ocean-deep text-xs font-bold text-white">${index + 1}</span>
+                ${item}
+              </div>
+            `).join('')}
+          </div>
+        </article>
+      </section>
+
+      <section class="grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
+        <article class="rounded-[1.75rem] border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-sky-50 px-5 py-5 shadow-sm">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h4 class="text-xl font-bold text-ocean-deep">知识点掌握情况</h4>
+              <p class="mt-1 text-sm text-slate-500">优先展示掌握率最低的知识点，帮助教师快速判断补讲顺序。</p>
+            </div>
+            <span class="rounded-full bg-white px-4 py-2 text-xs font-semibold text-slate-500 shadow-sm">Top ${Math.min(analytics.weakKnowledgeMasteryTopN.length, 6)}</span>
+          </div>
+          <div class="mt-5 grid gap-4">
+            ${renderKnowledgeCards(analytics.weakKnowledgeMasteryTopN)}
+          </div>
+        </article>
+
+        <div class="space-y-5">
+          <article class="rounded-[1.75rem] border border-slate-200 bg-white px-5 py-5 shadow-sm">
+            <h4 class="text-xl font-bold text-ocean-deep">能力薄弱项</h4>
+            <p class="mt-1 text-sm text-slate-500">基于客观题作答统计得到的低掌握能力标签。</p>
+            <div class="mt-4 grid gap-3">
+              ${renderAbilityChips(analytics.weakAbilityMasteryTopN)}
+            </div>
+          </article>
+
+          <article class="rounded-[1.75rem] border border-slate-200 bg-white px-5 py-5 shadow-sm">
+            <h4 class="text-xl font-bold text-ocean-deep">风险学生提示</h4>
+            <p class="mt-1 text-sm text-slate-500">优先列出缺交与低掌握学生，便于教师点名跟进。</p>
+            <div class="mt-4 grid gap-3">
+              ${renderRiskStudents(analytics.studentRiskTopN)}
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  `;
+}
+
 function renderTeacherHeader(user, profile) {
   teacherSummaryEl.textContent = `当前账号：${profile?.name || user?.email || ''}，仅能操作自己负责班级的作业与成绩。`;
   teacherRoleEl.textContent = roleLabel(profile?.role);
@@ -325,7 +593,7 @@ async function refreshReviewSection() {
   const assignmentId = reviewAssignmentSelect.value;
   if (!assignmentId) {
     reviewAttemptsBody.innerHTML = '<tr><td colspan="8" class="py-6 text-center text-slate-500">请选择作业。</td></tr>';
-    analyticsPanel.textContent = '请选择作业后查看提交、批改和错因分析。';
+    renderAnalyticsEmpty();
     reviewEditor.innerHTML = '';
     return;
   }
@@ -338,15 +606,7 @@ async function refreshReviewSection() {
   const assignment = state.assignments.find((item) => item.assignmentId === assignmentId);
   if (assignment) {
     const analytics = await buildAnalytics(await listAssignmentAttempts({ assignmentId }), assignment);
-    analyticsPanel.innerHTML = `
-      <p class="font-semibold text-ocean-deep">${analytics.assignmentTitle}</p>
-      <p class="mt-2">提交人数：${analytics.submissionCount}，平均分：${analytics.avgScore}，客观题正确率：${analytics.correctRate}%</p>
-      <p class="mt-1">未提交人数：${analytics.unsubmittedStudents}，主观题待批改：${analytics.pendingManualReview}</p>
-      <p class="mt-3 font-semibold text-ocean-deep">错题知识点 TopN</p>
-      <p class="mt-1">${analytics.wrongKnowledgePointTopN.map((item) => `${item.key} (${item.count})`).join('，') || '暂无'}</p>
-      <p class="mt-3 font-semibold text-ocean-deep">薄弱能力 TopN</p>
-      <p class="mt-1">${analytics.wrongAbilityTopN.map((item) => `${item.key} (${item.count})`).join('，') || '暂无'}</p>
-    `;
+    renderAnalyticsPanel(analytics, assignment);
   }
 }
 
@@ -567,5 +827,5 @@ onAuthStateChanged(auth, async (user) => {
   await refreshStudents();
   await refreshQuestionBank();
   await refreshAssignments();
-  analyticsPanel.textContent = '请选择作业后查看提交、批改和错因分析。';
+  renderAnalyticsEmpty();
 });

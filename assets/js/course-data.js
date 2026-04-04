@@ -695,46 +695,282 @@ export async function saveManualReview({ profile, attempt, answers, reviewMap, t
   await batch.commit();
 }
 
+function formatKnowledgeLabel(id, fallback = '未标注知识点') {
+  const value = compactText(id).replace(/^kp:/i, '').replace(/-/g, ' ');
+  return value || fallback;
+}
+
+function formatAbilityLabel(id) {
+  const value = compactText(id);
+  return value ? `能力 ${value}` : '未标注能力';
+}
+
+function buildKnowledgeRefs(question) {
+  const knowledgeIds = asArray(question?.knowledgePointIds).filter(Boolean);
+  if (knowledgeIds.length) {
+    return knowledgeIds.map((id) => ({
+      id,
+      label: formatKnowledgeLabel(id),
+      chapterCode: compactText(question?.chapterCode),
+      chapterLabel: compactText(question?.chapterLabel),
+    }));
+  }
+
+  const fallbackId = compactText(question?.chapterCode || question?.chapterLabel || question?.questionId) || 'unknown';
+  return [{
+    id: `chapter:${fallbackId}`,
+    label: compactText(question?.chapterLabel || question?.chapterCode) || '未标注章节',
+    chapterCode: compactText(question?.chapterCode),
+    chapterLabel: compactText(question?.chapterLabel),
+  }];
+}
+
+function createMasteryBucket(rate) {
+  if (rate >= 85) return 'strong';
+  if (rate >= 60) return 'warning';
+  return 'weak';
+}
+
 export function buildAssignmentAnalytics({ assignment, attempts, questionMap, classStudents }) {
+  const totalPossibleScore = Number(assignment?.totalScore || 0);
+  const allStudents = uniqueById(classStudents);
   const submittedAttempts = attempts.filter((item) => ['submitted', 'graded', 'returned'].includes(item.status));
+  const gradedAttempts = attempts.filter((item) => ['graded', 'returned'].includes(item.status));
   const pendingManualReview = attempts.filter((item) => Number(item.subjectivePendingCount || 0) > 0).length;
-  const unsubmittedStudents = Math.max(0, classStudents.length - submittedAttempts.length);
+  const submittedUids = new Set(submittedAttempts.map((item) => item.uid).filter(Boolean));
+  const unsubmittedStudents = Math.max(0, allStudents.length - submittedUids.size);
   const totalScore = submittedAttempts.reduce((sum, item) => sum + Number(item.totalScore || 0), 0);
   const avgScore = submittedAttempts.length ? totalScore / submittedAttempts.length : 0;
+  const avgScoreRate = submittedAttempts.length && totalPossibleScore > 0
+    ? (avgScore / totalPossibleScore) * 100
+    : 0;
+  const gradedAvgScore = gradedAttempts.length
+    ? gradedAttempts.reduce((sum, item) => sum + Number(item.totalScore || 0), 0) / gradedAttempts.length
+    : 0;
+  const gradedAvgScoreRate = gradedAttempts.length && totalPossibleScore > 0
+    ? (gradedAvgScore / totalPossibleScore) * 100
+    : 0;
 
   const knowledgeCounter = new Map();
   const abilityCounter = new Map();
+  const studentMetrics = new Map();
   let objectiveCount = 0;
   let objectiveCorrect = 0;
 
+  const ensureStudentMetric = (attempt) => {
+    const key = attempt.uid || attempt.studentNo || attempt.attemptId;
+    if (!studentMetrics.has(key)) {
+      const rawScore = Number(attempt.totalScore || 0);
+      studentMetrics.set(key, {
+        uid: attempt.uid || '',
+        studentNo: attempt.studentNo || '-',
+        studentName: attempt.studentName || '-',
+        classId: attempt.classId || '-',
+        status: attempt.status || '-',
+        score: rawScore,
+        scoreRate: totalPossibleScore > 0 ? (rawScore / totalPossibleScore) * 100 : 0,
+        pendingManualReview: Number(attempt.subjectivePendingCount || 0),
+        incorrectObjectiveCount: 0,
+        objectiveCount: 0,
+        submittedAt: attempt.submittedAt || null,
+      });
+    }
+    return studentMetrics.get(key);
+  };
+
   for (const attempt of attempts) {
+    const studentMetric = ensureStudentMetric(attempt);
     for (const answer of asArray(attempt.answers)) {
       const question = questionMap.get(answer.questionId);
-      if (!question) {
+      if (!question || answer.autoCorrect === null) {
         continue;
       }
-      if (answer.autoCorrect !== null) {
-        objectiveCount += 1;
-        if (answer.autoCorrect) {
-          objectiveCorrect += 1;
-        } else {
-          asArray(question.knowledgePointIds).forEach((id) => knowledgeCounter.set(id, (knowledgeCounter.get(id) || 0) + 1));
-          asArray(question.abilityIds).forEach((id) => abilityCounter.set(id, (abilityCounter.get(id) || 0) + 1));
-        }
+
+      objectiveCount += 1;
+      studentMetric.objectiveCount += 1;
+      if (answer.autoCorrect) {
+        objectiveCorrect += 1;
+      } else {
+        studentMetric.incorrectObjectiveCount += 1;
       }
+
+      buildKnowledgeRefs(question).forEach((knowledgeRef) => {
+        const current = knowledgeCounter.get(knowledgeRef.id) || {
+          ...knowledgeRef,
+          totalCount: 0,
+          correctCount: 0,
+          incorrectCount: 0,
+          studentIds: new Set(),
+          questionIds: new Set(),
+        };
+        current.totalCount += 1;
+        current.studentIds.add(attempt.uid || attempt.studentNo || attempt.attemptId);
+        current.questionIds.add(answer.questionId);
+        if (answer.autoCorrect) {
+          current.correctCount += 1;
+        } else {
+          current.incorrectCount += 1;
+        }
+        knowledgeCounter.set(knowledgeRef.id, current);
+      });
+
+      asArray(question.abilityIds).forEach((id) => {
+        const current = abilityCounter.get(id) || {
+          id,
+          label: formatAbilityLabel(id),
+          totalCount: 0,
+          correctCount: 0,
+          incorrectCount: 0,
+        };
+        current.totalCount += 1;
+        if (answer.autoCorrect) {
+          current.correctCount += 1;
+        } else {
+          current.incorrectCount += 1;
+        }
+        abilityCounter.set(id, current);
+      });
     }
   }
 
-  const sortCounter = (counter) => Array.from(counter.entries()).map(([key, count]) => ({ key, count })).sort((left, right) => right.count - left.count).slice(0, 5);
+  const scoreDistribution = [
+    { label: '90-100', min: 90, max: 100, count: 0 },
+    { label: '80-89', min: 80, max: 89.999, count: 0 },
+    { label: '70-79', min: 70, max: 79.999, count: 0 },
+    { label: '60-69', min: 60, max: 69.999, count: 0 },
+    { label: '0-59', min: 0, max: 59.999, count: 0 },
+  ];
+  submittedAttempts.forEach((attempt) => {
+    const rate = totalPossibleScore > 0 ? (Number(attempt.totalScore || 0) / totalPossibleScore) * 100 : 0;
+    const bucket = scoreDistribution.find((item) => rate >= item.min && rate <= item.max);
+    if (bucket) {
+      bucket.count += 1;
+    }
+  });
+
+  const knowledgeMastery = Array.from(knowledgeCounter.values())
+    .map((item) => {
+      const masteryRate = item.totalCount ? (item.correctCount / item.totalCount) * 100 : 0;
+      return {
+        id: item.id,
+        label: item.label,
+        chapterCode: item.chapterCode,
+        chapterLabel: item.chapterLabel,
+        masteryRate: Number(masteryRate.toFixed(2)),
+        totalCount: item.totalCount,
+        correctCount: item.correctCount,
+        incorrectCount: item.incorrectCount,
+        studentCount: item.studentIds.size,
+        questionCount: item.questionIds.size,
+        level: createMasteryBucket(masteryRate),
+      };
+    })
+    .sort((left, right) => {
+      if (left.masteryRate !== right.masteryRate) {
+        return left.masteryRate - right.masteryRate;
+      }
+      return right.totalCount - left.totalCount;
+    });
+
+  const abilityMastery = Array.from(abilityCounter.values())
+    .map((item) => {
+      const masteryRate = item.totalCount ? (item.correctCount / item.totalCount) * 100 : 0;
+      return {
+        id: item.id,
+        label: item.label,
+        masteryRate: Number(masteryRate.toFixed(2)),
+        totalCount: item.totalCount,
+        incorrectCount: item.incorrectCount,
+        level: createMasteryBucket(masteryRate),
+      };
+    })
+    .sort((left, right) => {
+      if (left.masteryRate !== right.masteryRate) {
+        return left.masteryRate - right.masteryRate;
+      }
+      return right.totalCount - left.totalCount;
+    });
+
+  const riskStudents = Array.from(studentMetrics.values())
+    .map((item) => ({
+      ...item,
+      scoreRate: Number(item.scoreRate.toFixed(2)),
+    }))
+    .sort((left, right) => {
+      if (left.scoreRate !== right.scoreRate) {
+        return left.scoreRate - right.scoreRate;
+      }
+      if (left.incorrectObjectiveCount !== right.incorrectObjectiveCount) {
+        return right.incorrectObjectiveCount - left.incorrectObjectiveCount;
+      }
+      return right.pendingManualReview - left.pendingManualReview;
+    });
+
+  const missingStudents = allStudents
+    .filter((student) => !submittedUids.has(student.id))
+    .map((student) => ({
+      uid: student.id,
+      studentNo: student.studentNo || '-',
+      studentName: student.name || '-',
+      classId: student.classId || '-',
+      status: 'missing',
+      score: 0,
+      scoreRate: 0,
+      pendingManualReview: 0,
+      incorrectObjectiveCount: 0,
+      objectiveCount: 0,
+      submittedAt: null,
+    }));
+
+  const masteryBucketSummary = knowledgeMastery.reduce((summary, item) => {
+    summary[item.level] += 1;
+    return summary;
+  }, { strong: 0, warning: 0, weak: 0 });
+
+  const sortCounter = (counter) => Array.from(counter.entries())
+    .map(([key, count]) => ({ key, count }))
+    .sort((left, right) => right.count - left.count)
+    .slice(0, 5);
+
+  const knowledgeWeaknessCounter = new Map();
+  const abilityWeaknessCounter = new Map();
+  knowledgeMastery
+    .filter((item) => item.incorrectCount > 0)
+    .forEach((item) => knowledgeWeaknessCounter.set(item.label, item.incorrectCount));
+  abilityMastery
+    .filter((item) => item.incorrectCount > 0)
+    .forEach((item) => abilityWeaknessCounter.set(item.label, item.incorrectCount));
+
+  const submissionRate = allStudents.length
+    ? (submittedAttempts.length / allStudents.length) * 100
+    : 0;
+  const masteryRate = knowledgeMastery.length
+    ? knowledgeMastery.reduce((sum, item) => sum + item.masteryRate, 0) / knowledgeMastery.length
+    : 0;
+
   return {
     assignmentTitle: assignment?.title || '',
+    totalStudents: allStudents.length,
     submissionCount: submittedAttempts.length,
     avgScore: Number(avgScore.toFixed(2)),
+    avgScoreRate: Number(avgScoreRate.toFixed(2)),
+    gradedAvgScore: Number(gradedAvgScore.toFixed(2)),
+    gradedAvgScoreRate: Number(gradedAvgScoreRate.toFixed(2)),
     correctRate: objectiveCount ? Number(((objectiveCorrect / objectiveCount) * 100).toFixed(2)) : 0,
+    submissionRate: Number(submissionRate.toFixed(2)),
+    masteryRate: Number(masteryRate.toFixed(2)),
     unsubmittedStudents,
     pendingManualReview,
-    wrongKnowledgePointTopN: sortCounter(knowledgeCounter),
-    wrongAbilityTopN: sortCounter(abilityCounter),
+    scoreDistribution,
+    knowledgeMastery,
+    weakKnowledgeMasteryTopN: knowledgeMastery.slice(0, 6),
+    abilityMastery,
+    weakAbilityMasteryTopN: abilityMastery.slice(0, 6),
+    studentRiskTopN: missingStudents.concat(riskStudents).slice(0, 8),
+    missingStudents: missingStudents.slice(0, 8),
+    masteryBucketSummary,
+    wrongKnowledgePointTopN: sortCounter(knowledgeWeaknessCounter),
+    wrongAbilityTopN: sortCounter(abilityWeaknessCounter),
   };
 }
 
