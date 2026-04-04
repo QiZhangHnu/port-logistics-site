@@ -1,0 +1,16 @@
+{
+  "name": "port-logistics-functions",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^6.3.2"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "check": "node --check index.js"
+  }
+}

@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>课程作业 | 港口物流课程</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Nunito Sans"', '"Noto Sans SC"', '"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'] },
+          colors: { ocean: { deep: '#0B3A5A', mid: '#115D8C', light: '#C7E3FF' } }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-slate-50 font-sans text-slate-800">
+  <header class="bg-ocean-deep text-white shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+      <div>
+        <p class="text-xs uppercase tracking-[0.3em] text-ocean-light/80">Assignment Workspace</p>
+        <h1 id="assignment-title" class="mt-2 text-2xl font-bold">正在加载作业…</h1>
+      </div>
+      <div class="flex items-center gap-3 text-sm">
+        <a href="student-center.html" class="rounded-full border border-white/20 px-4 py-2 hover:bg-white/10 transition">返回学生中心</a>
+        <button id="submit-assignment-btn" type="button" class="rounded-full bg-white px-4 py-2 font-semibold text-ocean-deep hover:bg-slate-100 transition">提交作业</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-8 space-y-6">
+    <section class="rounded-3xl bg-white shadow-sm border border-slate-200 p-6 space-y-4">
+      <div class="grid gap-4 md:grid-cols-4">
+        <div class="rounded-2xl bg-slate-50 p-4">
+          <p class="text-xs uppercase tracking-wide text-slate-500">班级</p>
+          <p id="assignment-classes" class="mt-2 text-lg font-semibold">-</p>
+        </div>
+        <div class="rounded-2xl bg-slate-50 p-4">
+          <p class="text-xs uppercase tracking-wide text-slate-500">开始时间</p>
+          <p id="assignment-start-at" class="mt-2 text-lg font-semibold">-</p>
+        </div>
+        <div class="rounded-2xl bg-slate-50 p-4">
+          <p class="text-xs uppercase tracking-wide text-slate-500">截止时间</p>
+          <p id="assignment-due-at" class="mt-2 text-lg font-semibold">-</p>
+        </div>
+        <div class="rounded-2xl bg-slate-50 p-4">
+          <p class="text-xs uppercase tracking-wide text-slate-500">当前状态</p>
+          <p id="attempt-status" class="mt-2 text-lg font-semibold">-</p>
+        </div>
+      </div>
+      <p id="assignment-description" class="text-sm leading-6 text-slate-600"></p>
+      <p id="assignment-message" class="text-sm text-slate-600" aria-live="polite"></p>
+    </section>
+
+    <section id="question-list" class="space-y-4"></section>
+  </main>
+
+  <script type="module" src="assets/js/assignment-page.js"></script>
+</body>
+</html>

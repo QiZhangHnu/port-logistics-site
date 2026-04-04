@@ -1,0 +1,280 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - navigation [ref=e4]:
+        - generic [ref=e5]:
+          - generic [ref=e6]:
+            - text: 娓?/div>
+            - generic [ref=e7]: 娓彛鐗╂祦璇剧▼
+          - generic [ref=e8]:
+            - link "棣栭〉" [ref=e9] [cursor=pointer]:
+              - /url: "#hero"
+            - link "鏁欏瑙嗛" [ref=e10] [cursor=pointer]:
+              - /url: "#videos"
+            - link "鐭ヨ瘑鍥捐氨" [ref=e11] [cursor=pointer]:
+              - /url: "#graph"
+            - link "琛屼笟鏂伴椈" [ref=e12] [cursor=pointer]:
+              - /url: "#news"
+            - link "涔犻闆?/a>" [ref=e13] [cursor=pointer]:
+              - /url: "#exercises"
+          - link "璐﹀彿鑿滃崟" [ref=e14] [cursor=pointer]:
+            - /url: "#exercises"
+            - button "璐﹀彿鑿滃崟" [ref=e16]:
+              - generic [ref=e17]: 璁?/span>
+      - link:
+        - /url: "#exercises"
+    - link:
+      - /url: "#exercises"
+  - link:
+    - /url: "#exercises"
+  - heading "4.3 鎴戝浗娓彛鐗╂祦鐨勭幇鐘跺垎鏋?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e19]:
+    - text: 4.3 鎴戝浗娓彛鐗╂祦鐨勭幇鐘跺垎鏋?/h3>
+    - paragraph
+    - generic [ref=e20]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "6.1 娓彛鐗╂祦璁炬柦鐩? 鐐瑰嚮鎾斁 6.1 娓彛鐗╂祦璁炬柦鐩?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e21] [cursor=pointer]:
+    - img "6.1 娓彛鐗╂祦璁炬柦鐩?" [ref=e22]
+    - generic [ref=e24]: 鐐瑰嚮鎾斁
+    - heading "6.1 娓彛鐗╂祦璁炬柦鐩?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e26]:
+      - text: 6.1 娓彛鐗╂祦璁炬柦鐩?/h3>
+      - paragraph
+      - generic [ref=e27]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "3.1 娓彛涓庣粡娴? 鐐瑰嚮鎾斁 3.1 娓彛涓庣粡娴?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e28] [cursor=pointer]:
+    - img "3.1 娓彛涓庣粡娴?" [ref=e29]
+    - generic [ref=e31]: 鐐瑰嚮鎾斁
+    - heading "3.1 娓彛涓庣粡娴?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e33]:
+      - text: 3.1 娓彛涓庣粡娴?/h3>
+      - paragraph
+      - generic [ref=e34]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "2.4 娓彛鐗╂祦绯荤粺鐨勬瀯鎴? 鐐瑰嚮鎾斁 2.4 娓彛鐗╂祦绯荤粺鐨勬瀯鎴?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e35] [cursor=pointer]:
+    - img "2.4 娓彛鐗╂祦绯荤粺鐨勬瀯鎴?" [ref=e36]
+    - generic [ref=e38]: 鐐瑰嚮鎾斁
+    - heading "2.4 娓彛鐗╂祦绯荤粺鐨勬瀯鎴?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e40]:
+      - text: 2.4 娓彛鐗╂祦绯荤粺鐨勬瀯鎴?/h3>
+      - paragraph
+      - generic [ref=e41]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "3.3 缁忔祹涓庣墿娴? 鐐瑰嚮鎾斁 3.3 缁忔祹涓庣墿娴?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e42] [cursor=pointer]:
+    - img "3.3 缁忔祹涓庣墿娴?" [ref=e43]
+    - generic [ref=e45]: 鐐瑰嚮鎾斁
+    - heading "3.3 缁忔祹涓庣墿娴?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e47]:
+      - text: 3.3 缁忔祹涓庣墿娴?/h3>
+      - paragraph
+      - generic [ref=e48]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "5.2 涓栫晫涓昏娓彛鐗╂祦鍩烘湰鎯呭喌 鐐瑰嚮鎾斁 5.2 涓栫晫涓昏娓彛鐗╂祦鍩烘湰鎯呭喌 鍓嶅線 Bilibili 瑙傜湅" [ref=e49] [cursor=pointer]:
+    - generic [ref=e50]:
+      - img "5.2 涓栫晫涓昏娓彛鐗╂祦鍩烘湰鎯呭喌" [ref=e51]
+      - generic [ref=e53]: 鐐瑰嚮鎾斁
+    - generic [ref=e54]:
+      - heading "5.2 涓栫晫涓昏娓彛鐗╂祦鍩烘湰鎯呭喌" [level=3] [ref=e55]
+      - paragraph
+      - generic [ref=e56]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "2.2 娓彛鐗╂祦鐨勫熀鏈壒寰? 鐐瑰嚮鎾斁 2.2 娓彛鐗╂祦鐨勫熀鏈壒寰?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e57] [cursor=pointer]:
+    - img "2.2 娓彛鐗╂祦鐨勫熀鏈壒寰?" [ref=e58]
+    - generic [ref=e60]: 鐐瑰嚮鎾斁
+    - heading "2.2 娓彛鐗╂祦鐨勫熀鏈壒寰?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e62]:
+      - text: 2.2 娓彛鐗╂祦鐨勫熀鏈壒寰?/h3>
+      - paragraph
+      - generic [ref=e63]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "4.1 娌挎捣娓彛甯冨眬褰㈡€? 鐐瑰嚮鎾斁 4.1 娌挎捣娓彛甯冨眬褰㈡€?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e64] [cursor=pointer]:
+    - img "4.1 娌挎捣娓彛甯冨眬褰㈡€?" [ref=e65]
+    - generic [ref=e67]: 鐐瑰嚮鎾斁
+    - heading "4.1 娌挎捣娓彛甯冨眬褰㈡€?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e69]:
+      - text: 4.1 娌挎捣娓彛甯冨眬褰㈡€?/h3>
+      - paragraph
+      - generic [ref=e70]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "涓€璧风湅涓浗路灞变笢琛岋綔璁╅泦瑁呯鈥滃姩鈥濊捣鏉ワ紝鎺㈢储涓浗闈掑矝鐨勬櫤鎱ф腐鍙? 鐐瑰嚮鎾斁 涓€璧风湅涓浗路灞变笢琛岋綔璁╅泦瑁呯鈥滃姩鈥濊捣鏉ワ紝鎺㈢储涓浗闈掑矝鐨勬櫤鎱ф腐鍙?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e71] [cursor=pointer]:
+    - img "涓€璧风湅涓浗路灞变笢琛岋綔璁╅泦瑁呯鈥滃姩鈥濊捣鏉ワ紝鎺㈢储涓浗闈掑矝鐨勬櫤鎱ф腐鍙?" [ref=e72]
+    - generic [ref=e74]: 鐐瑰嚮鎾斁
+    - heading "涓€璧风湅涓浗路灞变笢琛岋綔璁╅泦瑁呯鈥滃姩鈥濊捣鏉ワ紝鎺㈢储涓浗闈掑矝鐨勬櫤鎱ф腐鍙?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e76]:
+      - text: 涓€璧风湅涓浗路灞变笢琛岋綔璁╅泦瑁呯鈥滃姩鈥濊捣鏉ワ紝鎺㈢储涓浗闈掑矝鐨勬櫤鎱ф腐鍙?/h3>
+      - paragraph
+      - generic [ref=e77]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "銆愮墿娴佸皬鐭ヨ瘑銆戦泦瑁呯娓彛鏄€庝箞杩愪綔鐨勶紵 鐐瑰嚮鎾斁 銆愮墿娴佸皬鐭ヨ瘑銆戦泦瑁呯娓彛鏄€庝箞杩愪綔鐨勶紵 鍓嶅線 Bilibili 瑙傜湅" [ref=e78] [cursor=pointer]:
+    - generic [ref=e79]:
+      - img "銆愮墿娴佸皬鐭ヨ瘑銆戦泦瑁呯娓彛鏄€庝箞杩愪綔鐨勶紵" [ref=e80]
+      - generic [ref=e82]: 鐐瑰嚮鎾斁
+    - generic [ref=e83]:
+      - heading "銆愮墿娴佸皬鐭ヨ瘑銆戦泦瑁呯娓彛鏄€庝箞杩愪綔鐨勶紵" [level=3] [ref=e84]
+      - paragraph
+      - generic [ref=e85]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "鐪熻兘瑁咃紒锛佹禉姹熷畞娉㈣垷灞辨腐锛屽浣曟垚涓轰笘鐣屾渶澶ф腐鍙ｏ紵銆愭槦鐞?K銆戙€婅秴绾ч鏅?瓒呯骇宸ョ▼銆婼02E06 鐐瑰嚮鎾斁 鐪熻兘瑁咃紒锛佹禉姹熷畞娉㈣垷灞辨腐锛屽浣曟垚涓轰笘鐣屾渶澶ф腐鍙ｏ紵銆愭槦鐞?K銆戙€婅秴绾ч鏅?瓒呯骇宸ョ▼銆婼02E06 鍓嶅線 Bilibili 瑙傜湅" [ref=e86] [cursor=pointer]:
+    - generic [ref=e87]:
+      - img "鐪熻兘瑁咃紒锛佹禉姹熷畞娉㈣垷灞辨腐锛屽浣曟垚涓轰笘鐣屾渶澶ф腐鍙ｏ紵銆愭槦鐞?K銆戙€婅秴绾ч鏅?瓒呯骇宸ョ▼銆婼02E06" [ref=e88]
+      - generic [ref=e90]: 鐐瑰嚮鎾斁
+    - generic [ref=e91]:
+      - heading "鐪熻兘瑁咃紒锛佹禉姹熷畞娉㈣垷灞辨腐锛屽浣曟垚涓轰笘鐣屾渶澶ф腐鍙ｏ紵銆愭槦鐞?K銆戙€婅秴绾ч鏅?瓒呯骇宸ョ▼銆婼02E06" [level=3] [ref=e92]
+      - paragraph
+      - generic [ref=e93]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "銆婁笂娴锋腐-娲涙潐鐭舵腐缁胯壊鑸繍璧板粖瀹炴柦璁″垝绾茶銆嬪彂甯? 鐐瑰嚮鎾斁 銆婁笂娴锋腐-娲涙潐鐭舵腐缁胯壊鑸繍璧板粖瀹炴柦璁″垝绾茶銆嬪彂甯?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e94] [cursor=pointer]:
+    - img "銆婁笂娴锋腐-娲涙潐鐭舵腐缁胯壊鑸繍璧板粖瀹炴柦璁″垝绾茶銆嬪彂甯?" [ref=e95]
+    - generic [ref=e97]: 鐐瑰嚮鎾斁
+    - heading "銆婁笂娴锋腐-娲涙潐鐭舵腐缁胯壊鑸繍璧板粖瀹炴柦璁″垝绾茶銆嬪彂甯?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e99]:
+      - text: 銆婁笂娴锋腐-娲涙潐鐭舵腐缁胯壊鑸繍璧板粖瀹炴柦璁″垝绾茶銆嬪彂甯?/h3>
+      - paragraph
+      - generic [ref=e100]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "娲诲姏涓浗璋冪爺琛岋綔娴欐睙瀹佹尝锛氣€滅豢鑹叉腐鍙ｂ€濈殑鏅鸿兘鍖栬浆鍨? 鐐瑰嚮鎾斁 娲诲姏涓浗璋冪爺琛岋綔娴欐睙瀹佹尝锛氣€滅豢鑹叉腐鍙ｂ€濈殑鏅鸿兘鍖栬浆鍨?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e101] [cursor=pointer]:
+    - img "娲诲姏涓浗璋冪爺琛岋綔娴欐睙瀹佹尝锛氣€滅豢鑹叉腐鍙ｂ€濈殑鏅鸿兘鍖栬浆鍨?" [ref=e102]
+    - generic [ref=e104]: 鐐瑰嚮鎾斁
+    - heading "娲诲姏涓浗璋冪爺琛岋綔娴欐睙瀹佹尝锛氣€滅豢鑹叉腐鍙ｂ€濈殑鏅鸿兘鍖栬浆鍨?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e106]:
+      - text: 娲诲姏涓浗璋冪爺琛岋綔娴欐睙瀹佹尝锛氣€滅豢鑹叉腐鍙ｂ€濈殑鏅鸿兘鍖栬浆鍨?/h3>
+      - paragraph
+      - generic [ref=e107]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "淇勭綏鏂娓彛鐨勬复鏈涳細澶╃劧鑹腐锛岄渶瑕佹弧瓒充粈涔堟潯浠讹紵 鐐瑰嚮鎾斁 淇勭綏鏂娓彛鐨勬复鏈涳細澶╃劧鑹腐锛岄渶瑕佹弧瓒充粈涔堟潯浠讹紵 鍓嶅線 Bilibili 瑙傜湅" [ref=e108] [cursor=pointer]:
+    - generic [ref=e109]:
+      - img "淇勭綏鏂娓彛鐨勬复鏈涳細澶╃劧鑹腐锛岄渶瑕佹弧瓒充粈涔堟潯浠讹紵" [ref=e110]
+      - generic [ref=e112]: 鐐瑰嚮鎾斁
+    - generic [ref=e113]:
+      - heading "淇勭綏鏂娓彛鐨勬复鏈涳細澶╃劧鑹腐锛岄渶瑕佹弧瓒充粈涔堟潯浠讹紵" [level=3] [ref=e114]
+      - paragraph
+      - generic [ref=e115]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "杩炴帴涓栫晫鐨勪笉鏄簰鑱旂綉锛岃€屾槸闆嗚绠?銆愬樊璇勫悰銆? 鐐瑰嚮鎾斁 杩炴帴涓栫晫鐨勪笉鏄簰鑱旂綉锛岃€屾槸闆嗚绠?銆愬樊璇勫悰銆?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e116] [cursor=pointer]:
+    - img "杩炴帴涓栫晫鐨勪笉鏄簰鑱旂綉锛岃€屾槸闆嗚绠?銆愬樊璇勫悰銆?" [ref=e117]
+    - generic [ref=e119]: 鐐瑰嚮鎾斁
+    - heading "杩炴帴涓栫晫鐨勪笉鏄簰鑱旂綉锛岃€屾槸闆嗚绠?銆愬樊璇勫悰銆?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e121]:
+      - text: 杩炴帴涓栫晫鐨勪笉鏄簰鑱旂綉锛岃€屾槸闆嗚绠?銆愬樊璇勫悰銆?/h3>
+      - paragraph
+      - generic [ref=e122]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "銆愯胺姝屽湴鍥俱€戜腑鍥藉浣曠О闇稿叏鐞冭埅杩愬競鍦猴紵鎻涓浗鏋勫缓涓栫晫娓彛缃戠粶鐨勬晠浜媅20250118] 鐐瑰嚮鎾斁 銆愯胺姝屽湴鍥俱€戜腑鍥藉浣曠О闇稿叏鐞冭埅杩愬競鍦猴紵鎻涓浗鏋勫缓涓栫晫娓彛缃戠粶鐨勬晠浜媅20250118] 鍓嶅線 Bilibili 瑙傜湅" [ref=e123] [cursor=pointer]:
+    - generic [ref=e124]:
+      - img "銆愯胺姝屽湴鍥俱€戜腑鍥藉浣曠О闇稿叏鐞冭埅杩愬競鍦猴紵鎻涓浗鏋勫缓涓栫晫娓彛缃戠粶鐨勬晠浜媅20250118]" [ref=e125]
+      - generic [ref=e127]: 鐐瑰嚮鎾斁
+    - generic [ref=e128]:
+      - heading "銆愯胺姝屽湴鍥俱€戜腑鍥藉浣曠О闇稿叏鐞冭埅杩愬競鍦猴紵鎻涓浗鏋勫缓涓栫晫娓彛缃戠粶鐨勬晠浜媅20250118]" [level=3] [ref=e129]
+      - paragraph
+      - generic [ref=e130]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "濡傛灉瑕佺粍寤哄畬鏁寸殑鍐呮渤鑸繍绯荤粺锛屾垜鍥借繕闇€瑕佹墦閫氬摢浜涜繍娌筹紵 鐐瑰嚮鎾斁 濡傛灉瑕佺粍寤哄畬鏁寸殑鍐呮渤鑸繍绯荤粺锛屾垜鍥借繕闇€瑕佹墦閫氬摢浜涜繍娌筹紵 鍓嶅線 Bilibili 瑙傜湅" [ref=e131] [cursor=pointer]:
+    - generic [ref=e132]:
+      - img "濡傛灉瑕佺粍寤哄畬鏁寸殑鍐呮渤鑸繍绯荤粺锛屾垜鍥借繕闇€瑕佹墦閫氬摢浜涜繍娌筹紵" [ref=e133]
+      - generic [ref=e135]: 鐐瑰嚮鎾斁
+    - generic [ref=e136]:
+      - heading "濡傛灉瑕佺粍寤哄畬鏁寸殑鍐呮渤鑸繍绯荤粺锛屾垜鍥借繕闇€瑕佹墦閫氬摢浜涜繍娌筹紵" [level=3] [ref=e137]
+      - paragraph
+      - generic [ref=e138]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "涓栫晫鍏ぇ娴蜂笂閲嶈閫氶亾锛屾捣娲嬭繍杈撶殑鍜藉枆鎵€鍦紒鎵煎畧涓栫晫娴蜂笂鐢熷懡绾? 鐐瑰嚮鎾斁 涓栫晫鍏ぇ娴蜂笂閲嶈閫氶亾锛屾捣娲嬭繍杈撶殑鍜藉枆鎵€鍦紒鎵煎畧涓栫晫娴蜂笂鐢熷懡绾?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e139] [cursor=pointer]:
+    - img "涓栫晫鍏ぇ娴蜂笂閲嶈閫氶亾锛屾捣娲嬭繍杈撶殑鍜藉枆鎵€鍦紒鎵煎畧涓栫晫娴蜂笂鐢熷懡绾?" [ref=e140]
+    - generic [ref=e142]: 鐐瑰嚮鎾斁
+    - heading "涓栫晫鍏ぇ娴蜂笂閲嶈閫氶亾锛屾捣娲嬭繍杈撶殑鍜藉枆鎵€鍦紒鎵煎畧涓栫晫娴蜂笂鐢熷懡绾?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e144]:
+      - text: 涓栫晫鍏ぇ娴蜂笂閲嶈閫氶亾锛屾捣娲嬭繍杈撶殑鍜藉枆鎵€鍦紒鎵煎畧涓栫晫娴蜂笂鐢熷懡绾?/h3>
+      - paragraph
+      - generic [ref=e145]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "浣滀负涓栫晫涓婅埅杩愭渶绻佸繖鐨勫尯鍩燂紝 浠呬级浠冩磱涓昏埅閬?姣忓ぉ灏辨湁瓒呰繃4000鑹樿埞娆＄┛姊線鏉ャ€? 鐐瑰嚮鎾斁 浣滀负涓栫晫涓婅埅杩愭渶绻佸繖鐨勫尯鍩燂紝 浠呬级浠冩磱涓昏埅閬?姣忓ぉ灏辨湁瓒呰繃4000鑹樿埞娆＄┛姊線鏉ャ€?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e146] [cursor=pointer]:
+    - img "浣滀负涓栫晫涓婅埅杩愭渶绻佸繖鐨勫尯鍩燂紝 浠呬级浠冩磱涓昏埅閬?姣忓ぉ灏辨湁瓒呰繃4000鑹樿埞娆＄┛姊線鏉ャ€?" [ref=e147]
+    - generic [ref=e149]: 鐐瑰嚮鎾斁
+    - heading "浣滀负涓栫晫涓婅埅杩愭渶绻佸繖鐨勫尯鍩燂紝 浠呬级浠冩磱涓昏埅閬?姣忓ぉ灏辨湁瓒呰繃4000鑹樿埞娆＄┛姊線鏉ャ€?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e151]:
+      - text: 浣滀负涓栫晫涓婅埅杩愭渶绻佸繖鐨勫尯鍩燂紝 浠呬级浠冩磱涓昏埅閬?姣忓ぉ灏辨湁瓒呰繃4000鑹樿埞娆＄┛姊線鏉ャ€?/h3>
+      - paragraph
+      - generic [ref=e152]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "鈥滀竴鏉￠暱姹熲€濇姷寰椾笂鍏ㄥ浗閾佽矾锛佽浣庝及鐨勫唴娌宠埅杩愬埌搴曟湁澶氬己锛? 鐐瑰嚮鎾斁 鈥滀竴鏉￠暱姹熲€濇姷寰椾笂鍏ㄥ浗閾佽矾锛佽浣庝及鐨勫唴娌宠埅杩愬埌搴曟湁澶氬己锛?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e153] [cursor=pointer]:
+    - img "鈥滀竴鏉￠暱姹熲€濇姷寰椾笂鍏ㄥ浗閾佽矾锛佽浣庝及鐨勫唴娌宠埅杩愬埌搴曟湁澶氬己锛?" [ref=e154]
+    - generic [ref=e156]: 鐐瑰嚮鎾斁
+    - heading "鈥滀竴鏉￠暱姹熲€濇姷寰椾笂鍏ㄥ浗閾佽矾锛佽浣庝及鐨勫唴娌宠埅杩愬埌搴曟湁澶氬己锛?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e158]:
+      - text: 鈥滀竴鏉￠暱姹熲€濇姷寰椾笂鍏ㄥ浗閾佽矾锛佽浣庝及鐨勫唴娌宠埅杩愬埌搴曟湁澶氬己锛?/h3>
+      - paragraph
+      - generic [ref=e159]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "鎺㈢储鏈烘绉戞妧锛屽浣曞皢23,000涓泦瑁呯瑁呬笂鑸硅€屼笉璁╁畠浠帀鍏ユ捣涓? 鐐瑰嚮鎾斁 鎺㈢储鏈烘绉戞妧锛屽浣曞皢23,000涓泦瑁呯瑁呬笂鑸硅€屼笉璁╁畠浠帀鍏ユ捣涓?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e160] [cursor=pointer]:
+    - img "鎺㈢储鏈烘绉戞妧锛屽浣曞皢23,000涓泦瑁呯瑁呬笂鑸硅€屼笉璁╁畠浠帀鍏ユ捣涓?" [ref=e161]
+    - generic [ref=e163]: 鐐瑰嚮鎾斁
+    - heading "鎺㈢储鏈烘绉戞妧锛屽浣曞皢23,000涓泦瑁呯瑁呬笂鑸硅€屼笉璁╁畠浠帀鍏ユ捣涓?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e165]:
+      - text: 鎺㈢储鏈烘绉戞妧锛屽浣曞皢23,000涓泦瑁呯瑁呬笂鑸硅€屼笉璁╁畠浠帀鍏ユ捣涓?/h3>
+      - paragraph
+      - generic [ref=e166]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "涓浗杩愭渤vs娆ф床杩愭渤锛佸樊璺濓紝姝ｅ湪琚姽骞筹紒 鐐瑰嚮鎾斁 涓浗杩愭渤vs娆ф床杩愭渤锛佸樊璺濓紝姝ｅ湪琚姽骞筹紒 鍓嶅線 Bilibili 瑙傜湅" [ref=e167] [cursor=pointer]:
+    - generic [ref=e168]:
+      - img "涓浗杩愭渤vs娆ф床杩愭渤锛佸樊璺濓紝姝ｅ湪琚姽骞筹紒" [ref=e169]
+      - generic [ref=e171]: 鐐瑰嚮鎾斁
+    - generic [ref=e172]:
+      - heading "涓浗杩愭渤vs娆ф床杩愭渤锛佸樊璺濓紝姝ｅ湪琚姽骞筹紒" [level=3] [ref=e173]
+      - paragraph
+      - generic [ref=e174]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "璐т唬鎵捐埞浠ｏ紝鑸逛唬鎵捐埞鍙革紵 鎻娴疯繍浜т笟閾剧殑鍒嗗伐鍚堜綔 鐐瑰嚮鎾斁 璐т唬鎵捐埞浠ｏ紝鑸逛唬鎵捐埞鍙革紵 鎻娴疯繍浜т笟閾剧殑鍒嗗伐鍚堜綔 鍓嶅線 Bilibili 瑙傜湅" [ref=e175] [cursor=pointer]:
+    - generic [ref=e176]:
+      - img "璐т唬鎵捐埞浠ｏ紝鑸逛唬鎵捐埞鍙革紵 鎻娴疯繍浜т笟閾剧殑鍒嗗伐鍚堜綔" [ref=e177]
+      - generic [ref=e179]: 鐐瑰嚮鎾斁
+    - generic [ref=e180]:
+      - heading "璐т唬鎵捐埞浠ｏ紝鑸逛唬鎵捐埞鍙革紵 鎻娴疯繍浜т笟閾剧殑鍒嗗伐鍚堜綔" [level=3] [ref=e181]
+      - paragraph
+      - generic [ref=e182]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "銆愭墍闀块€熻銆戞捣鍗楃湡鏈夋柊鏈洪亣锛燂紵銆屼汉姘戞棩鎶ッ楁墍闀挎灄瓒呫€嶈仈鍚堝嚭鍝? 鐐瑰嚮鎾斁 銆愭墍闀块€熻銆戞捣鍗楃湡鏈夋柊鏈洪亣锛燂紵銆屼汉姘戞棩鎶ッ楁墍闀挎灄瓒呫€嶈仈鍚堝嚭鍝?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e183] [cursor=pointer]:
+    - img "銆愭墍闀块€熻銆戞捣鍗楃湡鏈夋柊鏈洪亣锛燂紵銆屼汉姘戞棩鎶ッ楁墍闀挎灄瓒呫€嶈仈鍚堝嚭鍝?" [ref=e184]
+    - generic [ref=e186]: 鐐瑰嚮鎾斁
+    - heading "銆愭墍闀块€熻銆戞捣鍗楃湡鏈夋柊鏈洪亣锛燂紵銆屼汉姘戞棩鎶ッ楁墍闀挎灄瓒呫€嶈仈鍚堝嚭鍝?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e188]:
+      - text: 銆愭墍闀块€熻銆戞捣鍗楃湡鏈夋柊鏈洪亣锛燂紵銆屼汉姘戞棩鎶ッ楁墍闀挎灄瓒呫€嶈仈鍚堝嚭鍝?/h3>
+      - paragraph
+      - generic [ref=e189]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "浣犱互涓虹殑娴峰崡涓嶆浜庢#2025#鐪熸鐨勬捣鍗?娴峰崡鑷锤娓渶鏂板浼犵墖 鐐瑰嚮鎾斁 浣犱互涓虹殑娴峰崡涓嶆浜庢#2025#鐪熸鐨勬捣鍗?娴峰崡鑷锤娓渶鏂板浼犵墖 鍓嶅線 Bilibili 瑙傜湅" [ref=e190] [cursor=pointer]:
+    - generic [ref=e191]:
+      - img "浣犱互涓虹殑娴峰崡涓嶆浜庢#2025#鐪熸鐨勬捣鍗?娴峰崡鑷锤娓渶鏂板浼犵墖" [ref=e192]
+      - generic [ref=e194]: 鐐瑰嚮鎾斁
+    - generic [ref=e195]:
+      - heading "浣犱互涓虹殑娴峰崡涓嶆浜庢#2025#鐪熸鐨勬捣鍗?娴峰崡鑷锤娓渶鏂板浼犵墖" [level=3] [ref=e196]
+      - paragraph
+      - generic [ref=e197]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "璇惧墠涓夊垎閽燂紝鍦扮悊涓嶇敤鎰佲€斺€斺€滄捣鍗楀皝鍏斥€?鑷锤娓柊鏈洪亣銆愮湅绾綍鐗囧鍦扮悊銆? 鐐瑰嚮鎾斁 璇惧墠涓夊垎閽燂紝鍦扮悊涓嶇敤鎰佲€斺€斺€滄捣鍗楀皝鍏斥€?鑷锤娓柊鏈洪亣銆愮湅绾綍鐗囧鍦扮悊銆?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e198] [cursor=pointer]:
+    - img "璇惧墠涓夊垎閽燂紝鍦扮悊涓嶇敤鎰佲€斺€斺€滄捣鍗楀皝鍏斥€?鑷锤娓柊鏈洪亣銆愮湅绾綍鐗囧鍦扮悊銆?" [ref=e199]
+    - generic [ref=e201]: 鐐瑰嚮鎾斁
+    - heading "璇惧墠涓夊垎閽燂紝鍦扮悊涓嶇敤鎰佲€斺€斺€滄捣鍗楀皝鍏斥€?鑷锤娓柊鏈洪亣銆愮湅绾綍鐗囧鍦扮悊銆?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e203]:
+      - text: 璇惧墠涓夊垎閽燂紝鍦扮悊涓嶇敤鎰佲€斺€斺€滄捣鍗楀皝鍏斥€?鑷锤娓柊鏈洪亣銆愮湅绾綍鐗囧鍦扮悊銆?/h3>
+      - paragraph
+      - generic [ref=e204]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "銆婃捣鍗楄嚜鐢辫锤鏄撴腐寤鸿鎬讳綋鏂规銆嬪浗鍔￠櫌鏂伴椈鍔?020.6鍙戝竷 鐐瑰嚮鎾斁 銆婃捣鍗楄嚜鐢辫锤鏄撴腐寤鸿鎬讳綋鏂规銆嬪浗鍔￠櫌鏂伴椈鍔?020.6鍙戝竷 鍓嶅線 Bilibili 瑙傜湅" [ref=e205] [cursor=pointer]:
+    - generic [ref=e206]:
+      - img "銆婃捣鍗楄嚜鐢辫锤鏄撴腐寤鸿鎬讳綋鏂规銆嬪浗鍔￠櫌鏂伴椈鍔?020.6鍙戝竷" [ref=e207]
+      - generic [ref=e209]: 鐐瑰嚮鎾斁
+    - generic [ref=e210]:
+      - heading "銆婃捣鍗楄嚜鐢辫锤鏄撴腐寤鸿鎬讳綋鏂规銆嬪浗鍔￠櫌鏂伴椈鍔?020.6鍙戝竷" [level=3] [ref=e211]
+      - paragraph
+      - generic [ref=e212]: 鍓嶅線 Bilibili 瑙傜湅
+  - button "榛勫甯嗘捣鍗楄嚜璐稿尯婕旇锛氣€滆嚜璐告腐寤鸿涓庨噾铻嶉珮璐ㄩ噺鍙戝睍璺緞鎬濊€冣€? 鐐瑰嚮鎾斁 榛勫甯嗘捣鍗楄嚜璐稿尯婕旇锛氣€滆嚜璐告腐寤鸿涓庨噾铻嶉珮璐ㄩ噺鍙戝睍璺緞鎬濊€冣€?/h3> 鍓嶅線 Bilibili 瑙傜湅" [ref=e213] [cursor=pointer]:
+    - img "榛勫甯嗘捣鍗楄嚜璐稿尯婕旇锛氣€滆嚜璐告腐寤鸿涓庨噾铻嶉珮璐ㄩ噺鍙戝睍璺緞鎬濊€冣€?" [ref=e214]
+    - generic [ref=e216]: 鐐瑰嚮鎾斁
+    - heading "榛勫甯嗘捣鍗楄嚜璐稿尯婕旇锛氣€滆嚜璐告腐寤鸿涓庨噾铻嶉珮璐ㄩ噺鍙戝睍璺緞鎬濊€冣€?/h3> 鍓嶅線 Bilibili 瑙傜湅" [level=3] [ref=e218]:
+      - text: 榛勫甯嗘捣鍗楄嚜璐稿尯婕旇锛氣€滆嚜璐告腐寤鸿涓庨噾铻嶉珮璐ㄩ噺鍙戝睍璺緞鎬濊€冣€?/h3>
+      - paragraph
+      - generic [ref=e219]: 鍓嶅線 Bilibili 瑙傜湅
+  - generic [ref=e221]:
+    - generic [ref=e222]:
+      - paragraph [ref=e223]: 鑳藉姏鍥捐氨銆侀棶棰樺浘璋?/p>
+      - heading "娓彛鐗╂祦 璇剧▼鑳藉姏鍥捐氨涓庨棶棰樺浘璋遍€熻" [level=2] [ref=e224]
+      - paragraph [ref=e225]: 涓€閿墦寮€銆婅兘鍔涘浘璋便€侀棶棰樺浘璋便€嬪彲瑙嗗寲锛屽揩閫熶簡瑙ｈ绋嬭兘鍔涚粨鏋勪笌鍩瑰吇璺緞銆?/p>
+    - link "鎵撳紑鑳藉姏鍥捐氨涓庨棶棰樺浘璋?" [ref=e226] [cursor=pointer]:
+      - /url: 鑳藉姏鍥捐氨/index.html
+      - text: 鎵撳紑鑳藉姏鍥捐氨涓庨棶棰樺浘璋?
+      - img [ref=e227]
+  - generic [ref=e230]:
+    - generic [ref=e231]:
+      - paragraph [ref=e232]: 鐭ヨ瘑鍥捐氨
+      - heading "浠庢腐鍙ｈ妭鐐瑰埌鍏ㄧ悆渚涘簲閾?/h2> 鏈绋嬩互娓彛涓烘牳蹇冿紝姊崇悊鑸繍銆侀檰渚ч泦鐤忚繍銆佷粨鍌ㄤ笌鎶ュ叧鐨勭煡璇嗕綋绯伙紝閰嶅悎鏁版嵁椹卞姩鐨勫垎鏋愬伐鍏凤紝甯姪瀛︾敓寤虹珛绯荤粺鍖栫殑璁ょ煡缁撴瀯銆?/p> 绔犺妭 1 绔犺妭 2 绔犺妭 3 绔犺妭 4 绔犺妭 5 绔犺妭 6 绔犺妭 7 绔犺妭 9 绔犺妭 10 绔犺妭 12 瀵艰埅椤?/a> 鏀惧皠鐘舵蹇靛眰绾у浘 鐐瑰嚮鏌ョ湅" [level=2] [ref=e233]:
+        - text: 浠庢腐鍙ｈ妭鐐瑰埌鍏ㄧ悆渚涘簲閾?/h2>
+        - paragraph [ref=e234]: 鏈绋嬩互娓彛涓烘牳蹇冿紝姊崇悊鑸繍銆侀檰渚ч泦鐤忚繍銆佷粨鍌ㄤ笌鎶ュ叧鐨勭煡璇嗕綋绯伙紝閰嶅悎鏁版嵁椹卞姩鐨勫垎鏋愬伐鍏凤紝甯姪瀛︾敓寤虹珛绯荤粺鍖栫殑璁ょ煡缁撴瀯銆?/p>
+        - generic [ref=e235]:
+          - link "绔犺妭 1" [ref=e236] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘/ch1.html
+          - link "绔犺妭 2" [ref=e237] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘/ch2.html
+          - link "绔犺妭 3" [ref=e238] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘/ch3.html
+          - link "绔犺妭 4" [ref=e239] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘/ch4.html
+          - link "绔犺妭 5" [ref=e240] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘/ch5.html
+          - link "绔犺妭 6" [ref=e241] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘/ch6.html
+          - link "绔犺妭 7" [ref=e242] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘/ch7.html
+          - link "绔犺妭 9" [ref=e243] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘/ch9.html
+          - link "绔犺妭 10" [ref=e244] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘/ch10.html
+          - link "绔犺妭 12" [ref=e245] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘/ch12.html
+          - link "瀵艰埅椤?/a>" [ref=e246] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘/menu.html
+        - link [ref=e247] [cursor=pointer]:
+          - /url: 鎬濈淮瀵煎浘/menu.html
+        - generic [ref=e248]:
+          - link [ref=e249] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘/menu.html
+          - link "鏀惧皠鐘舵蹇靛眰绾у浘 鐐瑰嚮鏌ョ湅" [ref=e250] [cursor=pointer]:
+            - /url: 鎬濈淮瀵煎浘2/index.html
+            - generic [ref=e251]: 鏀惧皠鐘舵蹇靛眰绾у浘
+            - generic [ref=e252]: 鐐瑰嚮鏌ョ湅
+    - iframe [ref=e255]: "<div class=\"grid gap-8 xl:grid-cols-[1.45fr_0.95fr] items-start\"> <div class=\"space-y-6\"> <div class=\"flex items-center justify-between gap-4\"> <div> <p class=\"text-sm font-semibold text-ocean-mid uppercase tracking-wide\">琛屼笟鏂伴椈</p> <h2 class=\"text-2xl md:text-3xl font-bold text-ocean-deep\">娓彛鐗╂祦 路 鏈€鏂拌瀵?/h2> </div> <a href=\"#\" class=\"hidden sm:inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep\">璁㈤槄鍛ㄦ姤</a> </div> <div class=\"space-y-4\"> <article class=\"p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition\"> <span class=\"text-xs font-semibold text-ocean-mid\">2025-10-31</span> <h3 class=\"text-lg font-semibold text-ocean-deep\"><a href=\"news/news20251031.html\" class=\"hover:text-ocean-mid\">2025骞?-9鏈堟腐鍙ｈ揣鐗┿€侀泦瑁呯鍚炲悙閲忓彂甯?/a></h3> <p class=\"text-sm text-slate-700\">浜ら€氳繍杈撻儴缁煎悎瑙勫垝鍙稿彂甯?1-9 鏈堟腐鍙ｈ揣鐗╀笌闆嗚绠卞悶鍚愰噺闃舵鏁版嵁锛岄檮鍥捐〃銆?/p> </article> <article class=\"p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition\"> <span class=\"text-xs font-semibold text-ocean-mid\">2025-11-25</span> <h3 class=\"text-lg font-semibold text-ocean-deep\"><a href=\"news/news20251125.html\" class=\"hover:text-ocean-mid\">娲嬫郸娓斂绛栧垱鏂伴┍鍔ㄨ埅杩愭灑绾藉礇璧?/a></h3> <p class=\"text-sm text-slate-700\">浜ら€氳繍杈撻儴鍙戝竷娲嬫郸娓斂绛栦笌鑸嚎缃戠粶杩涘睍锛岀獊鍑鸿嚜璐告腐鍙ｅ哺寮€鏀句笌鏋㈢航鑳界骇鎻愬崌銆?/p> </article> <article class=\"p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition\"> <span class=\"text-xs font-semibold text-ocean-mid\">2025-11-10</span> <h3 class=\"text-lg font-semibold text-ocean-deep\"><a href=\"news/news20251110.html\" class=\"hover:text-ocean-mid\">闆悆鏂囩珷锛?024骞村叏鐞僒OP30闆嗚绠辨腐鍙?/a></h3> <p class=\"text-sm text-slate-700\">闆悆骞冲彴鍙戝竷鐨勮涓氳鐐逛笌甯傚満瑙傚療锛屽缓璁墠寰€鍘熸枃鏌ョ湅瀹屾暣鍐呭銆?/p> </article> <article class=\"p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition\"> <span class=\"text-xs font-semibold text-ocean-mid\">2023-12-06</span> <h3 class=\"text-lg font-semibold text-ocean-deep\"><a href=\"news/news20231206.html\" class=\"hover:text-ocean-mid\">銆婂叧浜庡姞蹇櫤鎱ф腐鍙ｅ拰鏅烘収鑸亾寤鸿鐨勬剰瑙併€嬭В璇?/a></h3> <p class=\"text-sm text-slate-700\">姘磋繍灞€瀵规櫤鎱ф腐鍙ｅ拰鏅烘収鑸亾寤鸿鎰忚杩涜鏀跨瓥瑙ｈ锛屾槑纭换鍔′笌瀹炴柦瑕佺偣銆?/p> </article> <article class=\"p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition\"> <span class=\"text-xs font-semibold text-ocean-mid\">2025-11-07</span> <h3 class=\"text-lg font-semibold text-ocean-deep\"><a href=\"news/news20251107.html\" class=\"hover:text-ocean-mid\">娴峰彛娴峰叧鍙戝竷鑷锤娓揣鐗╃◣鏀跺緛绠″叕鍛?/a></h3> <p class=\"text-sm text-slate-700\">娴峰彛娴峰叧鍏竷涓€绾裤€佷簩绾垮強宀涘唴娴侀€氳揣鐗╃◣鏀跺緛绠″姙娉曪紝涓烘捣鍗楄嚜璐告腐璐х墿娴佽浆鎻愪緵鎸囧紩銆?/p> </article> <article class=\"p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition\"> <span class=\"text-xs font-semibold text-ocean-mid\">2024-04-16</span> <h3 class=\"text-lg font-semibold text-ocean-deep\"><a href=\"news/news20240416.html\" class=\"hover:text-ocean-mid\">2023骞村叏鍥芥腐鍙ｈ揣鐗┿€侀泦瑁呯鍚炲悙閲?/a></h3> <p class=\"text-sm text-slate-700\">瀹樻柟鍏竷 2023 骞存腐鍙ｈ揣鐗╀笌闆嗚绠卞悶鍚愰噺骞村害鏁版嵁锛屾彁渚?PDF 涓庡浘琛ㄣ€?/p> </article> <article class=\"p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition\"> <span class=\"text-xs font-semibold text-ocean-mid\">2023-01-30</span> <h3 class=\"text-lg font-semibold text-ocean-deep\"><a href=\"news/news20230130.html\" class=\"hover:text-ocean-mid\">2022骞?2鏈堝叏鍥芥腐鍙ｈ揣鐗┿€侀泦瑁呯鍚炲悙閲?/a></h3> <p class=\"text-sm text-slate-700\">12 鏈堝叏鍥芥腐鍙ｈ揣鐗╀笌闆嗚绠卞悶鍚愰噺鏁版嵁鍙戝竷锛岄檮 PDF 涓庡浘琛ㄣ€?/p> </article> <article class=\"p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition\"> <span class=\"text-xs font-semibold text-ocean-mid\">2025-03-26</span> <h3 class=\"text-lg font-semibold text-ocean-deep\"><a href=\"news/news20250326.html\" class=\"hover:text-ocean-mid\">2024骞存腐鍙ｈ揣鐗┿€侀泦瑁呯鍚炲悙閲忓彂甯?/a></h3> <p class=\"text-sm text-slate-700\">浜ら€氳繍杈撻儴缁煎悎瑙勫垝鍙稿彂甯?2024 骞村叏鍥芥腐鍙ｈ揣鐗╀笌闆嗚绠卞悶鍚愰噺骞村害鏁版嵁锛岄檮瀹樻柟鍥捐〃涓?PDF 涓嬭浇銆?/p> </article> <article class=\"p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition\"> <span class=\"text-xs font-semibold text-ocean-mid\">2024-05-12</span> <h3 class=\"text-lg font-semibold text-ocean-deep\">鏌愬浗闄呮腐鍙ｄ笂绾挎柊鑳芥簮璁惧锛屽爢鍦虹⒊鎺掍笅闄?5%</h3> <p class=\"text-sm text-slate-700\">閫氳繃宀哥數銆佹阿鐕冩枡闆嗗崱鍜屾櫤鑳借皟搴︾郴缁燂紝瀹炵幇缁胯壊杩愯惀鐨勫彲閲忓寲鏀剁泭銆?/p> </article> <article class=\"p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition\"> <span class=\"text-xs font-semibold text-ocean-mid\">2024-05-05</span> <h3 class=\"text-lg font-semibold text-ocean-deep\">鐝疆鍏徃璋冩暣浜氭鑸嚎锛岃埍浣嶇揣寮犱績浣挎腐鍙ｄ紭鍖栬鍗告晥鐜?/h3> <p class=\"text-sm text-slate-700\">娓彛閫氳繃鍔ㄦ€佸爢鍦鸿鍒掍笌鏈哄櫒瑙嗚浣滀笟寮曞锛屾彁鍗囨ˉ鍚婃晥鐜囦互搴斿娉㈠姩銆?/p> </article> <article class=\"p-4 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col gap-1 hover:-translate-y-0.5 transition\"> <span class=\"text-xs font-semibold text-ocean-mid\">2024-04-28</span> <h3 class=\"text-lg font-semibold text-ocean-deep\">澶氬紡鑱旇繍绀鸿寖椤圭洰钀藉湴锛岄搧璺泦瑁呯涓績绔欎笌娓彛鑱斿姩</h3> <p class=\"text-sm text-slate-700\">閫氳繃鐢靛瓙鎻愬崟涓庡疄鏃惰建杩瑰叡浜紝娴烽搧鑱旇繍鏁堢巼鏄捐憲鎻愬崌锛屽懆杞椂闂寸缉鐭€?/p> </article> </div> </div> <div class=\"space-y-6 xl:sticky xl:top-24\"> <div> <p class=\"text-sm font-semibold text-ocean-mid uppercase tracking-wide\">闅忕瑪璁板綍</p> <h2 class=\"text-2xl md:text-3xl font-bold text-ocean-deep\">璇剧▼鎬濊€?路 闅忕瑪瑙傚療</h2> </div> <article class=\"rounded-2xl border border-ocean-mid/15 bg-gradient-to-br from-white via-slate-50 to-ocean-light/25 shadow-sm overflow-hidden\"> <div class=\"p-6 space-y-4\"> <span class=\"inline-flex items-center rounded-full bg-ocean-deep px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white\">璇剧▼闅忕瑪</span> <h3 class=\"text-xl md:text-2xl font-bold text-ocean-deep leading-snug\"><a href=\"notes/hainan-yangpu.html\" class=\"hover:text-ocean-mid\">娴峰崡鑷敱璐告槗娓儗鏅笅鐨勬磱娴︽腐鍙戝睍</a></h3> <p class=\"text-sm text-slate-700 leading-relaxed\">浠庤嚜鐢辫锤鏄撴腐鍒跺害銆佹腐浜ц仈鍔ㄤ笌鍔熻兘鍗囩骇涓変釜缁村害锛岃璁烘磱娴︽腐濡備綍浠庝紶缁熻繍杈撹妭鐐硅蛋鍚戝紑鏀惧钩鍙颁笌浜т笟骞冲彴銆?/p> <a href=\"notes/hainan-yangpu.html\" class=\"inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ocean-deep text-white font-semibold shadow hover:bg-ocean-mid transition\"> 闃呰鍏ㄦ枃 <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-5 w-5\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"M9 5l7 7-7 7\" /> </svg> </a> </div> </article> </div> </div> </section> <section id=\"exercises\" class=\"bg-slate-50\"> <div class=\"max-w-6xl mx-auto px-4 py-16 space-y-6\"> <div class=\"flex items-center justify-between gap-4\"> <div> <p class=\"text-sm font-semibold text-ocean-mid uppercase tracking-wide\">涔犻闆?/p> <h2 class=\"text-2xl md:text-3xl font-bold text-ocean-deep\">娓彛鐗╂祦 路 缁煎悎缁冧範</h2> <p class=\"text-sm text-slate-700 mt-1\">鐩存帴鐐瑰嚮瀵瑰簲缁冧範鍗冲彲寮€濮嬨€?/p> </div> <a href=\"practice/all-single-choice.html\" class=\"hidden sm:inline-flex text-sm font-semibold text-ocean-mid hover:text-ocean-deep\">鎵撳紑缁冧範</a> </div> <div class=\"grid gap-6 md:grid-cols-2 lg:grid-cols-3\"> <div class=\"bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2\"> <h3 class=\"font-semibold text-ocean-deep\">鍗曢€夐锛堢患鍚堬級</h3> <p class=\"text-sm text-slate-700\">瑕嗙洊鏍稿績姒傚康涓庡熀纭€鐭ヨ瘑锛岃嚜鍔ㄩ殢鏈哄嚭棰樸€?/p> <a href=\"practice/all-single-choice.html\" class=\"inline-block mt-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep\">寮€濮嬬粌涔?/a> </div> <div class=\"bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2\"> <h3 class=\"font-semibold text-ocean-deep\">澶氶€夐锛堢患鍚堬級</h3> <p class=\"text-sm text-slate-700\">鑰冨療澶氱淮搴︾悊瑙ｄ笌鍦烘櫙搴旂敤锛屽惈鍏抽敭鏈杈ㄦ瀽銆?/p> <a href=\"practice/all-multiple-choice.html\" class=\"inline-block mt-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep\">寮€濮嬬粌涔?/a> </div> <div class=\"bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2\"> <h3 class=\"font-semibold text-ocean-deep\">濉┖棰橈紙鐭ヨ瘑鐐瑰洖椤撅級</h3> <p class=\"text-sm text-slate-700\">鍏抽敭姒傚康涓庡叕寮忛€熻锛屽己鍖栬蹇嗕笌鐞嗚В銆?/p> <a href=\"practice/all-fill-in.html\" class=\"inline-block mt-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep\">寮€濮嬬粌涔?/a> </div> <div class=\"bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2\"> <h3 class=\"font-semibold text-ocean-deep\">鍒ゆ柇棰橈紙蹇€熻嚜娴嬶級</h3> <p class=\"text-sm text-slate-700\">蹇€熸楠岀悊瑙ｏ紝閫傚悎璇惧墠/璇惧悗鑷祴銆?/p> <a href=\"practice/all-true-false.html\" class=\"inline-block mt-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep\">寮€濮嬬粌涔?/a> </div> <div class=\"bg-white border border-slate-100 rounded-xl shadow-sm p-4 space-y-2\"> <h3 class=\"font-semibold text-ocean-deep\">绠€绛旈锛堟渚嬫€濊€冿級</h3> <p class=\"text-sm text-slate-700\">鍥寸粫娓彛杩愯惀涓庢渚嬪垎鏋愮殑寮€鏀鹃棶绛旓紝璁粌琛ㄨ揪涓庢€濊鲸銆?/p> <a href=\"practice/all-short-answer.html\" class=\"inline-block mt-2 text-sm font-semibold text-ocean-mid hover:text-ocean-deep\">寮€濮嬬粌涔?/a> </div> </div> </div> </section> </main> <footer class=\"bg-ocean-deep text-white\"> <div class=\"max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6\"> <div class=\"space-y-2\"> <h3 class=\"text-lg font-semibold\">娓彛鐗╂祦璇剧▼</h3> <p class=\"text-sm text-slate-100/80\">鑱氱劍娓彛涓庝緵搴旈摼鐨勬暀瀛︿笌琛屼笟璧勮銆?/p> </div> <div class=\"space-y-2 text-sm\"> <p class=\"font-semibold text-ocean-light\">鑱旂郴鏂瑰紡</p> <p>鎺堣鑰佸笀锛氭潕鑰佸笀</p> <p>閭锛歩nstructor@example.edu</p> <p>鍔炲叕鏃堕棿锛氬懆涓?14:00 - 16:00</p> </div> <div class=\"space-y-2 text-sm\"> <p class=\"font-semibold text-ocean-light\">寮曠敤璇存槑</p> <p>鏁版嵁鏉ユ簮锛氳绋嬩笌鍏紑璧勬枡锛屼粎渚涙暀瀛﹀弬鑰冦€?/p> <p>漏 2024 娓彛鐗╂祦璇剧▼. 淇濈暀鎵€鏈夋潈鍒┿€?/p> </div> </div> </footer> <script> (() => { const cards = Array.from(document.querySelectorAll('.js-video-card')); const modal = document.getElementById('video-modal'); const player = document.getElementById('modal-player'); const titleEl = document.getElementById('modal-title'); const closeBtn = document.getElementById('close-modal'); const toggleMicroVideosBtn = document.getElementById('toggle-micro-videos'); const toggleMicroVideosLabelEl = document.getElementById('toggle-micro-videos-label'); const videosSummaryEl = document.getElementById('videos-summary'); const microVideosStatusEl = document.getElementById('micro-videos-status'); const microVideosPillEl = document.getElementById('micro-videos-pill'); const defaultTitle = '鏁欏瑙嗛'; const microVideoPattern = /^\\d/; const microCards = cards.filter(card => microVideoPattern.test((card.dataset.title || '').trim())); const collapsedButtonClasses = ['bg-white', 'text-ocean-deep', 'hover:bg-slate-50']; const expandedButtonClasses = ['bg-ocean-deep/25', 'text-white', 'ring-1', 'ring-white/35', 'hover:bg-ocean-deep/35']; let showMicroVideos = false; const syncToggleButtonState = () => { if (!toggleMicroVideosBtn) return; toggleMicroVideosBtn.classList.remove(...collapsedButtonClasses, ...expandedButtonClasses); toggleMicroVideosBtn.classList.add(...(showMicroVideos ? expandedButtonClasses : collapsedButtonClasses)); toggleMicroVideosBtn.setAttribute('aria-expanded', showMicroVideos ? 'true' : 'false'); if (toggleMicroVideosLabelEl) { toggleMicroVideosLabelEl.textContent = showMicroVideos ? '闅愯棌璇剧▼寰棰? : '灞曞紑璇剧▼寰棰?; } }; const syncMicroVideoVisibility = () => { const visibleCount = showMicroVideos ? cards.length : cards.length - microCards.length; microCards.forEach(card => { card.hidden = !showMicroVideos; }); if (videosSummaryEl) { videosSummaryEl.textContent = `褰撳墠灞曠ず ${visibleCount} / ${cards.length} 涓棰慲; } if (microVideosPillEl) { microVideosPillEl.textContent = microCards.length ? (showMicroVideos ? `宸插睍寮€ ${microCards.length} 涓井瑙嗛` : `榛樿闅愯棌 ${microCards.length} 涓井瑙嗛`) : '鏈瘑鍒埌璇剧▼寰棰?; } if (!toggleMicroVideosBtn) return; if (!microCards.length) { toggleMicroVideosBtn.hidden = true; if (microVideosStatusEl) microVideosStatusEl.textContent = '褰撳墠娌℃湁闇€瑕佹姌鍙犵殑璇剧▼寰棰?; return; } toggleMicroVideosBtn.hidden = false; syncToggleButtonState(); if (microVideosStatusEl) { microVideosStatusEl.textContent = showMicroVideos ? '绔犺妭寰棰戝凡鍏ㄩ儴灞曞紑锛屼富椤垫鍦ㄦ樉绀哄畬鏁磋绋嬭棰戝垪琛ㄣ€? : ''; } }; const openModal = (bvid, title) => { if (!bvid) return; const src = `https://player.bilibili.com/player.html?bvid=${encodeURIComponent(bvid)}&page=1&autoplay=1`; player.src = src; titleEl.textContent = title && title.trim() ? title : defaultTitle; modal.classList.remove('hidden'); modal.classList.add('flex'); }; const closeModal = () => { player.src = ''; modal.classList.add('hidden'); modal.classList.remove('flex'); }; syncMicroVideoVisibility(); toggleMicroVideosBtn?.addEventListener('click', () => { showMicroVideos = !showMicroVideos; syncMicroVideoVisibility(); }); cards.forEach(card => { card.addEventListener('click', () => { const bvid = card.dataset.bvid; const title = card.dataset.title; openModal(bvid, title); }); }); closeBtn?.addEventListener('click', closeModal); modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); }); window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal(); }); })(); </script> <script type=\"module\" src=\"assets/js/index-account-menu.js\"></script> </body> </html>"

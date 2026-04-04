@@ -1,0 +1,415 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function hasProfile() {
+      return signedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function me() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() {
+      return hasProfile() && me().role == 'admin';
+    }
+
+    function isTeacher() {
+      return hasProfile() && (me().role == 'teacher' || me().role == 'admin');
+    }
+
+    function isStudent() {
+      return hasProfile() && me().role == 'student';
+    }
+
+    function owns(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function managesClass(classId) {
+      return isAdmin() || (isTeacher() && classId in me().assignedClassIds);
+    }
+
+    function teacherCanWriteClasses(classIds) {
+      return isAdmin()
+        || (isTeacher()
+          && classIds is list
+          && classIds.size() > 0
+          && classIds.hasOnly(me().assignedClassIds));
+    }
+
+    function assignmentVisibleForStudent(data) {
+      return isStudent()
+        && data.visibility in ['published', 'closed']
+        && me().classId != null
+        && me().classId in data.targetClassIds;
+    }
+
+    function assignmentRef(assignmentId) {
+      return /databases/$(database)/documents/courses/PORT-LOG/assignments/$(assignmentId);
+    }
+
+    function assignmentExists(assignmentId) {
+      return exists(assignmentRef(assignmentId));
+    }
+
+    function assignmentData(assignmentId) {
+      return get(assignmentRef(assignmentId)).data;
+    }
+
+    function assignmentAcceptingDrafts(assignmentId) {
+      return assignmentExists(assignmentId)
+        && assignmentData(assignmentId).visibility == 'published'
+        && assignmentVisibleForStudent(assignmentData(assignmentId))
+        && (!('startAt' in assignmentData(assignmentId)) || assignmentData(assignmentId).startAt == null || assignmentData(assignmentId).startAt <= request.time)
+        && (!('dueAt' in assignmentData(assignmentId)) || assignmentData(assignmentId).dueAt == null || assignmentData(assignmentId).dueAt >= request.time);
+    }
+
+    function validStudentProfileCreate(uid) {
+      return owns(uid)
+        && request.resource.data.keys().hasOnly([
+          'role',
+          'name',
+          'email',
+          'emailVerified',
+          'studentNo',
+          'classId',
+          'assignedClassIds',
+          'status',
+          'createdAt',
+          'updatedAt',
+          'lastLoginAt'
+        ])
+        && request.resource.data.role == 'student'
+        && request.resource.data.name is string
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.emailVerified == request.auth.token.email_verified
+        && request.resource.data.studentNo == null
+        && request.resource.data.classId == null
+        && request.resource.data.assignedClassIds is list
+        && request.resource.data.assignedClassIds.size() == 0
+        && request.resource.data.status == 'active'
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.lastLoginAt == null;
+    }
+
+    function validStudentProfileUpdate(uid) {
+      return owns(uid)
+        && resource.data.role == 'student'
+        && request.resource.data.role == 'student'
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.emailVerified == resource.data.emailVerified
+        && request.resource.data.status == resource.data.status
+        && request.resource.data.assignedClassIds == resource.data.assignedClassIds
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.lastLoginAt == resource.data.lastLoginAt
+        && request.resource.data.name is string
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly(['name', 'studentNo', 'classId', 'updatedAt'])
+        && (
+          (
+            resource.data.studentNo == null
+            && resource.data.classId == null
+            && request.resource.data.studentNo is string
+            && request.resource.data.studentNo.size() > 0
+            && request.resource.data.classId is string
+            && request.resource.data.classId.size() > 0
+          )
+          || (
+            request.resource.data.studentNo == resource.data.studentNo
+            && request.resource.data.classId == resource.data.classId
+          )
+        );
+    }
+
+    function validAdminUserUpdate() {
+      return isAdmin()
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly([
+          'role',
+          'name',
+          'studentNo',
+          'classId',
+          'assignedClassIds',
+          'status',
+          'updatedAt'
+        ])
+        && request.resource.data.role in ['student', 'teacher', 'admin']
+        && request.resource.data.name is string
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.emailVerified == resource.data.emailVerified
+        && (request.resource.data.studentNo == null || request.resource.data.studentNo is string)
+        && (request.resource.data.classId == null || request.resource.data.classId is string)
+        && request.resource.data.assignedClassIds is list
+        && request.resource.data.status in ['active', 'disabled']
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.lastLoginAt == resource.data.lastLoginAt
+        && request.resource.data.updatedAt == request.time
+        && (
+          request.resource.data.role == 'student'
+          || (
+            request.resource.data.studentNo == null
+            && request.resource.data.classId == null
+          )
+        )
+        && (
+          request.resource.data.role == 'teacher'
+          || request.resource.data.assignedClassIds.size() == 0
+        );
+    }
+
+    function attemptRef(attemptId) {
+      return /databases/$(database)/documents/courses/PORT-LOG/attempts/$(attemptId);
+    }
+
+    function attemptData(attemptId) {
+      return get(attemptRef(attemptId)).data;
+    }
+
+    function attemptExists(attemptId) {
+      return exists(attemptRef(attemptId));
+    }
+
+    match /users/{uid} {
+      allow create: if validStudentProfileCreate(uid);
+      allow read: if isAdmin()
+        || owns(uid)
+        || (isTeacher() && resource.data.classId != null && managesClass(resource.data.classId));
+      allow update: if validStudentProfileUpdate(uid) || validAdminUserUpdate();
+      allow delete: if false;
+    }
+
+    match /courses/PORT-LOG {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /courses/PORT-LOG/classes/{classId} {
+      allow read: if isAdmin()
+        || managesClass(classId)
+        || (isStudent() && me().classId == classId);
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /courses/PORT-LOG/student_no_index/{studentNo} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /courses/PORT-LOG/question_items/{questionId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isTeacher();
+    }
+
+    match /courses/PORT-LOG/question_keys/{questionId} {
+      allow read, create, update, delete: if isTeacher();
+    }
+
+    match /courses/PORT-LOG/assignments/{assignmentId} {
+      allow read: if isAdmin()
+        || (isTeacher() && resource.data.targetClassIds.hasAny(me().assignedClassIds))
+        || assignmentVisibleForStudent(resource.data);
+      allow create: if isTeacher()
+        && request.resource.data.createdBy == request.auth.uid
+        && teacherCanWriteClasses(request.resource.data.targetClassIds);
+      allow update: if signedIn()
+        && request.resource.data.createdBy == resource.data.createdBy
+        && (
+          isAdmin()
+          || (
+            isTeacher()
+            && teacherCanWriteClasses(resource.data.targetClassIds)
+            && teacherCanWriteClasses(request.resource.data.targetClassIds)
+          )
+        );
+      allow delete: if isAdmin()
+        || (isTeacher() && teacherCanWriteClasses(resource.data.targetClassIds));
+    }
+
+    match /courses/PORT-LOG/assignments/{assignmentId}/items/{itemId} {
+      allow read: if signedIn()
+        && (
+          isAdmin()
+          || (isTeacher() && get(/databases/$(database)/documents/courses/PORT-LOG/assignments/$(assignmentId)).data.targetClassIds.hasAny(me().assignedClassIds))
+          || assignmentVisibleForStudent(get(/databases/$(database)/documents/courses/PORT-LOG/assignments/$(assignmentId)).data)
+        );
+      allow create, update, delete: if signedIn()
+        && teacherCanWriteClasses(get(/databases/$(database)/documents/courses/PORT-LOG/assignments/$(assignmentId)).data.targetClassIds);
+    }
+
+    match /courses/PORT-LOG/attempts/{attemptId} {
+      allow read: if signedIn()
+        && (
+          owns(resource.data.uid)
+          || managesClass(resource.data.classId)
+        );
+
+      allow create: if isStudent()
+        && owns(request.resource.data.uid)
+        && request.resource.data.keys().hasOnly([
+          'attemptId',
+          'assignmentId',
+          'uid',
+          'studentNo',
+          'studentName',
+          'classId',
+          'status',
+          'objectiveScore',
+          'subjectiveScore',
+          'totalScore',
+          'objectivePendingCount',
+          'subjectivePendingCount',
+          'teacherFeedback',
+          'startedAt',
+          'lastSavedAt',
+          'submittedAt',
+          'gradedAt',
+          'graderUid',
+          'resultReleasedAt'
+        ])
+        && request.resource.data.attemptId == attemptId
+        && request.resource.data.classId == me().classId
+        && assignmentAcceptingDrafts(request.resource.data.assignmentId)
+        && request.resource.data.status == 'draft'
+        && request.resource.data.objectiveScore == 0
+        && request.resource.data.subjectiveScore == 0
+        && request.resource.data.totalScore == 0
+        && request.resource.data.objectivePendingCount == 0
+        && request.resource.data.subjectivePendingCount == 0
+        && request.resource.data.teacherFeedback == ''
+        && request.resource.data.startedAt == request.time
+        && request.resource.data.lastSavedAt == null
+        && request.resource.data.submittedAt == null
+        && request.resource.data.gradedAt == null
+        && request.resource.data.graderUid == null
+        && request.resource.data.resultReleasedAt == null;
+
+      allow update: if (
+        isStudent()
+        && owns(resource.data.uid)
+        && resource.data.status == 'draft'
+        && request.resource.data.status == 'draft'
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly(['lastSavedAt'])
+        && request.resource.data.lastSavedAt == request.time
+      ) || (
+        isStudent()
+        && owns(resource.data.uid)
+        && resource.data.status == 'draft'
+        && request.resource.data.status == 'submitted'
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly(['status', 'lastSavedAt', 'submittedAt', 'objectivePendingCount', 'subjectivePendingCount'])
+        && request.resource.data.lastSavedAt == request.time
+        && request.resource.data.submittedAt == request.time
+        && request.resource.data.objectivePendingCount is int
+        && request.resource.data.objectivePendingCount >= 0
+        && request.resource.data.subjectivePendingCount is int
+        && request.resource.data.subjectivePendingCount >= 0
+      ) || (
+        managesClass(resource.data.classId)
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly([
+          'teacherFeedback',
+          'status',
+          'objectiveScore',
+          'subjectiveScore',
+          'totalScore',
+          'subjectivePendingCount',
+          'gradedAt',
+          'graderUid',
+          'resultReleasedAt'
+        ])
+      );
+
+      allow delete: if false;
+    }
+
+    match /courses/PORT-LOG/attempts/{attemptId}/answers/{questionId} {
+      allow read: if attemptExists(attemptId)
+        && (
+          owns(attemptData(attemptId).uid)
+          || managesClass(attemptData(attemptId).classId)
+        );
+
+      allow create: if attemptExists(attemptId)
+        && isStudent()
+        && owns(attemptData(attemptId).uid)
+        && attemptData(attemptId).status == 'draft'
+        && request.resource.data.keys().hasOnly([
+          'questionId',
+          'questionType',
+          'responsePayload',
+          'autoCorrect',
+          'autoScore',
+          'manualScore',
+          'finalScore',
+          'needsManualReview',
+          'manualComment',
+          'gradedBy',
+          'gradedAt',
+          'locked',
+          'savedAt',
+          'submittedAt'
+        ])
+        && request.resource.data.questionId == questionId
+        && request.resource.data.autoCorrect == null
+        && request.resource.data.autoScore == 0
+        && request.resource.data.manualScore == 0
+        && request.resource.data.finalScore == 0
+        && request.resource.data.manualComment == ''
+        && request.resource.data.gradedBy == null
+        && request.resource.data.gradedAt == null
+        && request.resource.data.savedAt == request.time
+        && (
+          (
+            request.resource.data.needsManualReview == false
+            && request.resource.data.locked == false
+            && request.resource.data.submittedAt == null
+          )
+          || (
+            request.resource.data.needsManualReview == true
+            && request.resource.data.locked == true
+            && request.resource.data.submittedAt == request.time
+          )
+        );
+
+      allow update: if (
+        attemptExists(attemptId)
+        && isStudent()
+        && owns(attemptData(attemptId).uid)
+        && attemptData(attemptId).status == 'draft'
+        && resource.data.locked == false
+        && (
+          (
+            request.resource.data.locked == false
+            && request.resource.data.diff(resource.data).changedKeys().hasOnly(['responsePayload', 'savedAt'])
+            && request.resource.data.savedAt == request.time
+          )
+          || (
+            request.resource.data.locked == true
+            && request.resource.data.diff(resource.data).changedKeys().hasOnly(['responsePayload', 'needsManualReview', 'locked', 'savedAt', 'submittedAt'])
+            && request.resource.data.needsManualReview == true
+            && request.resource.data.savedAt == request.time
+            && request.resource.data.submittedAt == request.time
+          )
+        )
+      ) || (
+        attemptExists(attemptId)
+        && managesClass(attemptData(attemptId).classId)
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly([
+          'manualScore',
+          'finalScore',
+          'needsManualReview',
+          'manualComment',
+          'gradedBy',
+          'gradedAt'
+        ])
+      );
+
+      allow delete: if false;
+    }
+  }
+}
+
+

@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>学生中心 | 港口物流课程</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Nunito Sans"', '"Noto Sans SC"', '"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'] },
+          colors: { ocean: { deep: '#0B3A5A', mid: '#115D8C', light: '#C7E3FF' } }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-slate-50 font-sans text-slate-800">
+  <header class="bg-ocean-deep text-white shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-3">
+        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 font-bold">港</span>
+        <span class="text-lg font-semibold">港口物流课程</span>
+      </a>
+      <div class="flex items-center gap-3 text-sm">
+        <a href="index.html" class="rounded-full border border-white/20 px-4 py-2 hover:bg-white/10 transition">返回首页</a>
+        <button id="signout-btn" type="button" class="rounded-full bg-white text-ocean-deep px-4 py-2 font-semibold hover:bg-slate-100 transition">退出登录</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-6">
+    <section class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      <article class="rounded-3xl bg-white shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-ocean-mid">Student Center</p>
+            <h1 class="mt-2 text-3xl font-bold text-ocean-deep">学生中心</h1>
+            <p id="student-summary" class="mt-2 text-sm text-slate-600">正在加载学生资料…</p>
+          </div>
+          <div class="rounded-2xl bg-ocean-light/40 px-4 py-3 text-right">
+            <p class="text-xs text-slate-500">角色</p>
+            <p id="student-role" class="text-lg font-semibold text-ocean-deep">-</p>
+          </div>
+        </div>
+        <dl class="grid gap-4 sm:grid-cols-2">
+          <div class="rounded-2xl bg-slate-50 p-4">
+            <dt class="text-xs uppercase tracking-wide text-slate-500">姓名</dt>
+            <dd id="student-name" class="mt-2 text-lg font-semibold">-</dd>
+          </div>
+          <div class="rounded-2xl bg-slate-50 p-4">
+            <dt class="text-xs uppercase tracking-wide text-slate-500">邮箱</dt>
+            <dd id="student-email" class="mt-2 text-lg font-semibold break-all">-</dd>
+          </div>
+          <div class="rounded-2xl bg-slate-50 p-4">
+            <dt class="text-xs uppercase tracking-wide text-slate-500">学号</dt>
+            <dd id="student-no" class="mt-2 text-lg font-semibold">-</dd>
+          </div>
+          <div class="rounded-2xl bg-slate-50 p-4">
+            <dt class="text-xs uppercase tracking-wide text-slate-500">班级</dt>
+            <dd id="student-class" class="mt-2 text-lg font-semibold">-</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="rounded-3xl bg-white shadow-sm border border-slate-200 p-6 space-y-4">
+        <div>
+          <h2 class="text-xl font-bold text-ocean-deep">学生身份绑定</h2>
+          <p class="mt-2 text-sm text-slate-600">首次使用时，请绑定姓名、学号和班级。绑定后将用于作业、成绩和教师后台检索。</p>
+        </div>
+        <form id="claim-form" class="space-y-4">
+          <div>
+            <label for="claim-name" class="block text-sm font-semibold text-slate-700">姓名</label>
+            <input id="claim-name" type="text" class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-ocean-mid focus:outline-none focus:ring-2 focus:ring-ocean-mid/20" />
+          </div>
+          <div>
+            <label for="claim-student-no" class="block text-sm font-semibold text-slate-700">学号</label>
+            <input id="claim-student-no" type="text" class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm uppercase focus:border-ocean-mid focus:outline-none focus:ring-2 focus:ring-ocean-mid/20" />
+          </div>
+          <div>
+            <label for="claim-class-id" class="block text-sm font-semibold text-slate-700">班级编号</label>
+            <input id="claim-class-id" type="text" class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm uppercase focus:border-ocean-mid focus:outline-none focus:ring-2 focus:ring-ocean-mid/20" placeholder="例如 WL2301" />
+          </div>
+          <button type="submit" class="w-full rounded-xl bg-ocean-mid px-4 py-3 text-sm font-semibold text-white hover:bg-ocean-deep transition">保存学生身份</button>
+          <p id="claim-message" class="text-sm text-slate-600" aria-live="polite"></p>
+        </form>
+      </article>
+    </section>
+
+    <section class="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+      <article class="rounded-3xl bg-white shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-ocean-deep">我的作业</h2>
+            <p class="mt-1 text-sm text-slate-600">已按当前班级筛选，只展示已发布或已关闭的作业。</p>
+          </div>
+          <button id="refresh-assignments-btn" type="button" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-ocean-mid hover:text-ocean-deep transition">刷新</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead>
+              <tr class="text-left text-slate-500">
+                <th class="py-3 pr-4">作业</th>
+                <th class="py-3 pr-4">开始时间</th>
+                <th class="py-3 pr-4">截止时间</th>
+                <th class="py-3 pr-4">状态</th>
+                <th class="py-3">操作</th>
+              </tr>
+            </thead>
+            <tbody id="assignment-table-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="rounded-3xl bg-white shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-ocean-deep">我的成绩与作答</h2>
+            <p class="mt-1 text-sm text-slate-600">展示最近作答记录与成绩状态。</p>
+          </div>
+          <button id="refresh-attempts-btn" type="button" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-ocean-mid hover:text-ocean-deep transition">刷新</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead>
+              <tr class="text-left text-slate-500">
+                <th class="py-3 pr-4">作业编号</th>
+                <th class="py-3 pr-4">提交时间</th>
+                <th class="py-3 pr-4">状态</th>
+                <th class="py-3 pr-4">总分</th>
+                <th class="py-3 pr-4">主观待批改</th>
+              </tr>
+            </thead>
+            <tbody id="attempt-table-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script type="module" src="assets/js/student-center-page.js"></script>
+</body>
+</html>
