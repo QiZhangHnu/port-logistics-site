@@ -2932,6 +2932,125 @@ function toggleAnswer(id, btn) {
     }
 }
 
-    </script>
+    
+(function initChapterFilter() {
+    var questions = Array.from(document.querySelectorAll('.question'));
+    if (!questions.length) return;
+
+    function chapterNumber(chapterText) {
+        var match = /^第(.+)章$/.exec((chapterText || '').trim());
+        if (!match) return Number.MAX_SAFE_INTEGER;
+        var raw = match[1];
+        var asArabic = Number(raw);
+        if (!Number.isNaN(asArabic)) return asArabic;
+        var map = {
+            '一': 1,
+            '二': 2,
+            '三': 3,
+            '四': 4,
+            '五': 5,
+            '六': 6,
+            '七': 7,
+            '八': 8,
+            '九': 9,
+            '十': 10,
+            '十一': 11,
+            '十二': 12,
+            '十三': 13,
+            '十四': 14,
+            '十五': 15,
+            '十六': 16,
+            '十七': 17,
+            '十八': 18,
+            '十九': 19,
+            '二十': 20
+        };
+        return map[raw] || Number.MAX_SAFE_INTEGER;
+    }
+
+    var chapterStats = {};
+    questions.forEach(function (question) {
+        var badge = question.querySelector('.badge');
+        var chapter = badge ? badge.textContent.trim() : '';
+        if (!chapter) return;
+        if (!chapterStats[chapter]) chapterStats[chapter] = 0;
+        chapterStats[chapter] += 1;
+    });
+
+    var chapters = Object.keys(chapterStats).sort(function (a, b) {
+        return chapterNumber(a) - chapterNumber(b);
+    });
+
+    var params = new URLSearchParams(window.location.search);
+    var targetChapter = (params.get('chapter') || '').trim();
+
+    var intro = document.querySelector('.intro');
+    var toolbar = document.createElement('div');
+    toolbar.style.margin = '12px 0 18px';
+    toolbar.style.padding = '12px';
+    toolbar.style.border = '1px solid #dbeafe';
+    toolbar.style.borderRadius = '10px';
+    toolbar.style.background = '#f8fbff';
+
+    var title = document.createElement('p');
+    title.textContent = '按章节筛选';
+    title.style.margin = '0 0 8px';
+    title.style.fontWeight = '600';
+    title.style.color = '#1f4f82';
+    toolbar.appendChild(title);
+
+    var linksWrap = document.createElement('div');
+    linksWrap.style.display = 'flex';
+    linksWrap.style.flexWrap = 'wrap';
+    linksWrap.style.gap = '8px';
+
+    function buildLink(label, href, isActive) {
+        var link = document.createElement('a');
+        link.textContent = label;
+        link.href = href;
+        link.style.fontSize = '12px';
+        link.style.textDecoration = 'none';
+        link.style.padding = '4px 10px';
+        link.style.borderRadius = '999px';
+        link.style.border = isActive ? '1px solid #1f4f82' : '1px solid #93c5fd';
+        link.style.color = isActive ? '#ffffff' : '#1f4f82';
+        link.style.background = isActive ? '#1f4f82' : '#ffffff';
+        return link;
+    }
+
+    var currentPath = window.location.pathname;
+    var pageName = currentPath.slice(currentPath.lastIndexOf('/') + 1) || currentPath;
+
+    linksWrap.appendChild(buildLink('全部章节', pageName, !targetChapter));
+    chapters.forEach(function (chapter) {
+        var href = pageName + '?chapter=' + encodeURIComponent(chapter);
+        linksWrap.appendChild(buildLink(chapter + '（' + chapterStats[chapter] + '）', href, targetChapter === chapter));
+    });
+    toolbar.appendChild(linksWrap);
+
+    var summary = document.createElement('p');
+    summary.style.margin = '8px 0 0';
+    summary.style.fontSize = '12px';
+    summary.style.color = '#4b5563';
+    toolbar.appendChild(summary);
+
+    if (intro && intro.parentNode) {
+        intro.insertAdjacentElement('afterend', toolbar);
+    }
+
+    var visibleCount = 0;
+    questions.forEach(function (question) {
+        var badge = question.querySelector('.badge');
+        var chapter = badge ? badge.textContent.trim() : '';
+        var keep = !targetChapter || chapter === targetChapter;
+        question.style.display = keep ? '' : 'none';
+        if (keep) visibleCount += 1;
+    });
+
+    summary.textContent = targetChapter
+        ? ('当前：' + targetChapter + '，共 ' + visibleCount + ' 题。')
+        : ('当前：全部章节，共 ' + questions.length + ' 题。');
+})();
+</script>
 </body>
 </html>
