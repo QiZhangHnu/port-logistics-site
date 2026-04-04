@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>教师后台 | 港口物流课程</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Nunito Sans"', '"Noto Sans SC"', '"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'] },
+          colors: { ocean: { deep: '#0B3A5A', mid: '#115D8C', light: '#C7E3FF' } }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-slate-100 font-sans text-slate-800">
+  <header class="bg-ocean-deep text-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+      <div>
+        <p class="text-xs uppercase tracking-[0.3em] text-ocean-light/80">Teacher Console</p>
+        <h1 class="mt-2 text-3xl font-bold">教师后台</h1>
+        <p id="teacher-summary" class="mt-2 text-sm text-slate-100/80">正在验证账号权限…</p>
+      </div>
+      <div class="flex items-center gap-3 text-sm">
+        <a href="index.html" class="rounded-full border border-white/20 px-4 py-2 hover:bg-white/10 transition">返回首页</a>
+        <button id="teacher-signout-btn" type="button" class="rounded-full bg-white px-4 py-2 font-semibold text-ocean-deep hover:bg-slate-100 transition">退出登录</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+    <section class="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+      <article class="rounded-3xl bg-white shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-ocean-deep">题库导入</h2>
+            <p class="mt-1 text-sm text-slate-600">从现有静态练习页解析题目，并拆分写入 question_items / question_keys。</p>
+          </div>
+          <button id="import-question-bank-btn" type="button" class="rounded-full bg-ocean-mid px-5 py-2.5 text-sm font-semibold text-white hover:bg-ocean-deep transition">导入静态题库</button>
+        </div>
+        <p id="import-question-bank-message" class="text-sm text-slate-600" aria-live="polite"></p>
+      </article>
+
+      <article class="rounded-3xl bg-white shadow-sm border border-slate-200 p-6 space-y-4">
+        <div>
+          <h2 class="text-2xl font-bold text-ocean-deep">当前教师信息</h2>
+          <p class="mt-1 text-sm text-slate-600">用于校验你可管理的班级和作业范围。</p>
+        </div>
+        <dl class="grid gap-4 sm:grid-cols-2">
+          <div class="rounded-2xl bg-slate-50 p-4">
+            <dt class="text-xs uppercase tracking-wide text-slate-500">角色</dt>
+            <dd id="teacher-role" class="mt-2 text-lg font-semibold">-</dd>
+          </div>
+          <div class="rounded-2xl bg-slate-50 p-4">
+            <dt class="text-xs uppercase tracking-wide text-slate-500">邮箱</dt>
+            <dd id="teacher-email" class="mt-2 text-lg font-semibold break-all">-</dd>
+          </div>
+          <div class="rounded-2xl bg-slate-50 p-4 sm:col-span-2">
+            <dt class="text-xs uppercase tracking-wide text-slate-500">负责班级</dt>
+            <dd id="teacher-classes" class="mt-2 text-lg font-semibold">-</dd>
+          </div>
+        </dl>
+      </article>
+    </section>
+
+    <section class="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+      <article class="rounded-3xl bg-white shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-ocean-deep">班级管理</h2>
+            <p class="mt-1 text-sm text-slate-600">管理员可新增或更新班级；教师只读。</p>
+          </div>
+          <button id="refresh-classes-btn" type="button" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold hover:border-ocean-mid hover:text-ocean-deep transition">刷新</button>
+        </div>
+        <form id="class-form" class="grid gap-4 md:grid-cols-2">
+          <input id="class-id-input" type="text" placeholder="班级编号，例如 WL2301" class="rounded-xl border border-slate-200 px-4 py-3 text-sm uppercase" />
+          <input id="class-name-input" type="text" placeholder="班级名称，例如 物流2301" class="rounded-xl border border-slate-200 px-4 py-3 text-sm" />
+          <input id="class-grade-input" type="text" placeholder="年级，例如 2023" class="rounded-xl border border-slate-200 px-4 py-3 text-sm" />
+          <input id="class-term-input" type="text" placeholder="学期，例如 2025-2026-2" class="rounded-xl border border-slate-200 px-4 py-3 text-sm" />
+          <input id="class-teachers-input" type="text" placeholder="教师 UID，逗号分隔" class="rounded-xl border border-slate-200 px-4 py-3 text-sm md:col-span-2" />
+          <select id="class-status-input" class="rounded-xl border border-slate-200 px-4 py-3 text-sm">
+            <option value="active">active</option>
+            <option value="archived">archived</option>
+          </select>
+          <button id="save-class-btn" type="submit" class="rounded-xl bg-ocean-mid px-4 py-3 text-sm font-semibold text-white hover:bg-ocean-deep transition">保存班级</button>
+        </form>
+        <p id="class-message" class="text-sm text-slate-600" aria-live="polite"></p>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead>
+              <tr class="text-left text-slate-500">
+                <th class="py-3 pr-4">classId</th>
+                <th class="py-3 pr-4">name</th>
+                <th class="py-3 pr-4">grade</th>
+                <th class="py-3 pr-4">term</th>
+                <th class="py-3 pr-4">teacherUids</th>
+                <th class="py-3 pr-4">studentCount</th>
+                <th class="py-3">status</th>
+              </tr>
+            </thead>
+            <tbody id="class-table-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="rounded-3xl bg-white shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-ocean-deep">学生管理</h2>
+            <p class="mt-1 text-sm text-slate-600">按班级、状态和关键字筛选学生。管理员可修改学生档案。</p>
+          </div>
+          <button id="refresh-students-btn" type="button" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold hover:border-ocean-mid hover:text-ocean-deep transition">刷新</button>
+        </div>
+        <form id="student-filter-form" class="grid gap-4 md:grid-cols-3">
+          <select id="student-filter-class" class="rounded-xl border border-slate-200 px-4 py-3 text-sm"></select>
+          <select id="student-filter-status" class="rounded-xl border border-slate-200 px-4 py-3 text-sm">
+            <option value="">全部状态</option>
+            <option value="active">active</option>
+            <option value="disabled">disabled</option>
+          </select>
+          <input id="student-filter-keyword" type="text" placeholder="按姓名/学号/邮箱检索" class="rounded-xl border border-slate-200 px-4 py-3 text-sm" />
+        </form>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead>
+              <tr class="text-left text-slate-500">
+                <th class="py-3 pr-4">studentNo</th>
+                <th class="py-3 pr-4">name</th>
+                <th class="py-3 pr-4">email</th>
+                <th class="py-3 pr-4">classId</th>
+                <th class="py-3 pr-4">status</th>
+                <th class="py-3 pr-4">lastLoginAt</th>
+                <th class="py-3">createdAt</th>
+              </tr>
+            </thead>
+            <tbody id="student-table-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+        <form id="student-editor-form" class="grid gap-4 md:grid-cols-2 border-t border-slate-100 pt-4">
+          <input id="student-editor-uid" type="text" placeholder="uid" class="rounded-xl border border-slate-200 px-4 py-3 text-sm" />
+          <input id="student-editor-name" type="text" placeholder="姓名" class="rounded-xl border border-slate-200 px-4 py-3 text-sm" />
+          <input id="student-editor-student-no" type="text" placeholder="学号" class="rounded-xl border border-slate-200 px-4 py-3 text-sm uppercase" />
+          <input id="student-editor-class-id" type="text" placeholder="班级编号" class="rounded-xl border border-slate-200 px-4 py-3 text-sm uppercase" />
+          <select id="student-editor-role" class="rounded-xl border border-slate-200 px-4 py-3 text-sm">
+            <option value="student">student</option>
+            <option value="teacher">teacher</option>
+            <option value="admin">admin</option>
+          </select>
+          <select id="student-editor-status" class="rounded-xl border border-slate-200 px-4 py-3 text-sm">
+            <option value="active">active</option>
+            <option value="disabled">disabled</option>
+          </select>
+          <input id="student-editor-assigned-class-ids" type="text" placeholder="教师负责班级，逗号分隔" class="rounded-xl border border-slate-200 px-4 py-3 text-sm md:col-span-2" />
+          <button type="submit" class="rounded-xl bg-ocean-mid px-4 py-3 text-sm font-semibold text-white hover:bg-ocean-deep transition md:col-span-2">保存用户资料</button>
+        </form>
+        <p id="student-message" class="text-sm text-slate-600" aria-live="polite"></p>
+      </article>
+    </section>
+
+    <section class="grid gap-6 xl:grid-cols-[1fr_1fr]">
+      <article class="rounded-3xl bg-white shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-ocean-deep">题库浏览与作业创建</h2>
+            <p class="mt-1 text-sm text-slate-600">从已导入题库中选择题目，按班级创建正式作业。</p>
+          </div>
+          <button id="refresh-question-bank-btn" type="button" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold hover:border-ocean-mid hover:text-ocean-deep transition">刷新题库</button>
+        </div>
+        <form id="assignment-form" class="grid gap-4 md:grid-cols-2">
+          <input id="assignment-title-input" type="text" placeholder="作业标题" class="rounded-xl border border-slate-200 px-4 py-3 text-sm md:col-span-2" />
+          <textarea id="assignment-description-input" rows="3" placeholder="作业说明" class="rounded-xl border border-slate-200 px-4 py-3 text-sm md:col-span-2"></textarea>
+          <input id="assignment-start-at-input" type="datetime-local" class="rounded-xl border border-slate-200 px-4 py-3 text-sm" />
+          <input id="assignment-due-at-input" type="datetime-local" class="rounded-xl border border-slate-200 px-4 py-3 text-sm" />
+          <select id="assignment-visibility-input" class="rounded-xl border border-slate-200 px-4 py-3 text-sm">
+            <option value="draft">draft</option>
+            <option value="published">published</option>
+            <option value="closed">closed</option>
+          </select>
+          <select id="assignment-release-policy-input" class="rounded-xl border border-slate-200 px-4 py-3 text-sm">
+            <option value="after_manual_grade">after_manual_grade</option>
+            <option value="immediate_objective_only">immediate_objective_only</option>
+            <option value="teacher_release">teacher_release</option>
+          </select>
+          <input id="assignment-target-classes-input" type="text" placeholder="目标班级编号，逗号分隔" class="rounded-xl border border-slate-200 px-4 py-3 text-sm md:col-span-2" />
+          <input id="assignment-objective-score-input" type="number" min="1" value="1" class="rounded-xl border border-slate-200 px-4 py-3 text-sm" placeholder="客观题默认分值" />
+          <input id="assignment-subjective-score-input" type="number" min="1" value="10" class="rounded-xl border border-slate-200 px-4 py-3 text-sm" placeholder="主观题默认分值" />
+          <button type="submit" class="rounded-xl bg-ocean-mid px-4 py-3 text-sm font-semibold text-white hover:bg-ocean-deep transition md:col-span-2">创建作业</button>
+        </form>
+        <p id="assignment-form-message" class="text-sm text-slate-600" aria-live="polite"></p>
+        <div class="grid gap-4 md:grid-cols-3">
+          <input id="question-search-input" type="text" placeholder="检索题目" class="rounded-xl border border-slate-200 px-4 py-3 text-sm md:col-span-2" />
+          <select id="question-type-filter" class="rounded-xl border border-slate-200 px-4 py-3 text-sm">
+            <option value="">全部题型</option>
+            <option value="single">single</option>
+            <option value="multiple">multiple</option>
+            <option value="true_false">true_false</option>
+            <option value="fill_blank">fill_blank</option>
+            <option value="short_answer">short_answer</option>
+          </select>
+        </div>
+        <div class="max-h-[28rem] overflow-auto rounded-2xl border border-slate-200">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead class="bg-slate-50 sticky top-0">
+              <tr class="text-left text-slate-500">
+                <th class="py-3 px-3">选择</th>
+                <th class="py-3 px-3">questionId</th>
+                <th class="py-3 px-3">题型</th>
+                <th class="py-3 px-3">章节</th>
+                <th class="py-3 px-3">题干</th>
+              </tr>
+            </thead>
+            <tbody id="question-bank-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="rounded-3xl bg-white shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-ocean-deep">作业列表、批改与分析</h2>
+            <p class="mt-1 text-sm text-slate-600">按班级查看作业、学生提交、主观题待批改和错因分布。</p>
+          </div>
+          <button id="refresh-assignments-dashboard-btn" type="button" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold hover:border-ocean-mid hover:text-ocean-deep transition">刷新</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead>
+              <tr class="text-left text-slate-500">
+                <th class="py-3 pr-4">title</th>
+                <th class="py-3 pr-4">targetClassIds</th>
+                <th class="py-3 pr-4">visibility</th>
+                <th class="py-3 pr-4">dueAt</th>
+                <th class="py-3 pr-4">submittedCount</th>
+                <th class="py-3 pr-4">gradedCount</th>
+                <th class="py-3">avgScore</th>
+              </tr>
+            </thead>
+            <tbody id="assignment-dashboard-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+        <form id="review-filter-form" class="grid gap-4 md:grid-cols-3 border-t border-slate-100 pt-4">
+          <select id="review-assignment-select" class="rounded-xl border border-slate-200 px-4 py-3 text-sm"></select>
+          <select id="review-class-select" class="rounded-xl border border-slate-200 px-4 py-3 text-sm"></select>
+          <select id="review-status-select" class="rounded-xl border border-slate-200 px-4 py-3 text-sm">
+            <option value="">全部状态</option>
+            <option value="draft">draft</option>
+            <option value="submitted">submitted</option>
+            <option value="graded">graded</option>
+            <option value="returned">returned</option>
+          </select>
+        </form>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead>
+              <tr class="text-left text-slate-500">
+                <th class="py-3 pr-4">studentNo</th>
+                <th class="py-3 pr-4">studentName</th>
+                <th class="py-3 pr-4">classId</th>
+                <th class="py-3 pr-4">submittedAt</th>
+                <th class="py-3 pr-4">status</th>
+                <th class="py-3 pr-4">objectiveScore</th>
+                <th class="py-3 pr-4">subjectivePendingCount</th>
+                <th class="py-3">totalScore</th>
+              </tr>
+            </thead>
+            <tbody id="review-attempts-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+        <div id="analytics-panel" class="rounded-2xl bg-slate-50 p-4 text-sm text-slate-700"></div>
+        <div id="review-editor" class="space-y-4 border-t border-slate-100 pt-4"></div>
+      </article>
+    </section>
+  </main>
+
+  <script type="module" src="assets/js/teacher-dashboard-page.js"></script>
+</body>
+</html>

@@ -76,6 +76,8 @@
       <a id="account-menu-register" href="register.html" class="inline-flex items-center justify-center rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-800 hover:border-ocean-mid/50 hover:bg-ocean-light/30 transition">注册</a>
       <a id="account-menu-login" href="login.html" class="inline-flex items-center justify-center rounded-xl bg-ocean-mid text-white px-4 py-2.5 text-sm font-semibold hover:bg-ocean-deep transition">登录</a>
       <a id="account-menu-switch" href="login.html" class="hidden inline-flex items-center justify-center rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-800 hover:border-ocean-mid/50 hover:bg-ocean-light/30 transition">切换账号</a>
+      <a id="account-menu-student-center" href="student-center.html" class="hidden inline-flex items-center justify-center rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-800 hover:border-ocean-mid/50 hover:bg-ocean-light/30 transition">学生中心</a>
+      <a id="account-menu-teacher-center" href="teacher-dashboard.html" class="hidden inline-flex items-center justify-center rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-800 hover:border-ocean-mid/50 hover:bg-ocean-light/30 transition">教师后台</a>
       <button id="account-menu-signout" type="button" class="hidden inline-flex items-center justify-center rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-800 hover:border-red-300 hover:bg-red-50 transition">退出登录</button>
     </div>
 
@@ -977,157 +979,7 @@
       });
     })();
   </script>
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-      apiKey: "AIzaSyCZQkYOqqrYVoh7em3vqa2_cQGTl54mDwY",
-      authDomain: "port-logistics-website.firebaseapp.com",
-      projectId: "port-logistics-website",
-      storageBucket: "port-logistics-website.firebasestorage.app",
-      messagingSenderId: "408055072268",
-      appId: "1:408055072268:web:ecafc91d732134028a9029",
-      measurementId: "G-LBWF59BH23"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    try {
-      getAnalytics(app);
-    } catch (error) {}
-
-    const auth = getAuth(app);
-    const accountMenuBtn = document.getElementById('account-menu-btn');
-    const accountBtnAvatarEl = document.getElementById('account-btn-avatar');
-    const accountMenuOverlay = document.getElementById('account-menu-overlay');
-    const accountMenuEl = document.getElementById('account-menu');
-    const accountMenuCloseBtn = document.getElementById('account-menu-close');
-    const accountMenuEmailEl = document.getElementById('account-menu-email');
-    const accountMenuAvatarEl = document.getElementById('account-menu-avatar');
-    const accountMenuGreetingEl = document.getElementById('account-menu-greeting');
-    const accountMenuRegisterLink = document.getElementById('account-menu-register');
-    const accountMenuLoginLink = document.getElementById('account-menu-login');
-    const accountMenuSwitchLink = document.getElementById('account-menu-switch');
-    const accountMenuSignOutBtn = document.getElementById('account-menu-signout');
-    const accountMenuMessageEl = document.getElementById('account-menu-message');
-
-    const errorMessages = {
-      'auth/too-many-requests': '请求过多，可能触发 Firebase 限流；请等待 10-30 分钟后再试。',
-      'auth/network-request-failed': '网络异常，请检查连接。'
-    };
-
-    const setMessage = (message, tone = 'info') => {
-      const apply = (el) => {
-        if (!el) return;
-        el.textContent = message || '';
-        el.classList.remove('text-red-600', 'text-emerald-600', 'text-slate-600');
-        if (!message) {
-          el.classList.add('text-slate-600');
-          return;
-        }
-        if (tone === 'error') el.classList.add('text-red-600');
-        else if (tone === 'success') el.classList.add('text-emerald-600');
-        else el.classList.add('text-slate-600');
-      };
-      apply(accountMenuMessageEl);
-    };
-
-    const getErrorMessage = (error) => {
-      const code = error?.code || '';
-      return errorMessages[code] || '操作失败，请稍后再试。';
-    };
-
-    const getUserName = (user) => {
-      const email = user?.email || '';
-      const fromEmail = email.includes('@') ? email.split('@')[0] : email;
-      return (user?.displayName || fromEmail || '您').trim();
-    };
-
-    const getAvatarText = (user) => {
-      const name = getUserName(user);
-      const first = (name || '').trim().slice(0, 1);
-      return first ? first.toUpperCase() : 'U';
-    };
-
-    const isAccountMenuOpen = () => {
-      return !!accountMenuEl && !accountMenuEl.classList.contains('hidden');
-    };
-
-    const setAccountMenuOpen = (open) => {
-      if (!accountMenuEl || !accountMenuOverlay || !accountMenuBtn) return;
-      accountMenuEl.classList.toggle('hidden', !open);
-      accountMenuOverlay.classList.toggle('hidden', !open);
-      accountMenuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (open) accountMenuCloseBtn?.focus();
-    };
-
-    accountMenuBtn?.addEventListener('click', () => {
-      setAccountMenuOpen(!isAccountMenuOpen());
-    });
-    accountMenuCloseBtn?.addEventListener('click', () => setAccountMenuOpen(false));
-    accountMenuOverlay?.addEventListener('click', () => setAccountMenuOpen(false));
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') setAccountMenuOpen(false);
-    });
-
-    const updateAccountMenu = (user) => {
-      const avatarText = user ? getAvatarText(user) : '访';
-      if (accountBtnAvatarEl) accountBtnAvatarEl.textContent = avatarText;
-      if (accountMenuAvatarEl) accountMenuAvatarEl.textContent = avatarText;
-      if (accountMenuEmailEl) accountMenuEmailEl.textContent = user?.email || '未登录';
-      if (accountMenuGreetingEl) {
-        accountMenuGreetingEl.textContent = user ? `${getUserName(user)}，您好！` : '您好，欢迎访问！';
-      }
-      const loggedIn = !!user;
-      accountMenuRegisterLink?.classList.toggle('hidden', loggedIn);
-      accountMenuLoginLink?.classList.toggle('hidden', loggedIn);
-      accountMenuSwitchLink?.classList.toggle('hidden', !loggedIn);
-      accountMenuSignOutBtn?.classList.toggle('hidden', !loggedIn);
-    };
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user && !user.emailVerified) {
-        updateAccountMenu(null);
-        setMessage('邮箱尚未验证，请先完成邮箱验证后再登录。', 'error');
-        await signOut(auth).catch(() => {});
-        return;
-      }
-      updateAccountMenu(user);
-    });
-
-    accountMenuRegisterLink?.addEventListener('click', () => setAccountMenuOpen(false));
-    accountMenuLoginLink?.addEventListener('click', () => setAccountMenuOpen(false));
-
-    accountMenuSwitchLink?.addEventListener('click', async (event) => {
-      event.preventDefault();
-      setMessage('正在退出并跳转到登录页…', 'info');
-      try {
-        await signOut(auth);
-        setAccountMenuOpen(false);
-        window.location.href = 'login.html';
-      } catch (error) {
-        setMessage(getErrorMessage(error), 'error');
-      }
-    });
-
-    accountMenuSignOutBtn?.addEventListener('click', async () => {
-      setMessage('正在退出登录…', 'info');
-      try {
-        await signOut(auth);
-        setMessage('已退出登录。', 'success');
-        setAccountMenuOpen(false);
-      } catch (error) {
-        setMessage(getErrorMessage(error), 'error');
-      }
-    });
-  </script>
-
+    <script type="module" src="assets/js/index-account-menu.js"></script>
 </body>
 </html>
+
