@@ -9,15 +9,23 @@
 } from './firebase-core.js';
 import {
   buildAssignmentAnalytics,
+  buildPracticeAnalytics,
   callAdminSetUserProfile,
   createAssignmentRecord,
+  evaluatePracticeAnswer,
   getAttemptReviewBundle,
+  getPracticeReviewBundle,
+  formatPracticeExpectedAnswer,
+  formatPracticeResponsePayload,
   importQuestionBank,
   listAssignmentAttempts,
   listAssignmentsForProfile,
   listCourseClasses,
+  listPracticeAttempts,
   listQuestionItems,
+  listQuestionKeysByPrefix,
   listUsersByFilters,
+  practicePageQuestionPrefix,
   saveClassRecord,
   saveManualReview,
   summarizeAssignmentRow,
@@ -72,17 +80,37 @@ const reviewStatusSelect = document.getElementById('review-status-select');
 const reviewAttemptsBody = document.getElementById('review-attempts-body');
 const analyticsPanel = document.getElementById('analytics-panel');
 const reviewEditor = document.getElementById('review-editor');
+const practicePageSelect = document.getElementById('practice-page-select');
+const practiceClassSelect = document.getElementById('practice-class-select');
+const practiceAttemptsBody = document.getElementById('practice-attempts-body');
+const practiceAnalyticsPanel = document.getElementById('practice-analytics-panel');
+const practiceReviewEditor = document.getElementById('practice-review-editor');
 const teacherSignoutBtn = document.getElementById('teacher-signout-btn');
+
+const PRACTICE_PAGE_OPTIONS = [
+  { pageId: 'all-single-choice', label: '全册 · 单选题综合练习' },
+  { pageId: 'all-multiple-choice', label: '全册 · 多选题综合练习' },
+  { pageId: 'all-fill-in', label: '全册 · 填空题综合练习' },
+  { pageId: 'all-true-false', label: '全册 · 判断题综合练习' },
+  { pageId: 'all-short-answer', label: '全册 · 简答题综合练习' },
+];
 
 const state = {
   profile: null,
   classes: [],
   students: [],
   questions: [],
+  questionCatalog: [],
   assignments: [],
   attemptsByAssignmentId: new Map(),
   selectedQuestionIds: new Set(),
   selectedAttemptId: '',
+  selectedPracticeAttemptId: '',
+  practiceQuestionKeysByPage: new Map(),
+  practiceQuestionMapsByPage: new Map(),
+  practiceAttemptMap: new Map(),
+  currentPracticeQuestionMap: new Map(),
+  currentPracticeQuestionKeyMap: new Map(),
 };
 
 function csvToList(value) {
@@ -131,6 +159,26 @@ function renderAnalyticsEmpty(message = '请选择作业后查看提交、批改
     <div class="rounded-[1.75rem] border border-dashed border-slate-300 bg-gradient-to-br from-slate-50 via-white to-slate-100 px-6 py-10 text-center">
       <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Teacher Insights</p>
       <h3 class="mt-3 text-2xl font-bold text-ocean-deep">作业分析面板</h3>
+      <p class="mt-3 text-sm leading-7 text-slate-600">${message}</p>
+    </div>
+  `;
+}
+
+function populatePracticePageSelect() {
+  practicePageSelect.innerHTML = ['<option value="">请选择综合练习</option>']
+    .concat(PRACTICE_PAGE_OPTIONS.map((item) => `<option value="${item.pageId}">${item.label}</option>`))
+    .join('');
+}
+
+function getPracticePageMeta(pageId) {
+  return PRACTICE_PAGE_OPTIONS.find((item) => item.pageId === pageId) || null;
+}
+
+function renderPracticeAnalyticsEmpty(message = '请选择综合练习后查看参与情况、知识掌握分析和学生作答明细。') {
+  practiceAnalyticsPanel.innerHTML = `
+    <div class="rounded-[1.75rem] border border-dashed border-slate-300 bg-gradient-to-br from-slate-50 via-white to-slate-100 px-6 py-10 text-center">
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Practice Insights</p>
+      <h3 class="mt-3 text-2xl font-bold text-ocean-deep">综合练习分析面板</h3>
       <p class="mt-3 text-sm leading-7 text-slate-600">${message}</p>
     </div>
   `;
@@ -370,6 +418,132 @@ function renderAnalyticsPanel(analytics, assignment) {
   `;
 }
 
+function buildPracticeSuggestions(analytics) {
+  const suggestions = [];
+  const weakestKnowledge = analytics.weakKnowledgeMasteryTopN?.[0];
+  const weakestAbility = analytics.weakAbilityMasteryTopN?.[0];
+
+  if (analytics.unstartedStudents > 0) {
+    suggestions.push(`当前仍有 ${analytics.unstartedStudents} 名学生尚未开始该综合练习，建议优先提醒先完成基础练习。`);
+  }
+  if (weakestKnowledge && weakestKnowledge.masteryRate < 60) {
+    suggestions.push(`知识点“${weakestKnowledge.label}”掌握率仅 ${formatPercent(weakestKnowledge.masteryRate)}，适合安排同章再练与讲评。`);
+  }
+  if (weakestAbility && weakestAbility.masteryRate < 60) {
+    suggestions.push(`${weakestAbility.label}表现偏弱，说明学生在相关能力迁移上仍不稳定。`);
+  }
+  if (analytics.revealRate > 40) {
+    suggestions.push(`学生查看答案比例达到 ${formatPercent(analytics.revealRate)}，建议补充分层练习，降低直接看答案的依赖。`);
+  }
+  if (!suggestions.length) {
+    suggestions.push('当前练习参与和掌握情况整体平稳，可继续按章节推进巩固。');
+  }
+  return suggestions.slice(0, 3);
+}
+
+function renderPracticeAnalyticsPanel(analytics, pageMeta) {
+  const suggestions = buildPracticeSuggestions(analytics);
+  practiceAnalyticsPanel.innerHTML = `
+    <div class="space-y-5">
+      <section class="overflow-hidden rounded-[1.9rem] border border-slate-200 bg-gradient-to-br from-ocean-deep via-[#14557e] to-[#60a5d8] px-6 py-6 text-white shadow-lg">
+        <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.32em] text-white/65">Practice Insights</p>
+            <h3 class="mt-3 text-3xl font-bold">${pageMeta?.label || analytics.pageTitle}</h3>
+            <p class="mt-3 max-w-3xl text-sm leading-7 text-white/80">该区域统计学生在综合练习页中的真实作答记录，帮助教师判断参与度、掌握率和高风险学生。</p>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2 lg:min-w-[20rem]">
+            <div class="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
+              <p class="text-xs uppercase tracking-wide text-white/60">参与率</p>
+              <p class="mt-2 text-2xl font-bold">${formatPercent(analytics.participationRate)}</p>
+            </div>
+            <div class="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
+              <p class="text-xs uppercase tracking-wide text-white/60">知识掌握均值</p>
+              <p class="mt-2 text-2xl font-bold">${formatPercent(analytics.masteryRate)}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <article class="rounded-3xl border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">学生覆盖</p>
+          <p class="mt-3 text-3xl font-bold text-ocean-deep">${analytics.participationCount}<span class="ml-2 text-base font-medium text-slate-400">/ ${analytics.totalStudents}</span></p>
+          <p class="mt-2 text-sm text-slate-600">未开始 ${analytics.unstartedStudents} 人</p>
+        </article>
+        <article class="rounded-3xl border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">平均完成题数</p>
+          <p class="mt-3 text-3xl font-bold text-ocean-deep">${formatMetricNumber(analytics.avgAnsweredCount)}</p>
+          <p class="mt-2 text-sm text-slate-600">累计作答 ${analytics.totalAnsweredCount} 题次</p>
+        </article>
+        <article class="rounded-3xl border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">客观题正确率</p>
+          <p class="mt-3 text-3xl font-bold text-ocean-deep">${formatPercent(analytics.correctRate)}</p>
+          <p class="mt-2 text-sm text-slate-600">共统计 ${analytics.objectiveCount} 次客观题作答</p>
+        </article>
+        <article class="rounded-3xl border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">查看答案占比</p>
+          <p class="mt-3 text-3xl font-bold text-ocean-deep">${formatPercent(analytics.revealRate)}</p>
+          <p class="mt-2 text-sm text-slate-600">共 ${analytics.answerRevealedCount} 次查看答案</p>
+        </article>
+      </section>
+
+      <section class="grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
+        <article class="rounded-[1.75rem] border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h4 class="text-xl font-bold text-ocean-deep">教学提示</h4>
+              <p class="mt-1 text-sm text-slate-500">基于练习参与度、知识点掌握和查看答案行为生成。</p>
+            </div>
+            <div class="rounded-full bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-600">
+              强项 ${analytics.masteryBucketSummary.strong} · 预警 ${analytics.masteryBucketSummary.warning} · 薄弱 ${analytics.masteryBucketSummary.weak}
+            </div>
+          </div>
+          <div class="mt-4 space-y-3">
+            ${suggestions.map((item, index) => `
+              <div class="rounded-2xl bg-slate-50 px-4 py-4 text-sm leading-7 text-slate-600">
+                <span class="mr-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-ocean-deep text-xs font-bold text-white">${index + 1}</span>
+                ${item}
+              </div>
+            `).join('')}
+          </div>
+        </article>
+
+        <article class="rounded-[1.75rem] border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <h4 class="text-xl font-bold text-ocean-deep">能力薄弱项</h4>
+          <p class="mt-1 text-sm text-slate-500">仅基于可自动判断正误的客观题统计。</p>
+          <div class="mt-4 grid gap-3">
+            ${renderAbilityChips(analytics.weakAbilityMasteryTopN)}
+          </div>
+        </article>
+      </section>
+
+      <section class="grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
+        <article class="rounded-[1.75rem] border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-sky-50 px-5 py-5 shadow-sm">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h4 class="text-xl font-bold text-ocean-deep">知识点掌握情况</h4>
+              <p class="mt-1 text-sm text-slate-500">优先显示掌握率最低的知识点，帮助教师确定讲评顺序。</p>
+            </div>
+            <span class="rounded-full bg-white px-4 py-2 text-xs font-semibold text-slate-500 shadow-sm">Top ${Math.min(analytics.weakKnowledgeMasteryTopN.length, 6)}</span>
+          </div>
+          <div class="mt-5 grid gap-4">
+            ${renderKnowledgeCards(analytics.weakKnowledgeMasteryTopN)}
+          </div>
+        </article>
+
+        <article class="rounded-[1.75rem] border border-slate-200 bg-white px-5 py-5 shadow-sm">
+          <h4 class="text-xl font-bold text-ocean-deep">风险学生提示</h4>
+          <p class="mt-1 text-sm text-slate-500">列出未开始练习和低正确率学生，便于教师快速跟进。</p>
+          <div class="mt-4 grid gap-3">
+            ${renderRiskStudents(analytics.studentRiskTopN)}
+          </div>
+        </article>
+      </section>
+    </div>
+  `;
+}
+
 function renderTeacherHeader(user, profile) {
   teacherSummaryEl.textContent = `当前账号：${profile?.name || user?.email || ''}，仅能操作自己负责班级的作业与成绩。`;
   teacherRoleEl.textContent = roleLabel(profile?.role);
@@ -416,6 +590,7 @@ function populateClassSelects() {
     .join('');
   studentFilterClass.innerHTML = options;
   reviewClassSelect.innerHTML = options;
+  practiceClassSelect.innerHTML = options;
 }
 
 async function refreshClasses() {
@@ -495,7 +670,10 @@ function renderQuestionBank() {
 }
 
 async function refreshQuestionBank() {
+  state.questionCatalog = await listQuestionItems();
   state.questions = await listQuestionItems({ keyword: questionSearchInput.value, type: questionTypeFilter.value });
+  state.practiceQuestionMapsByPage.clear();
+  state.practiceQuestionKeysByPage.clear();
   renderQuestionBank();
 }
 
@@ -567,6 +745,127 @@ function renderAttemptsTable(attempts) {
   });
 }
 
+async function loadPracticeReferenceData(pageId) {
+  if (!pageId) {
+    return { questionMap: new Map(), questionKeyMap: new Map() };
+  }
+  const prefix = practicePageQuestionPrefix(pageId);
+  if (!prefix) {
+    return { questionMap: new Map(), questionKeyMap: new Map() };
+  }
+
+  if (!state.questionCatalog.length) {
+    state.questionCatalog = await listQuestionItems();
+  }
+
+  if (!state.practiceQuestionMapsByPage.has(pageId)) {
+    const questionMap = new Map(
+      state.questionCatalog
+        .filter((item) => item.questionId.startsWith(prefix))
+        .map((item) => [item.questionId, item]),
+    );
+    state.practiceQuestionMapsByPage.set(pageId, questionMap);
+  }
+
+  if (!state.practiceQuestionKeysByPage.has(pageId)) {
+    const keys = await listQuestionKeysByPrefix(prefix);
+    const keyMap = new Map(keys.map((item) => [item.questionId, item]));
+    state.practiceQuestionKeysByPage.set(pageId, keyMap);
+  }
+
+  return {
+    questionMap: state.practiceQuestionMapsByPage.get(pageId) || new Map(),
+    questionKeyMap: state.practiceQuestionKeysByPage.get(pageId) || new Map(),
+  };
+}
+
+function renderPracticeAttemptsTable(attempts) {
+  if (!attempts.length) {
+    practiceAttemptsBody.innerHTML = '<tr><td colspan="7" class="py-6 text-center text-slate-500">该筛选条件下暂无练习记录。</td></tr>';
+    return;
+  }
+
+  practiceAttemptsBody.innerHTML = attempts.map((item) => `
+    <tr data-practice-attempt-id="${item.attemptId}" class="cursor-pointer hover:bg-slate-50">
+      <td class="py-4 pr-4 align-top font-semibold text-ocean-deep">${item.studentNo || '-'}</td>
+      <td class="py-4 pr-4 align-top">${item.studentName || '-'}</td>
+      <td class="py-4 pr-4 align-top">${item.classId || '-'}</td>
+      <td class="py-4 pr-4 align-top">${formatDateTime(item.lastSavedAt || item.updatedAt)}</td>
+      <td class="py-4 pr-4 align-top">${item.answeredCount ?? 0}</td>
+      <td class="py-4 pr-4 align-top">${formatPercent(item.correctRate ?? 0)}</td>
+      <td class="py-4 align-top">${item.answerRevealedCount ?? 0}</td>
+    </tr>
+  `).join('');
+
+  practiceAttemptsBody.querySelectorAll('tr[data-practice-attempt-id]').forEach((row) => {
+    row.addEventListener('click', async () => {
+      state.selectedPracticeAttemptId = row.getAttribute('data-practice-attempt-id') || '';
+      await renderPracticeReviewEditor();
+    });
+  });
+}
+
+async function buildPracticeInsights(attempts, pageId, selectedClassId = '') {
+  const { questionMap, questionKeyMap } = await loadPracticeReferenceData(pageId);
+  state.currentPracticeQuestionMap = questionMap;
+  state.currentPracticeQuestionKeyMap = questionKeyMap;
+
+  const attemptsWithAnswers = await Promise.all(attempts.map(async (attempt) => {
+    const bundle = await getPracticeReviewBundle(attempt.attemptId, { questionMap, questionKeyMap });
+    let objectiveCount = 0;
+    let correctObjectiveCount = 0;
+    let answerRevealedCount = 0;
+
+    (bundle.answers || []).forEach((answer) => {
+      if (answer.answerRevealed) {
+        answerRevealedCount += 1;
+      }
+      const evaluation = evaluatePracticeAnswer({
+        answer,
+        questionKey: questionKeyMap.get(answer.questionId),
+      });
+      if (!evaluation.objective) {
+        return;
+      }
+      objectiveCount += 1;
+      if (evaluation.autoCorrect) {
+        correctObjectiveCount += 1;
+      }
+    });
+
+    return {
+      ...attempt,
+      answers: bundle.answers || [],
+      answeredCount: (bundle.answers || []).length,
+      answerRevealedCount,
+      objectiveCount,
+      correctRate: objectiveCount ? (correctObjectiveCount / objectiveCount) * 100 : 0,
+    };
+  }));
+
+  state.practiceAttemptMap = new Map(attemptsWithAnswers.map((item) => [item.attemptId, item]));
+
+  const classStudents = [];
+  const classIds = selectedClassId
+    ? [selectedClassId]
+    : state.classes.map((item) => item.classId).filter(Boolean);
+  for (const classId of classIds) {
+    const students = await listUsersByFilters({ profile: state.profile, classId, roles: ['student'] });
+    classStudents.push(...students);
+  }
+
+  return {
+    attemptsWithAnswers,
+    analytics: buildPracticeAnalytics({
+      pageTitle: getPracticePageMeta(pageId)?.label || pageId,
+      attempts: attemptsWithAnswers,
+      questionMap,
+      questionKeyMap,
+      classStudents,
+    }),
+  };
+}
+
 async function buildAnalytics(attempts, assignment) {
   const attemptsWithAnswers = [];
   const questionMap = new Map();
@@ -608,6 +907,30 @@ async function refreshReviewSection() {
     const analytics = await buildAnalytics(await listAssignmentAttempts({ assignmentId }), assignment);
     renderAnalyticsPanel(analytics, assignment);
   }
+}
+
+async function refreshPracticeSection() {
+  const pageId = practicePageSelect.value;
+  if (!pageId) {
+    practiceAttemptsBody.innerHTML = '<tr><td colspan="7" class="py-6 text-center text-slate-500">请选择综合练习。</td></tr>';
+    renderPracticeAnalyticsEmpty();
+    practiceReviewEditor.innerHTML = '';
+    state.selectedPracticeAttemptId = '';
+    state.practiceAttemptMap = new Map();
+    return;
+  }
+
+  const attempts = await listPracticeAttempts({
+    pageId,
+    classId: practiceClassSelect.value,
+  });
+  const { attemptsWithAnswers, analytics } = await buildPracticeInsights(attempts, pageId, practiceClassSelect.value);
+  renderPracticeAttemptsTable(attemptsWithAnswers);
+  renderPracticeAnalyticsPanel(analytics, getPracticePageMeta(pageId));
+  if (state.selectedPracticeAttemptId && !state.practiceAttemptMap.has(state.selectedPracticeAttemptId)) {
+    state.selectedPracticeAttemptId = '';
+  }
+  await renderPracticeReviewEditor();
 }
 
 async function renderReviewEditor() {
@@ -683,6 +1006,69 @@ async function renderReviewEditor() {
       setToneMessage(reviewMessage, error?.message || '保存失败，请稍后再试。', 'error');
     }
   });
+}
+
+async function renderPracticeReviewEditor() {
+  if (!state.selectedPracticeAttemptId) {
+    practiceReviewEditor.innerHTML = '';
+    return;
+  }
+
+  const pageId = practicePageSelect.value;
+  const { questionMap, questionKeyMap } = await loadPracticeReferenceData(pageId);
+  const bundle = await getPracticeReviewBundle(state.selectedPracticeAttemptId, { questionMap, questionKeyMap });
+  const currentAttempt = state.practiceAttemptMap.get(state.selectedPracticeAttemptId) || bundle.attempt;
+
+  practiceReviewEditor.innerHTML = `
+    <div class="rounded-2xl bg-slate-50 p-4 space-y-4">
+      <div>
+        <p class="text-xs uppercase tracking-wide text-slate-500">练习明细</p>
+        <h3 class="mt-1 text-xl font-bold text-ocean-deep">${bundle.attempt.studentName || '-'} · ${bundle.attempt.studentNo || '-'}</h3>
+        <p class="mt-1 text-sm text-slate-600">班级：${bundle.attempt.classId || '-'} · 最近保存：${formatDateTime(bundle.attempt.lastSavedAt || bundle.attempt.updatedAt)}</p>
+        <p class="mt-1 text-sm text-slate-600">已答 ${currentAttempt.answeredCount ?? (bundle.answers || []).length} 题 · 客观题正确率 ${formatPercent(currentAttempt.correctRate ?? 0)} · 查看答案 ${currentAttempt.answerRevealedCount ?? 0} 次</p>
+      </div>
+      <div class="space-y-3">
+        ${(bundle.answers || []).map((answer) => {
+          const question = questionMap.get(answer.questionId);
+          const questionKey = questionKeyMap.get(answer.questionId);
+          const evaluation = evaluatePracticeAnswer({ answer, questionKey });
+          const resultLabel = evaluation.autoCorrect === null
+            ? '待判断'
+            : evaluation.autoCorrect
+              ? '正确'
+              : '错误';
+          const resultClasses = evaluation.autoCorrect === null
+            ? 'bg-slate-100 text-slate-700'
+            : evaluation.autoCorrect
+              ? 'bg-emerald-50 text-emerald-700'
+              : 'bg-rose-50 text-rose-700';
+          return `
+            <article class="rounded-2xl border border-slate-200 bg-white p-4">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <p class="text-xs uppercase tracking-wide text-ocean-mid">${question?.chapterLabel || '-'} · ${questionTypeLabel(answer.questionType)}</p>
+                <span class="rounded-full px-3 py-1 text-xs font-semibold ${resultClasses}">${resultLabel}</span>
+              </div>
+              <h4 class="mt-2 text-base font-semibold text-ocean-deep">${question?.stem || answer.questionId}</h4>
+              <dl class="mt-4 grid gap-3 text-sm">
+                <div>
+                  <dt class="text-slate-500">学生作答</dt>
+                  <dd class="mt-1 text-slate-800">${formatPracticeResponsePayload(answer.questionType, answer.responsePayload)}</dd>
+                </div>
+                <div>
+                  <dt class="text-slate-500">标准答案 / 参考要点</dt>
+                  <dd class="mt-1 text-slate-800">${formatPracticeExpectedAnswer(answer.questionType, questionKey)}</dd>
+                </div>
+                <div>
+                  <dt class="text-slate-500">查看答案</dt>
+                  <dd class="mt-1 text-slate-800">${answer.answerRevealed ? '已查看' : '未查看'}</dd>
+                </div>
+              </dl>
+            </article>
+          `;
+        }).join('') || '<p class="text-sm text-slate-500">该学生尚未形成可展示的练习作答。</p>'}
+      </div>
+    </div>
+  `;
 }
 
 classForm?.addEventListener('submit', async (event) => {
@@ -797,6 +1183,8 @@ importQuestionBankBtn?.addEventListener('click', async () => {
 reviewAssignmentSelect?.addEventListener('change', () => refreshReviewSection());
 reviewClassSelect?.addEventListener('change', () => refreshReviewSection());
 reviewStatusSelect?.addEventListener('change', () => refreshReviewSection());
+practicePageSelect?.addEventListener('change', () => refreshPracticeSection());
+practiceClassSelect?.addEventListener('change', () => refreshPracticeSection());
 teacherSignoutBtn?.addEventListener('click', async () => {
   await signOut(auth).catch(() => {});
   window.location.href = 'login.html';
@@ -806,6 +1194,7 @@ document.getElementById('refresh-classes-btn')?.addEventListener('click', () => 
 document.getElementById('refresh-students-btn')?.addEventListener('click', () => refreshStudents());
 document.getElementById('refresh-question-bank-btn')?.addEventListener('click', () => refreshQuestionBank());
 document.getElementById('refresh-assignments-dashboard-btn')?.addEventListener('click', () => refreshAssignments());
+document.getElementById('refresh-practice-dashboard-btn')?.addEventListener('click', () => refreshPracticeSection());
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
@@ -819,6 +1208,7 @@ onAuthStateChanged(auth, async (user) => {
   }
   state.profile = { id: user.uid, ...profile };
   renderTeacherHeader(user, state.profile);
+  populatePracticePageSelect();
   if (state.profile.role !== 'admin') {
     classForm?.querySelectorAll('input,select,button').forEach((el) => el.setAttribute('disabled', 'disabled'));
     studentEditorForm?.querySelectorAll('input,select,button').forEach((el) => el.setAttribute('disabled', 'disabled'));
@@ -828,4 +1218,5 @@ onAuthStateChanged(auth, async (user) => {
   await refreshQuestionBank();
   await refreshAssignments();
   renderAnalyticsEmpty();
+  renderPracticeAnalyticsEmpty();
 });

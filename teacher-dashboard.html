@@ -276,6 +276,41 @@
         <div id="review-editor" class="space-y-4 border-t border-slate-100 pt-4"></div>
       </article>
     </section>
+
+    <section>
+      <article class="rounded-3xl bg-white shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-ocean-deep">综合练习记录与统计</h2>
+            <p class="mt-1 text-sm text-slate-600">查看学生在综合练习中的作答情况、知识掌握分析和风险学生画像。</p>
+          </div>
+          <button id="refresh-practice-dashboard-btn" type="button" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold hover:border-ocean-mid hover:text-ocean-deep transition">刷新</button>
+        </div>
+        <form id="practice-filter-form" class="grid gap-4 md:grid-cols-3 border-t border-slate-100 pt-4">
+          <select id="practice-page-select" class="rounded-xl border border-slate-200 px-4 py-3 text-sm"></select>
+          <select id="practice-class-select" class="rounded-xl border border-slate-200 px-4 py-3 text-sm"></select>
+          <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500">仅教师或管理员可查看自己负责班级的练习记录。</div>
+        </form>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead>
+              <tr class="text-left text-slate-500">
+                <th class="py-3 pr-4">studentNo</th>
+                <th class="py-3 pr-4">studentName</th>
+                <th class="py-3 pr-4">classId</th>
+                <th class="py-3 pr-4">lastSavedAt</th>
+                <th class="py-3 pr-4">answeredCount</th>
+                <th class="py-3 pr-4">correctRate</th>
+                <th class="py-3">answerRevealedCount</th>
+              </tr>
+            </thead>
+            <tbody id="practice-attempts-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+        <div id="practice-analytics-panel" class="text-sm text-slate-700"></div>
+        <div id="practice-review-editor" class="space-y-4 border-t border-slate-100 pt-4"></div>
+      </article>
+    </section>
   </main>
 
   <script type="module" src="assets/js/teacher-dashboard-page.js"></script>

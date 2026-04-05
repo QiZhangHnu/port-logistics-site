@@ -71,6 +71,141 @@ function buildEmptyResponsePayload(questionType) {
   return { text: '' };
 }
 
+function normalizeOptionToken(value) {
+  return compactText(value).replace(/\s+/g, '').toUpperCase();
+}
+
+function normalizeFreeText(value) {
+  return compactText(value).replace(/\s+/g, '').toLowerCase();
+}
+
+function normalizeTrueFalseToken(value) {
+  const token = normalizeOptionToken(value);
+  if (['T', 'TRUE', 'Y', 'YES', '对', '√'].includes(token)) return 'T';
+  if (['F', 'FALSE', 'N', 'NO', '错', '×', 'X'].includes(token)) return 'F';
+  return token;
+}
+
+function hasSameMembers(left, right) {
+  if (left.size !== right.size) {
+    return false;
+  }
+  for (const item of left) {
+    if (!right.has(item)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function flattenBlankMatchers(blankMatchers = []) {
+  return asArray(blankMatchers).map((group) => asArray(group).map((item) => normalizeFreeText(item)).filter(Boolean));
+}
+
+export function practicePageQuestionPrefix(pageId) {
+  return {
+    'all-single-choice': 'all-single-',
+    'all-multiple-choice': 'all-multiple-',
+    'all-fill-in': 'all-fill-',
+    'all-true-false': 'all-tf-',
+    'all-short-answer': 'all-short-',
+  }[compactText(pageId)] || '';
+}
+
+export function formatPracticeResponsePayload(questionType, responsePayload = {}) {
+  if (questionType === 'multiple') {
+    const selectedList = asArray(responsePayload.selectedList).filter(Boolean);
+    return selectedList.length ? selectedList.join(', ') : '未作答';
+  }
+  if (questionType === 'single' || questionType === 'true_false') {
+    return compactText(responsePayload.selected) || '未作答';
+  }
+  if (questionType === 'fill_blank') {
+    const blanks = asArray(responsePayload.blanks).filter((item) => compactText(item));
+    if (blanks.length) {
+      return blanks.join(' / ');
+    }
+  }
+  return compactText(responsePayload.text) || '未作答';
+}
+
+export function formatPracticeExpectedAnswer(questionType, questionKey = {}) {
+  if (questionType === 'multiple') {
+    const answers = asArray(questionKey.correctAnswer).filter(Boolean);
+    return answers.length ? answers.join(', ') : '无标准答案';
+  }
+  if (questionType === 'single' || questionType === 'true_false') {
+    return compactText(questionKey.correctAnswer) || '无标准答案';
+  }
+  if (questionType === 'fill_blank') {
+    const groups = flattenBlankMatchers(questionKey.blankMatchers);
+    if (groups.length) {
+      return groups.map((group) => group.join(' / ')).join('；');
+    }
+    return compactText(questionKey.correctAnswer) || '无标准答案';
+  }
+  return compactText(questionKey.subjectiveRubric || questionKey.explanation) || '主观题，需教师判断';
+}
+
+export function evaluatePracticeAnswer({ answer, questionKey }) {
+  const questionType = compactText(answer?.questionType);
+  const payload = answer?.responsePayload || {};
+
+  if (!questionKey || questionType === 'short_answer') {
+    return { autoCorrect: null, objective: false };
+  }
+
+  if (questionType === 'multiple') {
+    const expectedSet = new Set(asArray(questionKey.correctAnswer).map((item) => normalizeOptionToken(item)).filter(Boolean));
+    const selectedSet = new Set(asArray(payload.selectedList).map((item) => normalizeOptionToken(item)).filter(Boolean));
+    if (!expectedSet.size) {
+      return { autoCorrect: null, objective: true };
+    }
+    return { autoCorrect: hasSameMembers(selectedSet, expectedSet), objective: true };
+  }
+
+  if (questionType === 'single') {
+    const expected = normalizeOptionToken(questionKey.correctAnswer);
+    if (!expected) {
+      return { autoCorrect: null, objective: true };
+    }
+    return { autoCorrect: normalizeOptionToken(payload.selected) === expected, objective: true };
+  }
+
+  if (questionType === 'true_false') {
+    const expected = normalizeTrueFalseToken(questionKey.correctAnswer);
+    if (!expected) {
+      return { autoCorrect: null, objective: true };
+    }
+    return { autoCorrect: normalizeTrueFalseToken(payload.selected) === expected, objective: true };
+  }
+
+  if (questionType === 'fill_blank') {
+    const responseBlanks = asArray(payload.blanks).length
+      ? asArray(payload.blanks)
+      : [payload.text];
+    const normalizedResponses = responseBlanks.map((item) => normalizeFreeText(item)).filter((item) => item !== '');
+    if (!normalizedResponses.length) {
+      return { autoCorrect: false, objective: true };
+    }
+    const matcherGroups = flattenBlankMatchers(questionKey.blankMatchers);
+    if (matcherGroups.length) {
+      const groups = matcherGroups.length === normalizedResponses.length
+        ? matcherGroups
+        : [matcherGroups.flat()];
+      const autoCorrect = normalizedResponses.every((item, index) => (groups[index] || []).includes(item));
+      return { autoCorrect, objective: true };
+    }
+    const expected = normalizeFreeText(questionKey.correctAnswer);
+    if (!expected) {
+      return { autoCorrect: null, objective: true };
+    }
+    return { autoCorrect: normalizedResponses[0] === expected, objective: true };
+  }
+
+  return { autoCorrect: null, objective: false };
+}
+
 export async function callClaimStudentProfile(payload) {
   const uid = requireCurrentUid();
   const name = compactText(payload?.name);
@@ -315,6 +450,16 @@ export async function listQuestionItems(filters = {}) {
     const haystack = [row.questionId, row.stem, row.chapterLabel, row.chapterCode].map((item) => compactText(item).toLowerCase()).join(' ');
     return haystack.includes(keyword);
   });
+}
+
+export async function listQuestionKeysByPrefix(prefix = '') {
+  const normalizedPrefix = compactText(prefix);
+  const snapshot = await getDocs(query(collection(db, 'courses', COURSE_ID, 'question_keys'), orderBy('questionId')));
+  const rows = mergeSnapshotDocs(snapshot);
+  if (!normalizedPrefix) {
+    return rows;
+  }
+  return rows.filter((row) => compactText(row.questionId).startsWith(normalizedPrefix));
 }
 
 export async function importQuestionBank() {
@@ -577,6 +722,18 @@ export async function listPracticeAnswers(attemptId) {
   return mergeSnapshotDocs(snapshot);
 }
 
+export async function listPracticeAttempts({ pageId = '', classId = '' } = {}) {
+  const snapshot = await getDocs(query(collection(db, 'courses', COURSE_ID, 'practice_attempts'), orderBy('updatedAt', 'desc')));
+  let rows = mergeSnapshotDocs(snapshot);
+  if (pageId) {
+    rows = rows.filter((row) => row.pageId === pageId);
+  }
+  if (classId) {
+    rows = rows.filter((row) => row.classId === classId);
+  }
+  return rows;
+}
+
 export async function savePracticeAnswer({
   attemptId,
   questionId,
@@ -604,6 +761,39 @@ export async function savePracticeAnswer({
     lastSavedAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   });
+}
+
+export async function getPracticeReviewBundle(attemptId, { questionMap = new Map(), questionKeyMap = new Map() } = {}) {
+  const attemptSnapshot = await getDoc(doc(db, 'courses', COURSE_ID, 'practice_attempts', attemptId));
+  if (!attemptSnapshot.exists()) {
+    throw new Error('未找到练习记录。');
+  }
+  const attempt = { id: attemptSnapshot.id, ...attemptSnapshot.data() };
+  const answers = await listPracticeAnswers(attemptId);
+  const questionIds = Array.from(new Set(answers.map((answer) => answer.questionId).filter(Boolean)));
+
+  const missingQuestionIds = questionIds.filter((questionId) => !questionMap.has(questionId));
+  await Promise.all(missingQuestionIds.map(async (questionId) => {
+    const snapshot = await getDoc(doc(db, 'courses', COURSE_ID, 'question_items', questionId));
+    if (snapshot.exists()) {
+      questionMap.set(questionId, { id: snapshot.id, ...snapshot.data() });
+    }
+  }));
+
+  const missingQuestionKeyIds = questionIds.filter((questionId) => !questionKeyMap.has(questionId));
+  await Promise.all(missingQuestionKeyIds.map(async (questionId) => {
+    const snapshot = await getDoc(doc(db, 'courses', COURSE_ID, 'question_keys', questionId));
+    if (snapshot.exists()) {
+      questionKeyMap.set(questionId, { id: snapshot.id, ...snapshot.data() });
+    }
+  }));
+
+  return {
+    attempt,
+    answers,
+    questions: questionIds.map((questionId) => questionMap.get(questionId)).filter(Boolean),
+    questionKeys: questionIds.map((questionId) => questionKeyMap.get(questionId)).filter(Boolean),
+  };
 }
 
 export async function listStudentAttempts(profile) {
@@ -971,6 +1161,231 @@ export function buildAssignmentAnalytics({ assignment, attempts, questionMap, cl
     masteryBucketSummary,
     wrongKnowledgePointTopN: sortCounter(knowledgeWeaknessCounter),
     wrongAbilityTopN: sortCounter(abilityWeaknessCounter),
+  };
+}
+
+export function buildPracticeAnalytics({ pageTitle, attempts, questionMap, questionKeyMap, classStudents }) {
+  const allStudents = uniqueById(classStudents);
+  const activeAttempts = attempts.filter((item) => asArray(item.answers).length > 0);
+  const activeUids = new Set(activeAttempts.map((item) => item.uid).filter(Boolean));
+  const participationRate = allStudents.length ? (activeAttempts.length / allStudents.length) * 100 : 0;
+  const unstartedStudents = Math.max(0, allStudents.length - activeUids.size);
+
+  const knowledgeCounter = new Map();
+  const abilityCounter = new Map();
+  const studentMetrics = new Map();
+  let objectiveCount = 0;
+  let objectiveCorrect = 0;
+  let totalAnsweredCount = 0;
+  let answerRevealedCount = 0;
+  let subjectiveAnswerCount = 0;
+
+  const ensureStudentMetric = (attempt) => {
+    const key = attempt.uid || attempt.studentNo || attempt.attemptId;
+    if (!studentMetrics.has(key)) {
+      studentMetrics.set(key, {
+        uid: attempt.uid || '',
+        studentNo: attempt.studentNo || '-',
+        studentName: attempt.studentName || '-',
+        classId: attempt.classId || '-',
+        status: attempt.status || 'in_progress',
+        scoreRate: 0,
+        pendingManualReview: 0,
+        incorrectObjectiveCount: 0,
+        objectiveCount: 0,
+        answeredCount: 0,
+        answerRevealedCount: 0,
+        correctObjectiveCount: 0,
+        lastSavedAt: attempt.lastSavedAt || attempt.updatedAt || null,
+      });
+    }
+    return studentMetrics.get(key);
+  };
+
+  for (const attempt of activeAttempts) {
+    const studentMetric = ensureStudentMetric(attempt);
+    for (const answer of asArray(attempt.answers)) {
+      const question = questionMap.get(answer.questionId);
+      const questionKey = questionKeyMap.get(answer.questionId);
+      const evaluation = evaluatePracticeAnswer({ answer, questionKey });
+
+      totalAnsweredCount += 1;
+      studentMetric.answeredCount += 1;
+
+      if (answer.answerRevealed) {
+        answerRevealedCount += 1;
+        studentMetric.answerRevealedCount += 1;
+      }
+
+      if (!evaluation.objective) {
+        subjectiveAnswerCount += 1;
+        continue;
+      }
+
+      objectiveCount += 1;
+      studentMetric.objectiveCount += 1;
+
+      if (evaluation.autoCorrect) {
+        objectiveCorrect += 1;
+        studentMetric.correctObjectiveCount += 1;
+      } else {
+        studentMetric.incorrectObjectiveCount += 1;
+      }
+
+      if (!question) {
+        continue;
+      }
+
+      buildKnowledgeRefs(question).forEach((knowledgeRef) => {
+        const current = knowledgeCounter.get(knowledgeRef.id) || {
+          ...knowledgeRef,
+          totalCount: 0,
+          correctCount: 0,
+          incorrectCount: 0,
+          studentIds: new Set(),
+          questionIds: new Set(),
+        };
+        current.totalCount += 1;
+        current.studentIds.add(attempt.uid || attempt.studentNo || attempt.attemptId);
+        current.questionIds.add(answer.questionId);
+        if (evaluation.autoCorrect) {
+          current.correctCount += 1;
+        } else {
+          current.incorrectCount += 1;
+        }
+        knowledgeCounter.set(knowledgeRef.id, current);
+      });
+
+      asArray(question.abilityIds).forEach((id) => {
+        const current = abilityCounter.get(id) || {
+          id,
+          label: formatAbilityLabel(id),
+          totalCount: 0,
+          correctCount: 0,
+          incorrectCount: 0,
+        };
+        current.totalCount += 1;
+        if (evaluation.autoCorrect) {
+          current.correctCount += 1;
+        } else {
+          current.incorrectCount += 1;
+        }
+        abilityCounter.set(id, current);
+      });
+    }
+  }
+
+  const knowledgeMastery = Array.from(knowledgeCounter.values())
+    .map((item) => {
+      const masteryRate = item.totalCount ? (item.correctCount / item.totalCount) * 100 : 0;
+      return {
+        id: item.id,
+        label: item.label,
+        chapterCode: item.chapterCode,
+        chapterLabel: item.chapterLabel,
+        masteryRate: Number(masteryRate.toFixed(2)),
+        totalCount: item.totalCount,
+        correctCount: item.correctCount,
+        incorrectCount: item.incorrectCount,
+        studentCount: item.studentIds.size,
+        questionCount: item.questionIds.size,
+        level: createMasteryBucket(masteryRate),
+      };
+    })
+    .sort((left, right) => {
+      if (left.masteryRate !== right.masteryRate) {
+        return left.masteryRate - right.masteryRate;
+      }
+      return right.totalCount - left.totalCount;
+    });
+
+  const abilityMastery = Array.from(abilityCounter.values())
+    .map((item) => {
+      const masteryRate = item.totalCount ? (item.correctCount / item.totalCount) * 100 : 0;
+      return {
+        id: item.id,
+        label: item.label,
+        masteryRate: Number(masteryRate.toFixed(2)),
+        totalCount: item.totalCount,
+        incorrectCount: item.incorrectCount,
+        level: createMasteryBucket(masteryRate),
+      };
+    })
+    .sort((left, right) => {
+      if (left.masteryRate !== right.masteryRate) {
+        return left.masteryRate - right.masteryRate;
+      }
+      return right.totalCount - left.totalCount;
+    });
+
+  const riskStudents = Array.from(studentMetrics.values())
+    .map((item) => {
+      const correctRate = item.objectiveCount ? (item.correctObjectiveCount / item.objectiveCount) * 100 : 0;
+      return {
+        ...item,
+        scoreRate: Number(correctRate.toFixed(2)),
+      };
+    })
+    .sort((left, right) => {
+      if (left.scoreRate !== right.scoreRate) {
+        return left.scoreRate - right.scoreRate;
+      }
+      if (left.answeredCount !== right.answeredCount) {
+        return left.answeredCount - right.answeredCount;
+      }
+      return right.answerRevealedCount - left.answerRevealedCount;
+    });
+
+  const missingStudents = allStudents
+    .filter((student) => !activeUids.has(student.id))
+    .map((student) => ({
+      uid: student.id,
+      studentNo: student.studentNo || '-',
+      studentName: student.name || '-',
+      classId: student.classId || '-',
+      status: 'missing',
+      scoreRate: 0,
+      pendingManualReview: 0,
+      incorrectObjectiveCount: 0,
+      objectiveCount: 0,
+      answeredCount: 0,
+      answerRevealedCount: 0,
+      lastSavedAt: null,
+    }));
+
+  const masteryBucketSummary = knowledgeMastery.reduce((summary, item) => {
+    summary[item.level] += 1;
+    return summary;
+  }, { strong: 0, warning: 0, weak: 0 });
+
+  const avgAnsweredCount = activeAttempts.length ? totalAnsweredCount / activeAttempts.length : 0;
+  const correctRate = objectiveCount ? (objectiveCorrect / objectiveCount) * 100 : 0;
+  const revealRate = totalAnsweredCount ? (answerRevealedCount / totalAnsweredCount) * 100 : 0;
+  const masteryRate = knowledgeMastery.length
+    ? knowledgeMastery.reduce((sum, item) => sum + item.masteryRate, 0) / knowledgeMastery.length
+    : 0;
+
+  return {
+    pageTitle: pageTitle || '',
+    totalStudents: allStudents.length,
+    participationCount: activeAttempts.length,
+    participationRate: Number(participationRate.toFixed(2)),
+    unstartedStudents,
+    avgAnsweredCount: Number(avgAnsweredCount.toFixed(2)),
+    correctRate: Number(correctRate.toFixed(2)),
+    revealRate: Number(revealRate.toFixed(2)),
+    objectiveCount,
+    subjectiveAnswerCount,
+    totalAnsweredCount,
+    answerRevealedCount,
+    masteryRate: Number(masteryRate.toFixed(2)),
+    knowledgeMastery,
+    weakKnowledgeMasteryTopN: knowledgeMastery.slice(0, 6),
+    abilityMastery,
+    weakAbilityMasteryTopN: abilityMastery.slice(0, 6),
+    studentRiskTopN: missingStudents.concat(riskStudents).slice(0, 8),
+    missingStudents: missingStudents.slice(0, 8),
+    masteryBucketSummary,
   };
 }
 
