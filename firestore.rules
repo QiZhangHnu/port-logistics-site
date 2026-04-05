@@ -34,6 +34,14 @@ service cloud.firestore {
       return isAdmin() || (isTeacher() && classId in me().assignedClassIds);
     }
 
+    function requestOwnsAttemptId(attemptId) {
+      return signedIn() && attemptId is string && attemptId.matches('^.+__' + request.auth.uid + '$');
+    }
+
+    function requestOwnsPracticeAttemptId(attemptId) {
+      return signedIn() && attemptId is string && attemptId.matches('^practice__.+__' + request.auth.uid + '$');
+    }
+
     function teacherCanWriteClasses(classIds) {
       return isAdmin()
         || (isTeacher()
@@ -256,8 +264,14 @@ service cloud.firestore {
     match /courses/PORT-LOG/attempts/{attemptId} {
       allow read: if signedIn()
         && (
-          owns(resource.data.uid)
-          || managesClass(resource.data.classId)
+          (
+            resource != null
+            && (
+              owns(resource.data.uid)
+              || managesClass(resource.data.classId)
+            )
+          )
+          || (resource == null && isStudent() && requestOwnsAttemptId(attemptId))
         );
 
       allow create: if isStudent()
@@ -424,8 +438,14 @@ service cloud.firestore {
     match /courses/PORT-LOG/practice_attempts/{attemptId} {
       allow read: if signedIn()
         && (
-          owns(resource.data.uid)
-          || managesClass(resource.data.classId)
+          (
+            resource != null
+            && (
+              owns(resource.data.uid)
+              || managesClass(resource.data.classId)
+            )
+          )
+          || (resource == null && isStudent() && requestOwnsPracticeAttemptId(attemptId))
         );
 
       allow create: if isStudent()
