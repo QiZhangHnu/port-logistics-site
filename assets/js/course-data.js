@@ -1432,6 +1432,59 @@ export function buildChapterLearningAnalytics({
   };
 }
 
+function broadcastSourceLabel(source) {
+  if (source === 'assignment') return '正式作业';
+  if (source === 'practice') return '综合练习';
+  return '正式作业与综合练习';
+}
+
+export function buildAnalyticsBroadcastScript(analytics, options = {}) {
+  const chapters = asArray(analytics?.chapters);
+  const classLabel = compactText(options.classLabel) || '当前班级';
+  const sourceLabel = compactText(options.sourceLabel) || broadcastSourceLabel(analytics?.source);
+  const topKnowledge = asArray(analytics?.overallWeakKnowledgeTopN)
+    .slice(0, 3)
+    .map((item) => item.label)
+    .filter(Boolean);
+  const stableCount = Number(analytics?.masteryBucketSummary?.strong || 0);
+  const warningCount = Number(analytics?.masteryBucketSummary?.warning || 0);
+  const weakCount = Number(analytics?.masteryBucketSummary?.weak || 0);
+
+  const introText = `下面播报${classLabel}的学情分析结果。本次播报基于${sourceLabel}数据，共覆盖 ${Number(analytics?.totalStudents || 0)} 名学生，形成 ${chapters.length} 个章节画像。`;
+  const overviewText = `${analytics?.overallNarrative || '当前筛选条件下还没有形成可分析的章节数据。'} 其中，稳定章节 ${stableCount} 个，需要巩固的章节 ${warningCount} 个，重点补强章节 ${weakCount} 个。${topKnowledge.length ? `优先讲评的知识点包括：${topKnowledge.join('、')}。` : ''}`;
+
+  const chapterSegments = chapters.map((chapter, index) => {
+    const firstSuggestion = asArray(chapter?.narrative?.suggestions)[0] || '建议继续结合章节练习巩固本章内容。';
+    return {
+      id: `chapter-${chapter.chapterId || index + 1}`,
+      type: 'chapter',
+      chapterId: chapter.chapterId,
+      title: chapter.displayLabel || chapter.chapterLabel || `章节 ${index + 1}`,
+      text: `${chapter.narrative?.evaluation || ''} 教学建议：${firstSuggestion}`,
+    };
+  });
+
+  const closingText = weakCount > 0
+    ? '播报结束。建议教师优先围绕重点补强章节组织专题讲评，并通过同类题训练完成巩固。'
+    : '播报结束。当前班级整体掌握较为稳定，建议继续保持章节复盘与综合迁移训练。';
+
+  const segments = [
+    { id: 'intro', type: 'intro', title: '播报开场', text: introText },
+    { id: 'overview', type: 'overview', title: '整体结论', text: overviewText },
+    ...chapterSegments,
+    { id: 'closing', type: 'closing', title: '教学提示', text: closingText },
+  ];
+
+  return {
+    title: `${classLabel}学情数字人播报`,
+    classLabel,
+    sourceLabel,
+    generatedAt: new Date().toISOString(),
+    segments,
+    fullText: segments.map((item) => item.text).join('\n'),
+  };
+}
+
 export function buildAssignmentAnalytics({ assignment, attempts, questionMap, classStudents }) {
   const totalPossibleScore = Number(assignment?.totalScore || 0);
   const allStudents = uniqueById(classStudents);

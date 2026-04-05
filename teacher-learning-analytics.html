@@ -141,6 +141,86 @@
       border-radius: inherit;
       background: linear-gradient(90deg, #115d8c 0%, #38bdf8 100%);
     }
+
+    .broadcast-avatar-shell {
+      position: relative;
+      overflow: hidden;
+      min-height: 26rem;
+      background:
+        radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 38%),
+        linear-gradient(160deg, rgba(11, 58, 90, 0.94), rgba(17, 93, 140, 0.92) 55%, rgba(56, 189, 248, 0.76));
+    }
+
+    .broadcast-avatar-shell::after {
+      content: "";
+      position: absolute;
+      inset: auto -12% -22% auto;
+      width: 18rem;
+      height: 18rem;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+
+    .broadcast-avatar-frame {
+      position: relative;
+      width: min(100%, 25rem);
+      margin: 0 auto;
+      aspect-ratio: 4 / 5;
+      border-radius: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.09);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+    }
+
+    .broadcast-avatar-frame img,
+    .broadcast-avatar-frame canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .broadcast-avatar-frame.is-speaking img {
+      animation: presenter-float 2.6s ease-in-out infinite;
+    }
+
+    .broadcast-bars span {
+      display: block;
+      width: 0.34rem;
+      height: 0.9rem;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(191,219,254,0.72));
+      transform-origin: center bottom;
+      animation: presenter-bars 1s ease-in-out infinite;
+      animation-play-state: paused;
+    }
+
+    .broadcast-bars.is-speaking span {
+      animation-play-state: running;
+    }
+
+    .broadcast-bars span:nth-child(2) { animation-delay: 0.12s; }
+    .broadcast-bars span:nth-child(3) { animation-delay: 0.24s; }
+    .broadcast-bars span:nth-child(4) { animation-delay: 0.36s; }
+
+    .chapter-card.is-broadcast-focus {
+      box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.32), 0 30px 80px rgba(14, 165, 233, 0.16);
+      transform: translateY(-2px);
+      transition: box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    @keyframes presenter-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @keyframes presenter-bars {
+      0%, 100% { transform: scaleY(0.55); opacity: 0.72; }
+      50% { transform: scaleY(1.2); opacity: 1; }
+    }
   </style>
 </head>
 <body class="analytics-grid min-h-screen bg-[radial-gradient(circle_at_top,_rgba(199,227,255,0.92),_rgba(241,245,249,1)_44%,_rgba(248,250,252,1)_100%)] font-sans text-slate-800">
@@ -193,6 +273,70 @@
       </div>
     </section>
 
+    <section class="grid gap-6 xl:grid-cols-[0.72fr_1.28fr]">
+      <article class="chart-card rounded-[2rem] border border-white/70 bg-white/88 shadow-[0_24px_70px_rgba(15,23,42,0.07)] backdrop-blur">
+        <div class="broadcast-avatar-shell px-6 py-6 text-white">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <p class="section-kicker text-white/60">Digital Presenter</p>
+              <h3 class="mt-2 text-2xl font-bold">数字人学情播报</h3>
+            </div>
+            <span id="broadcast-status-chip" class="rounded-full border border-white/20 bg-white/12 px-3 py-1 text-xs font-semibold text-white/90">待生成</span>
+          </div>
+          <div class="mt-6 broadcast-avatar-frame" id="broadcast-avatar-frame">
+            <div id="live2d-avatar-stage" class="absolute inset-0 z-10"></div>
+            <img id="broadcast-avatar-fallback" src="assets/avatars/teacher-analyst.svg" alt="数字人播报形象" />
+            <div class="broadcast-bars absolute bottom-5 right-5 z-20 flex items-end gap-1.5 rounded-full bg-white/12 px-3 py-2 backdrop-blur" id="broadcast-audio-bars" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <p id="broadcast-avatar-hint" class="mt-4 text-xs leading-6 text-white/72">首版默认使用内置播报形象。补充 Live2D Core 和模型后，可切换为 easy-live2d 数字人角色。</p>
+        </div>
+      </article>
+
+      <article class="chart-card rounded-[2rem] border border-white/70 bg-white/88 px-6 py-6 shadow-[0_24px_70px_rgba(15,23,42,0.07)] backdrop-blur">
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p class="section-kicker">Broadcast Console</p>
+            <h3 class="mt-2 text-2xl font-bold text-ocean-deep">播报控制台</h3>
+            <p class="mt-2 text-sm leading-7 text-slate-500">系统会根据当前筛选结果自动生成播报稿，支持播放、暂停、停止，并在播报时同步高亮对应章节。</p>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <button id="generate-broadcast-script-btn" type="button" class="rounded-2xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-ocean-mid hover:text-ocean-deep">生成播报稿</button>
+            <button id="start-broadcast-btn" type="button" class="rounded-2xl bg-ocean-deep px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-ocean-mid">开始播报</button>
+            <button id="pause-broadcast-btn" type="button" class="rounded-2xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-ocean-mid hover:text-ocean-deep">暂停</button>
+            <button id="stop-broadcast-btn" type="button" class="rounded-2xl border border-rose-200 px-4 py-2.5 text-sm font-semibold text-rose-600 transition hover:bg-rose-50">停止</button>
+          </div>
+        </div>
+
+        <div class="mt-5 grid gap-4 xl:grid-cols-[0.8fr_1.2fr]">
+          <section class="rounded-[1.75rem] border border-white/80 bg-gradient-to-br from-slate-50 via-white to-sky-50 px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+            <p class="section-kicker">Current Segment</p>
+            <h4 id="broadcast-current-title" class="mt-2 text-xl font-bold text-ocean-deep">等待播报</h4>
+            <p id="broadcast-subtitle" class="mt-4 text-sm leading-8 text-slate-600">点击“生成播报稿”后，系统会输出整体结论和各章节播报内容。</p>
+            <div class="mt-5 rounded-[1.4rem] bg-white px-4 py-4 shadow-[0_10px_25px_rgba(15,23,42,0.04)]">
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">播报说明</p>
+              <p id="broadcast-meta" class="mt-3 text-sm leading-7 text-slate-500">当前使用浏览器语音合成进行首版播报。若浏览器不支持语音合成，将保留播报稿文本预览。</p>
+            </div>
+          </section>
+
+          <section class="rounded-[1.75rem] border border-white/80 bg-white px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <p class="section-kicker">Script Outline</p>
+                <h4 class="mt-2 text-xl font-bold text-ocean-deep">播报稿预览</h4>
+              </div>
+              <span id="broadcast-segment-count" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">0 段</span>
+            </div>
+            <div id="broadcast-script-outline" class="mt-4 space-y-3"></div>
+          </section>
+        </div>
+      </article>
+    </section>
+
     <section id="learning-overview-cards" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4"></section>
 
     <section class="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
@@ -241,6 +385,7 @@
     </section>
   </main>
 
-  <script type="module" src="assets/js/teacher-learning-analytics-page.js"></script>
+  <script src="/assets/vendor/live2d/live2dcubismcore.js"></script>
+  <script type="module" src="assets/js/teacher-learning-analytics-page.js?v=20260405-live2d"></script>
 </body>
 </html>

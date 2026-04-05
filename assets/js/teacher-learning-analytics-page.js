@@ -5,6 +5,7 @@ import {
   signOut,
 } from './firebase-core.js';
 import {
+  buildAnalyticsBroadcastScript,
   buildChapterLearningAnalytics,
   listAssignmentAttempts,
   listAssignmentsForProfile,
@@ -16,6 +17,7 @@ import {
   listQuestionKeysByPrefix,
   listUsersByFilters,
 } from './course-data.js';
+import { live2DBroadcastConfig } from './live2d-broadcast-config.js?v=20260405-live2d';
 
 const headerSummaryEl = document.getElementById('analytics-header-summary');
 const classSelect = document.getElementById('analytics-class-select');
@@ -27,6 +29,20 @@ const overviewCardsEl = document.getElementById('learning-overview-cards');
 const overallSummaryEl = document.getElementById('analytics-overall-summary');
 const chapterSectionsEl = document.getElementById('chapter-analysis-sections');
 const signoutBtn = document.getElementById('analytics-signout-btn');
+const generateBroadcastBtn = document.getElementById('generate-broadcast-script-btn');
+const startBroadcastBtn = document.getElementById('start-broadcast-btn');
+const pauseBroadcastBtn = document.getElementById('pause-broadcast-btn');
+const stopBroadcastBtn = document.getElementById('stop-broadcast-btn');
+const broadcastStatusChip = document.getElementById('broadcast-status-chip');
+const broadcastCurrentTitleEl = document.getElementById('broadcast-current-title');
+const broadcastSubtitleEl = document.getElementById('broadcast-subtitle');
+const broadcastMetaEl = document.getElementById('broadcast-meta');
+const broadcastSegmentCountEl = document.getElementById('broadcast-segment-count');
+const broadcastScriptOutlineEl = document.getElementById('broadcast-script-outline');
+const broadcastAvatarFrameEl = document.getElementById('broadcast-avatar-frame');
+const broadcastAudioBarsEl = document.getElementById('broadcast-audio-bars');
+const broadcastAvatarHintEl = document.getElementById('broadcast-avatar-hint');
+const live2dAvatarStageEl = document.getElementById('live2d-avatar-stage');
 
 const chartRoots = {
   chapterPerformance: document.getElementById('chapter-performance-chart'),
@@ -41,6 +57,19 @@ const state = {
   questionKeyMap: new Map(),
   analytics: null,
   chartInstances: new Map(),
+  broadcast: {
+    script: null,
+    activeSegmentId: '',
+    isPlaying: false,
+    isPaused: false,
+    supported: typeof window !== 'undefined' && 'speechSynthesis' in window,
+    voices: [],
+    selectedVoice: null,
+    avatarMode: 'fallback',
+    live2dReady: false,
+    live2dSprite: null,
+    live2dApp: null,
+  },
 };
 
 function setToneMessage(target, message, tone = 'info') {
@@ -136,6 +165,357 @@ function sourceMixText(chapter) {
   return segments.length ? segments.join(' / ') : '暂无来源样本';
 }
 
+function broadcastSourceLabel(value) {
+  if (value === 'assignment') return '仅正式作业';
+  if (value === 'practice') return '仅综合练习';
+  return '作业 + 综合练习';
+}
+
+function updateBroadcastStatusChip(label, tone = 'idle') {
+  if (!broadcastStatusChip) return;
+  broadcastStatusChip.textContent = label;
+  broadcastStatusChip.className = 'rounded-full border px-3 py-1 text-xs font-semibold';
+  if (tone === 'playing') {
+    broadcastStatusChip.classList.add('border-emerald-200', 'bg-emerald-50', 'text-emerald-700');
+  } else if (tone === 'paused') {
+    broadcastStatusChip.classList.add('border-amber-200', 'bg-amber-50', 'text-amber-700');
+  } else if (tone === 'error') {
+    broadcastStatusChip.classList.add('border-rose-200', 'bg-rose-50', 'text-rose-700');
+  } else {
+    broadcastStatusChip.classList.add('border-slate-200', 'bg-slate-100', 'text-slate-600');
+  }
+}
+
+function clearBroadcastFocus() {
+  chapterSectionsEl
+    .querySelectorAll('.chapter-card.is-broadcast-focus')
+    .forEach((node) => node.classList.remove('is-broadcast-focus'));
+}
+
+function focusBroadcastChapter(chapterId) {
+  clearBroadcastFocus();
+  if (!chapterId) return;
+  const card = chapterSectionsEl.querySelector(`.chapter-card[data-chapter-id="${chapterId}"]`);
+  if (!card) return;
+  card.classList.add('is-broadcast-focus');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function setAvatarSpeaking(isSpeaking) {
+  broadcastAvatarFrameEl?.classList.toggle('is-speaking', isSpeaking);
+  broadcastAudioBarsEl?.classList.toggle('is-speaking', isSpeaking);
+  const sprite = state.broadcast.live2dSprite;
+  if (!sprite || !state.broadcast.live2dReady) {
+    return;
+  }
+  try {
+    sprite.startMotion?.({
+      group: isSpeaking
+        ? live2DBroadcastConfig.introMotionGroup || 'Tap'
+        : live2DBroadcastConfig.idleMotionGroup || 'Idle',
+      no: 0,
+      priority: isSpeaking ? 2 : 1,
+    });
+  } catch (error) {
+    console.warn('Live2D motion switch failed:', error);
+  }
+}
+
+function renderBroadcastOutline(script) {
+  const segments = script?.segments || [];
+  broadcastSegmentCountEl.textContent = `${segments.length} 段`;
+  if (!segments.length) {
+    broadcastScriptOutlineEl.innerHTML = `
+      <div class="rounded-[1.4rem] border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-sm text-slate-500">
+        当前还没有生成播报稿。
+      </div>
+    `;
+    return;
+  }
+  broadcastScriptOutlineEl.innerHTML = segments.map((segment, index) => `
+    <article
+      data-broadcast-segment-id="${segment.id}"
+      class="rounded-[1.35rem] border border-slate-200 bg-slate-50 px-4 py-4 transition"
+    >
+      <div class="flex items-start gap-3">
+        <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-xs font-bold text-slate-500 shadow-sm">${index + 1}</span>
+        <div>
+          <p class="text-sm font-semibold text-slate-800">${segment.title}</p>
+          <p class="mt-2 text-sm leading-7 text-slate-500">${segment.text}</p>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+function highlightBroadcastSegment(segmentId) {
+  broadcastScriptOutlineEl
+    ?.querySelectorAll('[data-broadcast-segment-id]')
+    .forEach((node) => {
+      const active = node.dataset.broadcastSegmentId === segmentId;
+      node.classList.toggle('border-ocean-mid', active);
+      node.classList.toggle('bg-sky-50', active);
+      node.classList.toggle('shadow-[0_16px_30px_rgba(17,93,140,0.08)]', active);
+      if (active) {
+        node.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+}
+
+function updateBroadcastButtons() {
+  const hasScript = Boolean(state.broadcast.script?.segments?.length);
+  startBroadcastBtn.disabled = !hasScript;
+  pauseBroadcastBtn.disabled = !state.broadcast.isPlaying;
+  stopBroadcastBtn.disabled = !state.broadcast.isPlaying && !state.broadcast.isPaused;
+  generateBroadcastBtn.disabled = !state.analytics;
+
+  [startBroadcastBtn, pauseBroadcastBtn, stopBroadcastBtn, generateBroadcastBtn].forEach((button) => {
+    if (!button) return;
+    button.classList.toggle('opacity-50', button.disabled);
+    button.classList.toggle('cursor-not-allowed', button.disabled);
+  });
+  pauseBroadcastBtn.textContent = state.broadcast.isPaused ? '继续' : '暂停';
+}
+
+function resetBroadcastDisplay() {
+  state.broadcast.activeSegmentId = '';
+  broadcastCurrentTitleEl.textContent = '等待播报';
+  broadcastSubtitleEl.textContent = '点击“生成播报稿”后，系统会输出整体结论和各章节播报内容。';
+  highlightBroadcastSegment('');
+  clearBroadcastFocus();
+  setAvatarSpeaking(false);
+  updateBroadcastStatusChip(state.broadcast.script ? '已生成' : '待生成');
+  updateBroadcastButtons();
+}
+
+function buildClassLabel() {
+  const currentOption = classSelect?.selectedOptions?.[0];
+  return currentOption?.textContent?.trim() || normalizeSelectedClassId() || '当前班级';
+}
+
+function generateBroadcastScriptFromState() {
+  if (!state.analytics) {
+    state.broadcast.script = null;
+    renderBroadcastOutline(null);
+    resetBroadcastDisplay();
+    return;
+  }
+  state.broadcast.script = buildAnalyticsBroadcastScript(state.analytics, {
+    classLabel: buildClassLabel(),
+    sourceLabel: broadcastSourceLabel(sourceSelect.value),
+  });
+  renderBroadcastOutline(state.broadcast.script);
+  broadcastCurrentTitleEl.textContent = state.broadcast.script.title;
+  broadcastSubtitleEl.textContent = state.broadcast.script.segments[0]?.text || '播报稿已生成。';
+  broadcastMetaEl.textContent = state.broadcast.supported
+    ? `当前使用浏览器语音合成进行首版播报，共生成 ${state.broadcast.script.segments.length} 段内容。`
+    : '当前浏览器不支持语音合成，系统将保留播报稿文本预览。';
+  updateBroadcastStatusChip('已生成');
+  updateBroadcastButtons();
+}
+
+function updateBroadcastSegment(segment) {
+  state.broadcast.activeSegmentId = segment?.id || '';
+  broadcastCurrentTitleEl.textContent = segment?.title || '等待播报';
+  broadcastSubtitleEl.textContent = segment?.text || '当前没有可播报内容。';
+  highlightBroadcastSegment(segment?.id || '');
+  focusBroadcastChapter(segment?.chapterId || '');
+}
+
+function stopBroadcastPlayback() {
+  if (state.broadcast.supported) {
+    window.speechSynthesis.cancel();
+  }
+  state.broadcast.isPlaying = false;
+  state.broadcast.isPaused = false;
+  setAvatarSpeaking(false);
+  updateBroadcastStatusChip(state.broadcast.script ? '已生成' : '待生成');
+  updateBroadcastButtons();
+}
+
+function chooseBroadcastVoice() {
+  if (!state.broadcast.supported) {
+    return null;
+  }
+  const voices = window.speechSynthesis.getVoices();
+  state.broadcast.voices = voices;
+  state.broadcast.selectedVoice = voices.find((voice) => /zh(-|_)?CN/i.test(voice.lang))
+    || voices.find((voice) => /^zh/i.test(voice.lang))
+    || voices[0]
+    || null;
+  return state.broadcast.selectedVoice;
+}
+
+async function playBroadcastSegments(segments, index = 0) {
+  if (!state.broadcast.supported || !segments.length || index >= segments.length) {
+    stopBroadcastPlayback();
+    resetBroadcastDisplay();
+    return;
+  }
+
+  const voice = chooseBroadcastVoice();
+  const segment = segments[index];
+  const utterance = new SpeechSynthesisUtterance(segment.text);
+  if (voice) {
+    utterance.voice = voice;
+    utterance.lang = voice.lang || 'zh-CN';
+  } else {
+    utterance.lang = 'zh-CN';
+  }
+  utterance.rate = 1.02;
+  utterance.pitch = 1;
+
+  utterance.onstart = () => {
+    state.broadcast.isPlaying = true;
+    state.broadcast.isPaused = false;
+    setAvatarSpeaking(true);
+    updateBroadcastStatusChip('播报中', 'playing');
+    updateBroadcastSegment(segment);
+    updateBroadcastButtons();
+  };
+  utterance.onend = () => {
+    setAvatarSpeaking(false);
+    if (!state.broadcast.isPlaying) {
+      return;
+    }
+    if (index + 1 < segments.length) {
+      playBroadcastSegments(segments, index + 1);
+      return;
+    }
+    stopBroadcastPlayback();
+    updateBroadcastStatusChip('播报完成', 'idle');
+    broadcastCurrentTitleEl.textContent = '播报完成';
+    broadcastSubtitleEl.textContent = segment.text;
+  };
+  utterance.onerror = () => {
+    stopBroadcastPlayback();
+    updateBroadcastStatusChip('播报失败', 'error');
+    setToneMessage(messageEl, '浏览器语音播报失败，请尝试重新点击“开始播报”。', 'error');
+  };
+  window.speechSynthesis.speak(utterance);
+}
+
+async function startBroadcastPlayback() {
+  const segments = state.broadcast.script?.segments || [];
+  if (!segments.length) {
+    generateBroadcastScriptFromState();
+  }
+  if (!state.broadcast.supported) {
+    updateBroadcastStatusChip('仅预览', 'error');
+    setToneMessage(messageEl, '当前浏览器不支持语音合成，已保留播报稿文本预览。', 'error');
+    return;
+  }
+  window.speechSynthesis.cancel();
+  await playBroadcastSegments(state.broadcast.script?.segments || []);
+}
+
+function toggleBroadcastPause() {
+  if (!state.broadcast.supported || !state.broadcast.isPlaying) {
+    return;
+  }
+  if (state.broadcast.isPaused) {
+    window.speechSynthesis.resume();
+    state.broadcast.isPaused = false;
+    setAvatarSpeaking(true);
+    updateBroadcastStatusChip('播报中', 'playing');
+  } else {
+    window.speechSynthesis.pause();
+    state.broadcast.isPaused = true;
+    setAvatarSpeaking(false);
+    updateBroadcastStatusChip('已暂停', 'paused');
+  }
+  updateBroadcastButtons();
+}
+
+async function initLive2DBroadcastAvatar() {
+  if (!live2DBroadcastConfig?.enabled || !live2DBroadcastConfig?.modelJsonPath || !live2dAvatarStageEl) {
+    broadcastAvatarHintEl.textContent = '首版默认使用内置播报形象。补充 Live2D Core 和模型后，可切换为 easy-live2d 数字人角色。';
+    return;
+  }
+
+  if (!window.Live2DCubismCore) {
+    broadcastAvatarHintEl.textContent = '已启用 Live2D 配置，但未检测到 Cubism Core。请先在页面中引入官方 Core 脚本。';
+    return;
+  }
+  try {
+    const easyLive2D = await import(live2DBroadcastConfig.bundlePath);
+    const { Application, Ticker, Config, Live2DSprite, Priority } = easyLive2D;
+    if (!Application || !Live2DSprite) {
+      throw new Error('easy-live2d bundle 导出不完整。');
+    }
+
+    Config.MotionGroupIdle = live2DBroadcastConfig.idleMotionGroup || 'Idle';
+    Config.MouseFollow = false;
+
+    const canvas = document.createElement('canvas');
+    canvas.className = 'h-full w-full';
+    live2dAvatarStageEl.innerHTML = '';
+    live2dAvatarStageEl.appendChild(canvas);
+
+    const app = new Application();
+    await app.init({
+      view: canvas,
+      backgroundAlpha: 0,
+      autoDensity: true,
+      width: live2dAvatarStageEl.clientWidth || 360,
+      height: live2dAvatarStageEl.clientHeight || 450,
+      resolution: Math.max(window.devicePixelRatio || 1, 1),
+    });
+
+    const sprite = new Live2DSprite();
+    sprite.init({
+      modelPath: live2DBroadcastConfig.modelJsonPath,
+      ticker: Ticker.shared,
+    });
+    const stageWidth = live2dAvatarStageEl.clientWidth || 360;
+    const stageHeight = live2dAvatarStageEl.clientHeight || 450;
+    const scale = live2DBroadcastConfig.scale || 0.34;
+    sprite.x = -stageWidth * 0.34;
+    sprite.y = -stageHeight * 0.3;
+    sprite.width = stageWidth * window.devicePixelRatio * scale * 3.05;
+    sprite.height = stageHeight * window.devicePixelRatio * scale * 3.05;
+    app.stage.addChild(sprite);
+    state.broadcast.live2dReady = true;
+    state.broadcast.live2dSprite = sprite;
+    state.broadcast.live2dApp = app;
+    document.getElementById('broadcast-avatar-fallback')?.classList.add('hidden');
+    broadcastAvatarHintEl.textContent = '褰撳墠宸插惎鐢?easy-live2d Hiyori 鍏嶈垂妯″瀷锛屾挱鎶ユ椂浼氳嚜鍔ㄥ垏鎹㈠姩浣溿€?;
+    window.setTimeout(() => {
+      try {
+        sprite.startMotion?.({
+          group: live2DBroadcastConfig.idleMotionGroup || 'Idle',
+          no: 0,
+          priority: Priority?.Normal ?? 1,
+        });
+      } catch (error) {
+        console.warn('Initial Live2D idle motion failed:', error);
+      }
+    }, 420);
+
+    sprite.onLive2D?.('ready', async () => {
+      state.broadcast.live2dReady = true;
+      state.broadcast.live2dSprite = sprite;
+      state.broadcast.live2dApp = app;
+      document.getElementById('broadcast-avatar-fallback')?.classList.add('hidden');
+      broadcastAvatarHintEl.textContent = '当前已启用 easy-live2d Hiyori 免费模型，播报时会自动切换动作。';
+      try {
+        await sprite.startMotion({
+          group: live2DBroadcastConfig.idleMotionGroup || 'Idle',
+          no: 0,
+          priority: Priority?.Normal ?? 1,
+        });
+      } catch (error) {
+        // Ignore idle motion failures and keep the model visible.
+      }
+    });
+
+    state.broadcast.avatarMode = 'live2d';
+  } catch (error) {
+    console.error('Live2D avatar init failed:', error);
+    broadcastAvatarHintEl.textContent = 'Live2D 模型初始化失败，系统已回退到内置播报形象。';
+  }
+}
+
 function getChart(name) {
   if (!window.echarts || !chartRoots[name]) {
     return null;
@@ -148,6 +528,18 @@ function getChart(name) {
 
 function resizeCharts() {
   state.chartInstances.forEach((chart) => chart.resize());
+  if (state.broadcast.live2dApp?.renderer && live2dAvatarStageEl) {
+    const width = live2dAvatarStageEl.clientWidth || 360;
+    const height = live2dAvatarStageEl.clientHeight || 450;
+    state.broadcast.live2dApp.renderer.resize(width, height);
+    if (state.broadcast.live2dSprite) {
+      const scale = live2DBroadcastConfig.scale || 0.34;
+      state.broadcast.live2dSprite.x = -width * 0.34;
+      state.broadcast.live2dSprite.y = -height * 0.3;
+      state.broadcast.live2dSprite.width = width * window.devicePixelRatio * scale * 3.05;
+      state.broadcast.live2dSprite.height = height * window.devicePixelRatio * scale * 3.05;
+    }
+  }
 }
 
 function renderChartPlaceholder(target, message) {
@@ -509,7 +901,7 @@ function renderChapterSections(analytics) {
   chapterSectionsEl.innerHTML = chapters.map((chapter) => {
     const theme = chapterTheme(chapter.level);
     return `
-      <article class="chapter-card rounded-[2.2rem] border border-white/80 bg-white/92 shadow-[0_28px_80px_rgba(15,23,42,0.08)] backdrop-blur">
+      <article data-chapter-id="${chapter.chapterId}" class="chapter-card rounded-[2.2rem] border border-white/80 bg-white/92 shadow-[0_28px_80px_rgba(15,23,42,0.08)] backdrop-blur">
         <div class="chapter-hero ${theme.hero} px-6 py-6">
           <div class="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
             <div class="max-w-3xl">
@@ -636,6 +1028,7 @@ function renderAnalytics(analytics) {
   renderWeakKnowledgeChart(analytics);
   syncChapterFocusOptions(analytics);
   renderChapterSections(analytics);
+  generateBroadcastScriptFromState();
 }
 
 async function ensureReferenceData() {
@@ -681,6 +1074,10 @@ async function loadPracticeAttempts(classId) {
 async function refreshAnalytics() {
   const classId = normalizeSelectedClassId();
   if (!classId) {
+    state.analytics = null;
+    state.broadcast.script = null;
+    renderBroadcastOutline(null);
+    resetBroadcastDisplay();
     renderPageEmpty('请先选择一个班级。');
     setToneMessage(messageEl, '请选择班级后开始分析。');
     return;
@@ -713,6 +1110,10 @@ async function refreshAnalytics() {
     setToneMessage(messageEl, `分析完成：覆盖 ${state.analytics.totalStudents} 名学生，形成 ${state.analytics.chapterCount} 个章节画像。`, 'success');
   } catch (error) {
     console.error('Failed to load learning analytics:', error);
+    state.analytics = null;
+    state.broadcast.script = null;
+    renderBroadcastOutline(null);
+    resetBroadcastDisplay();
     renderPageEmpty('加载学情分析失败，请检查网络或教师权限。');
     setToneMessage(messageEl, error?.message || '加载学情分析失败。', 'error');
   }
@@ -742,6 +1143,7 @@ function renderHeader(user, profile) {
 function bindEvents() {
   filterForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+    stopBroadcastPlayback();
     await refreshAnalytics();
   });
 
@@ -751,11 +1153,34 @@ function bindEvents() {
     }
   });
 
+  generateBroadcastBtn.addEventListener('click', () => {
+    generateBroadcastScriptFromState();
+    setToneMessage(messageEl, '已根据当前筛选结果生成播报稿。', 'success');
+  });
+
+  startBroadcastBtn.addEventListener('click', async () => {
+    await startBroadcastPlayback();
+  });
+
+  pauseBroadcastBtn.addEventListener('click', () => {
+    toggleBroadcastPause();
+  });
+
+  stopBroadcastBtn.addEventListener('click', () => {
+    stopBroadcastPlayback();
+    resetBroadcastDisplay();
+  });
+
   signoutBtn.addEventListener('click', async () => {
+    stopBroadcastPlayback();
     await signOut(auth);
     window.location.href = 'login.html';
   });
 
+  if (state.broadcast.supported) {
+    window.speechSynthesis.addEventListener?.('voiceschanged', chooseBroadcastVoice);
+    chooseBroadcastVoice();
+  }
   window.addEventListener('resize', resizeCharts);
 }
 
@@ -783,6 +1208,9 @@ async function bootstrap() {
       renderHeader(user, profile);
       await refreshClasses();
       await refreshAnalytics();
+      initLive2DBroadcastAvatar().catch((error) => {
+        console.error('Live2D avatar init failed after analytics ready:', error);
+      });
     } catch (error) {
       console.error('Teacher analytics bootstrap failed:', error);
       setToneMessage(messageEl, error?.message || '初始化学情分析页面失败。', 'error');
@@ -793,4 +1221,6 @@ async function bootstrap() {
 
 bindEvents();
 renderPageEmpty('请选择班级后查看学情分析结果。');
+renderBroadcastOutline(null);
+resetBroadcastDisplay();
 bootstrap();
