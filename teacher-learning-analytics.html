@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>学情分析中心 | 港口物流课程</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Nunito Sans"', '"Noto Sans SC"', '"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'] },
+          colors: {
+            ocean: { deep: '#0B3A5A', mid: '#115D8C', light: '#C7E3FF' },
+            sand: { soft: '#F4E7D3', deep: '#D8B88C' },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    .analytics-grid {
+      position: relative;
+      overflow-x: hidden;
+      isolation: isolate;
+    }
+
+    .analytics-grid::before {
+      content: "";
+      position: absolute;
+      inset: auto -10% -45% auto;
+      width: 28rem;
+      height: 28rem;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.18), rgba(56, 189, 248, 0));
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .analytics-grid::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.12), transparent 65%);
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .metric-card,
+    .chart-card,
+    .chapter-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::before,
+    .chart-card::before,
+    .chapter-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+
+    .metric-card::after {
+      content: "";
+      position: absolute;
+      top: -2.75rem;
+      right: -2.75rem;
+      width: 8rem;
+      height: 8rem;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(17, 93, 140, 0.16), rgba(17, 93, 140, 0));
+      pointer-events: none;
+    }
+
+    .section-kicker {
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(15, 23, 42, 0.45);
+    }
+
+    .chapter-hero {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chapter-hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -3rem -4rem auto;
+      width: 12rem;
+      height: 12rem;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+
+    .chapter-hero.theme-strong {
+      background: linear-gradient(135deg, #0f766e 0%, #0f9f8f 52%, #a7f3d0 100%);
+      color: #ecfeff;
+    }
+
+    .chapter-hero.theme-warning {
+      background: linear-gradient(135deg, #b45309 0%, #f59e0b 55%, #fde68a 100%);
+      color: #fffdf5;
+    }
+
+    .chapter-hero.theme-weak {
+      background: linear-gradient(135deg, #b91c1c 0%, #ef4444 54%, #fecaca 100%);
+      color: #fff7f7;
+    }
+
+    .chapter-glass {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      backdrop-filter: blur(10px);
+    }
+
+    .metric-progress {
+      height: 0.5rem;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.18);
+    }
+
+    .metric-progress > span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #115d8c 0%, #38bdf8 100%);
+    }
+  </style>
+</head>
+<body class="analytics-grid min-h-screen bg-[radial-gradient(circle_at_top,_rgba(199,227,255,0.92),_rgba(241,245,249,1)_44%,_rgba(248,250,252,1)_100%)] font-sans text-slate-800">
+  <header class="border-b border-slate-200 bg-white/90 backdrop-blur">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5">
+      <div>
+        <p class="text-xs uppercase tracking-[0.35em] text-ocean-mid/70">Learning Analytics</p>
+        <h1 class="mt-2 text-3xl font-bold text-ocean-deep">班级学情分析中心</h1>
+        <p id="analytics-header-summary" class="mt-2 text-sm text-slate-600">正在校验教师权限并加载分析数据…</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-3 text-sm">
+        <a href="teacher-dashboard.html" class="rounded-full border border-slate-200 px-4 py-2 font-semibold text-slate-700 transition hover:border-ocean-mid hover:text-ocean-deep">返回教师后台</a>
+        <a href="index.html" class="rounded-full border border-slate-200 px-4 py-2 font-semibold text-slate-700 transition hover:border-ocean-mid hover:text-ocean-deep">首页</a>
+        <button id="analytics-signout-btn" type="button" class="rounded-full bg-ocean-deep px-4 py-2 font-semibold text-white transition hover:bg-ocean-mid">退出登录</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl space-y-6 px-4 py-8">
+    <section class="overflow-hidden rounded-[2rem] border border-white/70 bg-white/88 shadow-[0_28px_80px_rgba(15,23,42,0.08)] backdrop-blur">
+      <div class="grid gap-5 px-6 py-6 lg:grid-cols-[1.25fr_0.75fr]">
+        <div>
+          <p class="section-kicker text-ocean-mid/70">Class Snapshot</p>
+          <h2 class="mt-3 text-3xl font-bold text-ocean-deep">按章节看班级真实掌握情况</h2>
+          <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600">本页聚焦班级整体表现，不做单个学生画像。系统会基于正式作业与综合练习的真实作答数据，按章节输出图表、评价结果和教学建议。</p>
+        </div>
+        <div class="rounded-[1.75rem] border border-white/80 bg-gradient-to-br from-slate-50 via-white to-sky-50 px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+          <p class="text-sm font-semibold text-ocean-deep">分析口径</p>
+          <ul class="mt-3 space-y-2 text-sm leading-7 text-slate-600">
+            <li>仅教师或管理员可查看。</li>
+            <li>支持按班级和数据来源筛选。</li>
+            <li>文字评价由固定阈值和模板生成，不依赖 LLM。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-slate-100 bg-slate-50/80 px-6 py-5">
+        <form id="learning-analytics-filter-form" class="grid gap-4 lg:grid-cols-[1.1fr_0.9fr_1fr_auto]">
+          <select id="analytics-class-select" class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"></select>
+          <select id="analytics-source-select" class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm">
+            <option value="all">作业 + 综合练习</option>
+            <option value="assignment">仅正式作业</option>
+            <option value="practice">仅综合练习</option>
+          </select>
+          <select id="analytics-chapter-focus-select" class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm">
+            <option value="">显示全部章节</option>
+          </select>
+          <button id="refresh-learning-analytics-btn" type="submit" class="rounded-2xl bg-ocean-deep px-5 py-3 text-sm font-semibold text-white transition hover:bg-ocean-mid">刷新分析</button>
+        </form>
+        <p id="learning-analytics-message" class="mt-3 text-sm text-slate-600" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="learning-overview-cards" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4"></section>
+
+    <section class="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+      <article class="chart-card rounded-[2rem] border border-white/70 bg-white/88 px-6 py-6 shadow-[0_24px_70px_rgba(15,23,42,0.07)] backdrop-blur">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="section-kicker">Overview Chart</p>
+            <h3 class="mt-3 text-2xl font-bold text-ocean-deep">章节掌握与正确率</h3>
+            <p class="mt-2 text-sm text-slate-500">同一视图中对比各章节知识点平均掌握率与客观题正确率。</p>
+          </div>
+        </div>
+        <div id="chapter-performance-chart" class="mt-5 h-[24rem]"></div>
+      </article>
+
+      <article class="chart-card rounded-[2rem] border border-white/70 bg-white/88 px-6 py-6 shadow-[0_24px_70px_rgba(15,23,42,0.07)] backdrop-blur">
+        <p class="section-kicker">Narrative Summary</p>
+        <h3 class="mt-3 text-2xl font-bold text-ocean-deep">班级整体判断</h3>
+        <div id="analytics-overall-summary" class="mt-5 rounded-[1.75rem] border border-white/80 bg-gradient-to-br from-slate-50 via-white to-sky-50 px-5 py-5 text-sm leading-7 text-slate-600 shadow-[0_18px_40px_rgba(15,23,42,0.05)]"></div>
+      </article>
+    </section>
+
+    <section class="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+      <article class="chart-card rounded-[2rem] border border-white/70 bg-white/88 px-6 py-6 shadow-[0_24px_70px_rgba(15,23,42,0.07)] backdrop-blur">
+        <p class="section-kicker">Ability Radar</p>
+        <h3 class="mt-3 text-2xl font-bold text-ocean-deep">能力维度掌握雷达图</h3>
+        <p class="mt-2 text-sm text-slate-500">反映班级在主要能力标签上的整体掌握水平。</p>
+        <div id="ability-radar-chart" class="mt-5 h-[24rem]"></div>
+      </article>
+
+      <article class="chart-card rounded-[2rem] border border-white/70 bg-white/88 px-6 py-6 shadow-[0_24px_70px_rgba(15,23,42,0.07)] backdrop-blur">
+        <p class="section-kicker">Knowledge Focus</p>
+        <h3 class="mt-3 text-2xl font-bold text-ocean-deep">薄弱知识点 Top 10</h3>
+        <p class="mt-2 text-sm text-slate-500">优先展示掌握率最低的知识点，帮助教师确定讲评顺序。</p>
+        <div id="weak-knowledge-chart" class="mt-5 h-[24rem]"></div>
+      </article>
+    </section>
+
+    <section>
+      <div class="mb-4 flex items-center justify-between gap-4">
+        <div>
+          <p class="section-kicker">Chapter Review</p>
+          <h3 class="mt-2 text-2xl font-bold text-ocean-deep">按章节输出评价与建议</h3>
+        </div>
+      </div>
+      <div id="chapter-analysis-sections" class="space-y-5"></div>
+    </section>
+  </main>
+
+  <script type="module" src="assets/js/teacher-learning-analytics-page.js"></script>
+</body>
+</html>

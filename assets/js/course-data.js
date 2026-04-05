@@ -28,6 +28,33 @@ function compactText(value) {
   return String(value || '').trim();
 }
 
+function toChineseChapterNumber(value) {
+  const digits = String(value || '').trim();
+  if (!digits) {
+    return '';
+  }
+  const basic = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  const number = Number(digits);
+  if (!Number.isFinite(number) || number <= 0 || !Number.isInteger(number)) {
+    return digits;
+  }
+  if (number < 10) {
+    return basic[number];
+  }
+  if (number === 10) {
+    return '十';
+  }
+  if (number < 20) {
+    return `十${basic[number % 10]}`;
+  }
+  if (number < 100) {
+    const tens = Math.floor(number / 10);
+    const units = number % 10;
+    return `${basic[tens]}十${units ? basic[units] : ''}`;
+  }
+  return digits;
+}
+
 function uniqueById(records) {
   const map = new Map();
   for (const record of records) {
@@ -886,7 +913,15 @@ export async function saveManualReview({ profile, attempt, answers, reviewMap, t
 }
 
 function formatKnowledgeLabel(id, fallback = '未标注知识点') {
-  const value = compactText(id).replace(/^kp:/i, '').replace(/-/g, ' ');
+  const raw = compactText(id).replace(/^kp:/i, '');
+  if (!raw) {
+    return fallback;
+  }
+  const match = raw.match(/^(\d+)-(\d+)-(.+)$/);
+  if (match) {
+    return `${match[1]}.${match[2]} ${match[3]}`;
+  }
+  const value = raw.replace(/-/g, ' ');
   return value || fallback;
 }
 
@@ -919,6 +954,482 @@ function createMasteryBucket(rate) {
   if (rate >= 85) return 'strong';
   if (rate >= 60) return 'warning';
   return 'weak';
+}
+
+function formatRateText(value) {
+  return `${Number(value || 0).toFixed(2)}%`;
+}
+
+function chapterSortOrder(chapterCode, chapterLabel) {
+  const codeMatch = compactText(chapterCode).match(/^(\d+(?:\.\d+)?)/);
+  if (codeMatch) {
+    return Number(codeMatch[1].split('.')[0]);
+  }
+  const labelMatch = compactText(chapterLabel).match(/第\s*(\d+)\s*章/);
+  if (labelMatch) {
+    return Number(labelMatch[1]);
+  }
+  return Number.MAX_SAFE_INTEGER;
+}
+
+function chapterDisplayLabel(chapterCode, chapterLabel) {
+  const label = compactText(chapterLabel);
+  const code = compactText(chapterCode);
+  const chapterDigits = code.match(/^(\d+)/)?.[1] || label.match(/第\s*(\d+)\s*章/)?.[1] || '';
+  const normalizedLabel = label || (chapterDigits ? `第${toChineseChapterNumber(chapterDigits)}章` : '');
+  return normalizedLabel || code || '未标注章节';
+}
+
+function extractTopicLabelFromKnowledgeItems(items = []) {
+  for (const item of items) {
+    const label = compactText(item?.label);
+    if (!label) {
+      continue;
+    }
+    const topic = label.replace(/^\d+(?:\.\d+)?\s*/, '').trim();
+    if (topic) {
+      return topic;
+    }
+  }
+  return '';
+}
+
+function chapterHeadlineLabel(chapterCode, chapterLabel, topicLabel = '') {
+  const base = chapterDisplayLabel(chapterCode, chapterLabel);
+  const topic = compactText(topicLabel);
+  if (base && topic) {
+    return `${base} ${topic}`;
+  }
+  return base || topic || '未标注章节';
+}
+
+function createKnowledgeMasteryList(counter) {
+  return Array.from(counter.values())
+    .map((item) => {
+      const masteryRate = item.totalCount ? (item.correctCount / item.totalCount) * 100 : 0;
+      return {
+        id: item.id,
+        label: item.label,
+        chapterCode: item.chapterCode,
+        chapterLabel: item.chapterLabel,
+        masteryRate: Number(masteryRate.toFixed(2)),
+        totalCount: item.totalCount,
+        correctCount: item.correctCount,
+        incorrectCount: item.incorrectCount,
+        studentCount: item.studentIds.size,
+        questionCount: item.questionIds.size,
+        level: createMasteryBucket(masteryRate),
+      };
+    })
+    .sort((left, right) => {
+      if (left.masteryRate !== right.masteryRate) {
+        return left.masteryRate - right.masteryRate;
+      }
+      return right.totalCount - left.totalCount;
+    });
+}
+
+function createAbilityMasteryList(counter) {
+  return Array.from(counter.values())
+    .map((item) => {
+      const masteryRate = item.totalCount ? (item.correctCount / item.totalCount) * 100 : 0;
+      return {
+        id: item.id,
+        label: item.label,
+        masteryRate: Number(masteryRate.toFixed(2)),
+        totalCount: item.totalCount,
+        correctCount: item.correctCount,
+        incorrectCount: item.incorrectCount,
+        level: createMasteryBucket(masteryRate),
+      };
+    })
+    .sort((left, right) => {
+      if (left.masteryRate !== right.masteryRate) {
+        return left.masteryRate - right.masteryRate;
+      }
+      return right.totalCount - left.totalCount;
+    });
+}
+
+function createChapterAccumulator(question) {
+  return {
+    chapterId: compactText(question?.chapterCode || question?.chapterLabel) || 'unknown',
+    chapterCode: compactText(question?.chapterCode),
+    chapterLabel: compactText(question?.chapterLabel) || '未标注章节',
+    displayLabel: chapterDisplayLabel(question?.chapterCode, question?.chapterLabel),
+    sortOrder: chapterSortOrder(question?.chapterCode, question?.chapterLabel),
+    studentIds: new Set(),
+    questionIds: new Set(),
+    knowledgeCounter: new Map(),
+    abilityCounter: new Map(),
+    sourceAttemptIds: { assignment: new Set(), practice: new Set() },
+    answeredCount: 0,
+    objectiveCount: 0,
+    correctCount: 0,
+    incorrectCount: 0,
+    answerRevealedCount: 0,
+    performanceRateSum: 0,
+    performanceRateCount: 0,
+  };
+}
+
+function updateKnowledgeCounter(counter, knowledgeRefs, attempt, answerId, isCorrect) {
+  knowledgeRefs.forEach((knowledgeRef) => {
+    const current = counter.get(knowledgeRef.id) || {
+      ...knowledgeRef,
+      totalCount: 0,
+      correctCount: 0,
+      incorrectCount: 0,
+      studentIds: new Set(),
+      questionIds: new Set(),
+    };
+    current.totalCount += 1;
+    current.studentIds.add(attempt.uid || attempt.studentNo || attempt.attemptId);
+    current.questionIds.add(answerId);
+    if (isCorrect) {
+      current.correctCount += 1;
+    } else {
+      current.incorrectCount += 1;
+    }
+    counter.set(knowledgeRef.id, current);
+  });
+}
+
+function updateAbilityCounter(counter, abilityIds, isCorrect) {
+  asArray(abilityIds).forEach((id) => {
+    const current = counter.get(id) || {
+      id,
+      label: formatAbilityLabel(id),
+      totalCount: 0,
+      correctCount: 0,
+      incorrectCount: 0,
+    };
+    current.totalCount += 1;
+    if (isCorrect) {
+      current.correctCount += 1;
+    } else {
+      current.incorrectCount += 1;
+    }
+    counter.set(id, current);
+  });
+}
+
+export function generateChapterNarrative(chapter) {
+  const weakestKnowledge = asArray(chapter?.weakKnowledgeTopN).slice(0, 3);
+  const strongestKnowledge = asArray(chapter?.knowledgeMastery)
+    .filter((item) => item.level === 'strong')
+    .sort((left, right) => right.masteryRate - left.masteryRate)[0];
+  const weakestAbility = asArray(chapter?.weakAbilityTopN)[0] || null;
+  const chapterName = chapter?.displayLabel || chapter?.chapterLabel || chapter?.chapterCode || '当前章节';
+  const focusKnowledgeLabels = weakestKnowledge
+    .filter((item) => Number(item.incorrectCount || 0) > 0)
+    .map((item) => `“${item.label}”`);
+  const focusKnowledgeText = focusKnowledgeLabels.join('、');
+  const level = chapter?.level || createMasteryBucket(chapter?.masteryRate || 0);
+
+  let evaluation = `${chapterName}整体`;
+  if (level === 'strong') {
+    evaluation += `掌握较好，章节参与率为 ${formatRateText(chapter?.participationRate)}，知识点平均掌握率为 ${formatRateText(chapter?.masteryRate)}。`;
+  } else if (level === 'warning') {
+    evaluation += `基本掌握，章节参与率为 ${formatRateText(chapter?.participationRate)}，但知识点平均掌握率仅 ${formatRateText(chapter?.masteryRate)}，仍有巩固空间。`;
+  } else {
+    evaluation += `掌握偏弱，章节参与率为 ${formatRateText(chapter?.participationRate)}，知识点平均掌握率仅 ${formatRateText(chapter?.masteryRate)}，建议作为重点讲评章节。`;
+  }
+
+  if (focusKnowledgeText) {
+    evaluation += ` 当前失分主要集中在 ${focusKnowledgeText}。`;
+  } else if (strongestKnowledge) {
+    evaluation += ` 学生对“${strongestKnowledge.label}”的理解相对稳定。`;
+  } else {
+    evaluation += ' 当前章节可用于判断的知识点样本还不多。';
+  }
+
+  const suggestions = [];
+  if (Number(chapter?.objectiveCount || 0) < 5) {
+    suggestions.push('本章当前可用于分析的客观题样本较少，建议继续补充章节练习后再做阶段判断。');
+  }
+  if (Number(chapter?.participationRate || 0) < 70) {
+    suggestions.push('建议先补齐本章作答覆盖，再开展讲评，避免因为样本不足影响教学判断。');
+  }
+  if (level === 'weak') {
+    suggestions.push(`建议围绕 ${focusKnowledgeText || '本章核心知识点'} 安排一次专题讲解，先厘清概念，再用同类题做分层巩固。`);
+  } else if (level === 'warning') {
+    suggestions.push(`建议针对 ${focusKnowledgeText || '本章关键知识点'} 增加辨析题和变式题训练，减少概念混淆。`);
+  } else {
+    suggestions.push('建议保持本章综合训练强度，并适度增加跨题型迁移练习，把“会做”提升为“稳定会做”。');
+  }
+  if (weakestAbility && weakestAbility.masteryRate < 75) {
+    suggestions.push(`建议补充 ${weakestAbility.label} 相关例题与课堂追问，提升学生从识记到判断应用的迁移能力。`);
+  }
+
+  return {
+    level,
+    evaluation,
+    suggestions: suggestions.slice(0, 3),
+  };
+}
+
+export function buildChapterLearningAnalytics({
+  assignmentAttempts = [],
+  practiceAttempts = [],
+  questionMap = new Map(),
+  questionKeyMap = new Map(),
+  classStudents = [],
+  source = 'all',
+} = {}) {
+  const allStudents = uniqueById(classStudents);
+  const activeStudentIds = new Set();
+  const overallKnowledgeCounter = new Map();
+  const overallAbilityCounter = new Map();
+  const chapterCounter = new Map();
+  let objectiveCount = 0;
+  let objectiveCorrect = 0;
+  let totalAnsweredCount = 0;
+  let answerRevealedCount = 0;
+  let performanceRateSum = 0;
+  let performanceRateCount = 0;
+
+  const ensureChapter = (question) => {
+    const key = compactText(question?.chapterCode || question?.chapterLabel) || 'unknown';
+    if (!chapterCounter.has(key)) {
+      chapterCounter.set(key, createChapterAccumulator(question));
+    }
+    return chapterCounter.get(key);
+  };
+
+  const registerPerformanceRate = (chapter, rate) => {
+    if (!Number.isFinite(rate)) {
+      return;
+    }
+    chapter.performanceRateSum += rate;
+    chapter.performanceRateCount += 1;
+    performanceRateSum += rate;
+    performanceRateCount += 1;
+  };
+
+  const handleObjectiveAnswer = ({ attempt, answer, question, isCorrect, sourceType, answerRevealed = false }) => {
+    if (!question) {
+      return;
+    }
+    const chapter = ensureChapter(question);
+    const studentKey = attempt.uid || attempt.studentNo || attempt.attemptId;
+    chapter.studentIds.add(studentKey);
+    chapter.questionIds.add(answer.questionId);
+    chapter.sourceAttemptIds[sourceType].add(attempt.attemptId);
+    chapter.answeredCount += 1;
+    chapter.objectiveCount += 1;
+    if (answerRevealed) {
+      chapter.answerRevealedCount += 1;
+    }
+
+    totalAnsweredCount += 1;
+    objectiveCount += 1;
+    if (answerRevealed) {
+      answerRevealedCount += 1;
+    }
+    if (isCorrect) {
+      chapter.correctCount += 1;
+      objectiveCorrect += 1;
+    } else {
+      chapter.incorrectCount += 1;
+    }
+
+    const knowledgeRefs = buildKnowledgeRefs(question);
+    updateKnowledgeCounter(chapter.knowledgeCounter, knowledgeRefs, attempt, answer.questionId, isCorrect);
+    updateKnowledgeCounter(overallKnowledgeCounter, knowledgeRefs, attempt, answer.questionId, isCorrect);
+    updateAbilityCounter(chapter.abilityCounter, question.abilityIds, isCorrect);
+    updateAbilityCounter(overallAbilityCounter, question.abilityIds, isCorrect);
+  };
+
+  assignmentAttempts.forEach((attempt) => {
+    const answers = asArray(attempt.answers);
+    if (!answers.length) {
+      return;
+    }
+    activeStudentIds.add(attempt.uid || attempt.studentNo || attempt.attemptId);
+    const scoreRate = Number(attempt.totalPossibleScore || 0) > 0
+      ? (Number(attempt.totalScore || 0) / Number(attempt.totalPossibleScore || 0)) * 100
+      : NaN;
+
+    const touchedChapters = new Set();
+    for (const answer of answers) {
+      const question = questionMap.get(answer.questionId);
+      const chapterKey = compactText(question?.chapterCode || question?.chapterLabel) || 'unknown';
+      touchedChapters.add(chapterKey);
+      if (!question || answer.autoCorrect === null) {
+        continue;
+      }
+      handleObjectiveAnswer({
+        attempt,
+        answer,
+        question,
+        isCorrect: Boolean(answer.autoCorrect),
+        sourceType: 'assignment',
+      });
+    }
+
+    touchedChapters.forEach((key) => {
+      const chapter = chapterCounter.get(key);
+      if (chapter) {
+        registerPerformanceRate(chapter, scoreRate);
+      }
+    });
+  });
+
+  practiceAttempts.forEach((attempt) => {
+    const answers = asArray(attempt.answers);
+    if (!answers.length) {
+      return;
+    }
+    activeStudentIds.add(attempt.uid || attempt.studentNo || attempt.attemptId);
+    let attemptObjectiveCount = 0;
+    let attemptCorrectCount = 0;
+    const touchedChapters = new Set();
+
+    for (const answer of answers) {
+      const question = questionMap.get(answer.questionId);
+      const questionKey = questionKeyMap.get(answer.questionId);
+      const chapterKey = compactText(question?.chapterCode || question?.chapterLabel) || 'unknown';
+      touchedChapters.add(chapterKey);
+      const evaluation = evaluatePracticeAnswer({ answer, questionKey });
+      if (!question || evaluation.autoCorrect === null || !evaluation.objective) {
+        continue;
+      }
+      attemptObjectiveCount += 1;
+      if (evaluation.autoCorrect) {
+        attemptCorrectCount += 1;
+      }
+      handleObjectiveAnswer({
+        attempt,
+        answer,
+        question,
+        isCorrect: Boolean(evaluation.autoCorrect),
+        sourceType: 'practice',
+        answerRevealed: Boolean(answer.answerRevealed),
+      });
+    }
+
+    const practiceRate = attemptObjectiveCount ? (attemptCorrectCount / attemptObjectiveCount) * 100 : NaN;
+    touchedChapters.forEach((key) => {
+      const chapter = chapterCounter.get(key);
+      if (chapter) {
+        registerPerformanceRate(chapter, practiceRate);
+      }
+    });
+  });
+
+  const overallKnowledgeMastery = createKnowledgeMasteryList(overallKnowledgeCounter);
+  const overallAbilityMastery = createAbilityMasteryList(overallAbilityCounter);
+
+  const chapters = Array.from(chapterCounter.values())
+    .map((chapter) => {
+      const participationRate = allStudents.length ? (chapter.studentIds.size / allStudents.length) * 100 : 0;
+      const correctRate = chapter.objectiveCount ? (chapter.correctCount / chapter.objectiveCount) * 100 : 0;
+      const masteryList = createKnowledgeMasteryList(chapter.knowledgeCounter);
+      const abilityList = createAbilityMasteryList(chapter.abilityCounter);
+      const masteryRate = masteryList.length
+        ? masteryList.reduce((sum, item) => sum + item.masteryRate, 0) / masteryList.length
+        : correctRate;
+      const avgPerformanceRate = chapter.performanceRateCount
+        ? chapter.performanceRateSum / chapter.performanceRateCount
+        : correctRate;
+      const level = createMasteryBucket(masteryRate);
+      const topicLabel = extractTopicLabelFromKnowledgeItems(masteryList);
+      const nextChapter = {
+        chapterId: chapter.chapterId,
+        chapterCode: chapter.chapterCode,
+        chapterLabel: chapter.chapterLabel,
+        topicLabel,
+        displayLabel: chapterHeadlineLabel(chapter.chapterCode, chapter.chapterLabel, topicLabel),
+        sortOrder: chapter.sortOrder,
+        participationRate: Number(participationRate.toFixed(2)),
+        activeStudentCount: chapter.studentIds.size,
+        questionCount: chapter.questionIds.size,
+        answeredCount: chapter.answeredCount,
+        objectiveCount: chapter.objectiveCount,
+        correctCount: chapter.correctCount,
+        incorrectCount: chapter.incorrectCount,
+        answerRevealedCount: chapter.answerRevealedCount,
+        correctRate: Number(correctRate.toFixed(2)),
+        avgPerformanceRate: Number(avgPerformanceRate.toFixed(2)),
+        masteryRate: Number(masteryRate.toFixed(2)),
+        level,
+        sourceBreakdown: {
+          assignmentAttempts: chapter.sourceAttemptIds.assignment.size,
+          practiceAttempts: chapter.sourceAttemptIds.practice.size,
+        },
+        knowledgeMastery: masteryList,
+        weakKnowledgeTopN: masteryList.slice(0, 5),
+        abilityMastery: abilityList,
+        weakAbilityTopN: abilityList.slice(0, 5),
+      };
+      nextChapter.narrative = generateChapterNarrative(nextChapter);
+      return nextChapter;
+    })
+    .sort((left, right) => {
+      if (left.sortOrder !== right.sortOrder) {
+        return left.sortOrder - right.sortOrder;
+      }
+      return left.displayLabel.localeCompare(right.displayLabel, 'zh-CN');
+    });
+
+  const participationRate = allStudents.length ? (activeStudentIds.size / allStudents.length) * 100 : 0;
+  const correctRate = objectiveCount ? (objectiveCorrect / objectiveCount) * 100 : 0;
+  const masteryRate = overallKnowledgeMastery.length
+    ? overallKnowledgeMastery.reduce((sum, item) => sum + item.masteryRate, 0) / overallKnowledgeMastery.length
+    : correctRate;
+  const avgPerformanceRate = performanceRateCount ? performanceRateSum / performanceRateCount : correctRate;
+
+  const masteryBucketSummary = chapters.reduce((summary, item) => {
+    summary[item.level] += 1;
+    return summary;
+  }, { strong: 0, warning: 0, weak: 0 });
+
+  const overallNarrative = (() => {
+    const weakestChapter = chapters.find((item) => item.level !== 'strong') || chapters[0];
+    const weakestKnowledge = overallKnowledgeMastery.find((item) => Number(item.incorrectCount || 0) > 0) || null;
+    const chapterFocus = weakestChapter?.displayLabel || '当前课程';
+    const knowledgeFocus = weakestKnowledge?.label ? `，尤其需要关注“${weakestKnowledge.label}”` : '';
+    if (!chapters.length) {
+      return '当前筛选条件下还没有形成可分析的章节数据。';
+    }
+    if (masteryRate >= 85) {
+      return weakestKnowledge
+        ? `当前班级整体掌握较好，但仍可继续巩固 ${chapterFocus}${knowledgeFocus}。`
+        : '当前班级整体掌握较好，各章节表现较稳定，可继续保持章节巩固与综合训练。';
+    }
+    if (masteryRate >= 60) {
+      return `当前班级整体基本掌握，但章节之间仍有分化，建议优先讲评 ${chapterFocus}${knowledgeFocus}。`;
+    }
+    return `当前班级整体掌握偏弱，建议把 ${chapterFocus} 作为近期重点补强章节${knowledgeFocus}。`;
+  })();
+
+  return {
+    source,
+    totalStudents: allStudents.length,
+    activeStudentCount: activeStudentIds.size,
+    participationRate: Number(participationRate.toFixed(2)),
+    avgPerformanceRate: Number(avgPerformanceRate.toFixed(2)),
+    correctRate: Number(correctRate.toFixed(2)),
+    masteryRate: Number(masteryRate.toFixed(2)),
+    totalAnsweredCount,
+    objectiveCount,
+    answerRevealedCount,
+    chapterCount: chapters.length,
+    masteryBucketSummary,
+    overallKnowledgeMastery,
+    overallWeakKnowledgeTopN: overallKnowledgeMastery.slice(0, 10),
+    overallAbilityMastery,
+    overallWeakAbilityTopN: overallAbilityMastery.slice(0, 8),
+    chartSeries: {
+      chapterLabels: chapters.map((item) => item.displayLabel),
+      chapterMasteryRates: chapters.map((item) => item.masteryRate),
+      chapterCorrectRates: chapters.map((item) => item.correctRate),
+      chapterParticipationRates: chapters.map((item) => item.participationRate),
+    },
+    chapters,
+    overallNarrative,
+  };
 }
 
 export function buildAssignmentAnalytics({ assignment, attempts, questionMap, classStudents }) {
