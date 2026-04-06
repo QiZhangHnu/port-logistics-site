@@ -76,6 +76,8 @@ const state = {
   },
 };
 
+let live2DCoreReadyPromise = null;
+
 function setToneMessage(target, message, tone = 'info') {
   if (!target) return;
   target.textContent = message || '';
@@ -227,6 +229,37 @@ function setAvatarSpeaking(isSpeaking) {
   } catch (error) {
     console.warn('Live2D motion switch failed:', error);
   }
+}
+
+function ensureLive2DCoreLoaded() {
+  if (window.Live2DCubismCore) {
+    return Promise.resolve(window.Live2DCubismCore);
+  }
+  if (live2DCoreReadyPromise) {
+    return live2DCoreReadyPromise;
+  }
+  live2DCoreReadyPromise = new Promise((resolve, reject) => {
+    const existingScript = document.querySelector(`script[data-live2d-core="1"]`);
+    if (existingScript) {
+      existingScript.addEventListener('load', () => resolve(window.Live2DCubismCore), { once: true });
+      existingScript.addEventListener('error', () => reject(new Error('Live2D Core 加载失败')), { once: true });
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = live2DBroadcastConfig.coreScript;
+    script.async = true;
+    script.dataset.live2dCore = '1';
+    script.onload = () => {
+      if (window.Live2DCubismCore) {
+        resolve(window.Live2DCubismCore);
+      } else {
+        reject(new Error('Live2D Core 已加载，但全局对象不可用'));
+      }
+    };
+    script.onerror = () => reject(new Error('Live2D Core 脚本请求失败'));
+    document.head.appendChild(script);
+  });
+  return live2DCoreReadyPromise;
 }
 
 function resolveLive2DCoreModel(sprite) {
@@ -591,11 +624,8 @@ async function initLive2DBroadcastAvatar() {
     return;
   }
 
-  if (!window.Live2DCubismCore) {
-    broadcastAvatarHintEl.textContent = '检测不到 Live2D Core，已回退到静态数字人形象。';
-    return;
-  }
   try {
+    await ensureLive2DCoreLoaded();
     const easyLive2D = await import(live2DBroadcastConfig.bundlePath);
     const { Application, Ticker, Config, Live2DSprite, Priority } = easyLive2D;
     if (!Application || !Live2DSprite) {
@@ -621,7 +651,7 @@ async function initLive2DBroadcastAvatar() {
     });
 
     const sprite = new Live2DSprite();
-    sprite.init({
+    await sprite.init({
       modelPath: live2DBroadcastConfig.modelJsonPath,
       ticker: Ticker.shared,
     });
