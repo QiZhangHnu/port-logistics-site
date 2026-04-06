@@ -1,4 +1,4 @@
-import {
+﻿import {
   auth,
   getUserContext,
   onAuthStateChanged,
@@ -17,7 +17,7 @@ import {
   listQuestionKeysByPrefix,
   listUsersByFilters,
 } from './course-data.js';
-import { live2DBroadcastConfig } from './live2d-broadcast-config.js?v=20260405-live2d';
+import { live2DBroadcastConfig } from './live2d-broadcast-config.js?v=20260405-haru';
 
 const headerSummaryEl = document.getElementById('analytics-header-summary');
 const classSelect = document.getElementById('analytics-class-select');
@@ -69,6 +69,10 @@ const state = {
     live2dReady: false,
     live2dSprite: null,
     live2dApp: null,
+    utterance: null,
+    mouthAnimationFrame: 0,
+    mouthPulseUntil: 0,
+    mouthValue: 0,
   },
 };
 
@@ -95,6 +99,10 @@ function formatMetricNumber(value) {
 
 function clampPercent(value) {
   return Math.max(0, Math.min(Number(value || 0), 100));
+}
+
+function clampUnit(value) {
+  return Math.max(0, Math.min(Number(value || 0), 1));
 }
 
 function masteryTone(level) {
@@ -166,8 +174,8 @@ function sourceMixText(chapter) {
 }
 
 function broadcastSourceLabel(value) {
-  if (value === 'assignment') return '仅正式作业';
-  if (value === 'practice') return '仅综合练习';
+  if (value === 'assignment') return '正式作业';
+  if (value === 'practice') return '综合练习';
   return '作业 + 综合练习';
 }
 
@@ -219,6 +227,72 @@ function setAvatarSpeaking(isSpeaking) {
   } catch (error) {
     console.warn('Live2D motion switch failed:', error);
   }
+}
+
+function resolveLive2DCoreModel(sprite) {
+  const candidates = [
+    sprite?._model?._model,
+    sprite?._model,
+    sprite?.model?._model,
+    sprite?.model,
+    sprite?.internalModel?.coreModel,
+    sprite?.coreModel,
+  ];
+  return candidates.find((candidate) => candidate
+    && typeof candidate.setParameterValueById === 'function');
+}
+
+function setLive2DMouthValue(value) {
+  const coreModel = resolveLive2DCoreModel(state.broadcast.live2dSprite);
+  if (!coreModel) {
+    return;
+  }
+  const mouthValue = clampUnit(value);
+  state.broadcast.mouthValue = mouthValue;
+  try {
+    coreModel.setParameterValueById('ParamMouthOpenY', mouthValue, 1);
+    if (typeof coreModel.setParameterValueById === 'function') {
+      coreModel.setParameterValueById('ParamMouthForm', mouthValue * 0.25, 1);
+    }
+  } catch (error) {
+    // Ignore parameter writes on models that do not expose these parameters.
+  }
+}
+
+function pulseBroadcastMouth(boost = 1) {
+  state.broadcast.mouthPulseUntil = performance.now() + (live2DBroadcastConfig.speech?.mouthPulseMs || 150) * boost;
+}
+
+function stopMouthAnimation() {
+  if (state.broadcast.mouthAnimationFrame) {
+    cancelAnimationFrame(state.broadcast.mouthAnimationFrame);
+    state.broadcast.mouthAnimationFrame = 0;
+  }
+  state.broadcast.mouthPulseUntil = 0;
+  setLive2DMouthValue(0);
+}
+
+function startMouthAnimation() {
+  stopMouthAnimation();
+  const speechConfig = live2DBroadcastConfig.speech || {};
+  const loop = (timestamp) => {
+    if (!state.broadcast.isPlaying || state.broadcast.isPaused) {
+      setLive2DMouthValue(0);
+      state.broadcast.mouthAnimationFrame = requestAnimationFrame(loop);
+      return;
+    }
+    const waveA = (Math.sin(timestamp / 75) + 1) / 2;
+    const waveB = (Math.sin(timestamp / 41 + 1.6) + 1) / 2;
+    const pulseRatio = timestamp < state.broadcast.mouthPulseUntil
+      ? (state.broadcast.mouthPulseUntil - timestamp) / (speechConfig.mouthPulseMs || 150)
+      : 0;
+    const mouthValue = (speechConfig.mouthBase || 0.08)
+      + (((waveA * 0.58) + (waveB * 0.42)) / 1.8) * (speechConfig.mouthAmplitude || 0.48)
+      + pulseRatio * (speechConfig.mouthPulseBoost || 0.34);
+    setLive2DMouthValue(mouthValue);
+    state.broadcast.mouthAnimationFrame = requestAnimationFrame(loop);
+  };
+  state.broadcast.mouthAnimationFrame = requestAnimationFrame(loop);
 }
 
 function renderBroadcastOutline(script) {
@@ -284,7 +358,7 @@ function resetBroadcastDisplay() {
   highlightBroadcastSegment('');
   clearBroadcastFocus();
   setAvatarSpeaking(false);
-  updateBroadcastStatusChip(state.broadcast.script ? '已生成' : '待生成');
+  updateBroadcastStatusChip(state.broadcast.script ? '待播报' : '待生成');
   updateBroadcastButtons();
 }
 
@@ -306,18 +380,18 @@ function generateBroadcastScriptFromState() {
   });
   renderBroadcastOutline(state.broadcast.script);
   broadcastCurrentTitleEl.textContent = state.broadcast.script.title;
-  broadcastSubtitleEl.textContent = state.broadcast.script.segments[0]?.text || '播报稿已生成。';
+  broadcastSubtitleEl.textContent = state.broadcast.script.segments[0]?.text || '当前暂无可播报内容。';
   broadcastMetaEl.textContent = state.broadcast.supported
-    ? `当前使用浏览器语音合成进行首版播报，共生成 ${state.broadcast.script.segments.length} 段内容。`
-    : '当前浏览器不支持语音合成，系统将保留播报稿文本预览。';
-  updateBroadcastStatusChip('已生成');
+    ? `当前已生成播报稿，共 ${state.broadcast.script.segments.length} 段内容。将优先使用中文音色：${getSelectedVoiceLabel()}。`
+    : '当前浏览器不支持语音合成，将保留播报稿文本预览。';
+  updateBroadcastStatusChip('待播报');
   updateBroadcastButtons();
 }
 
 function updateBroadcastSegment(segment) {
   state.broadcast.activeSegmentId = segment?.id || '';
   broadcastCurrentTitleEl.textContent = segment?.title || '等待播报';
-  broadcastSubtitleEl.textContent = segment?.text || '当前没有可播报内容。';
+  broadcastSubtitleEl.textContent = segment?.text || '当前段落暂无文本。';
   highlightBroadcastSegment(segment?.id || '');
   focusBroadcastChapter(segment?.chapterId || '');
 }
@@ -326,10 +400,12 @@ function stopBroadcastPlayback() {
   if (state.broadcast.supported) {
     window.speechSynthesis.cancel();
   }
+  state.broadcast.utterance = null;
   state.broadcast.isPlaying = false;
   state.broadcast.isPaused = false;
   setAvatarSpeaking(false);
-  updateBroadcastStatusChip(state.broadcast.script ? '已生成' : '待生成');
+  stopMouthAnimation();
+  updateBroadcastStatusChip(state.broadcast.script ? '待播报' : '待生成');
   updateBroadcastButtons();
 }
 
@@ -339,11 +415,63 @@ function chooseBroadcastVoice() {
   }
   const voices = window.speechSynthesis.getVoices();
   state.broadcast.voices = voices;
-  state.broadcast.selectedVoice = voices.find((voice) => /zh(-|_)?CN/i.test(voice.lang))
-    || voices.find((voice) => /^zh/i.test(voice.lang))
-    || voices[0]
-    || null;
+  const scoreVoice = (voice) => {
+    if (!voice) return -1;
+    let score = 0;
+    const name = `${voice.name || ''} ${(voice.voiceURI || '')}`.toLowerCase();
+    const lang = (voice.lang || '').toLowerCase();
+    if (/zh(-|_)?cn/.test(lang)) score += 60;
+    else if (lang.startsWith('zh')) score += 45;
+    if (/xiaoxiao|xiaoyi|yunxi|yunyang|xiaomo|xiaorui|zhiyu|xiaoshuang/.test(name)) score += 28;
+    if (/microsoft|edge/.test(name)) score += 18;
+    if (/female|girl|xiaoxiao|xiaoyi|xiaomo|xiaorui|zhiyu|xiaoshuang/.test(name)) score += 8;
+    if (voice.localService) score += 6;
+    if (/natural/.test(name)) score += 6;
+    return score;
+  };
+  state.broadcast.selectedVoice = [...voices].sort((left, right) => scoreVoice(right) - scoreVoice(left))[0] || null;
   return state.broadcast.selectedVoice;
+}
+
+function getSelectedVoiceLabel() {
+  const voice = state.broadcast.selectedVoice || chooseBroadcastVoice();
+  if (!voice) {
+    return '默认中文音色';
+  }
+  return (voice.name || voice.voiceURI || '默认中文音色').replace(/^Microsoft\s*/i, '').trim();
+}
+
+function wait(ms) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+function splitBroadcastClauses(text = '') {
+  const normalized = String(text || '').replace(/\s+/g, ' ').trim();
+  if (!normalized) {
+    return [];
+  }
+  const chunks = normalized.match(/[^，。！？；：,.!?;:]+[，。！？；：,.!?;:]*/g) || [normalized];
+  return chunks
+    .map((chunk) => chunk.trim())
+    .filter(Boolean)
+    .map((chunk) => ({
+      text: chunk,
+      isSentenceEnd: /[。！？.!?]$/.test(chunk),
+    }));
+}
+
+function buildUtterance(text, voice) {
+  const utterance = new SpeechSynthesisUtterance(text);
+  if (voice) {
+    utterance.voice = voice;
+    utterance.lang = voice.lang || 'zh-CN';
+  } else {
+    utterance.lang = 'zh-CN';
+  }
+  utterance.rate = live2DBroadcastConfig.speech?.rate || 0.9;
+  utterance.pitch = live2DBroadcastConfig.speech?.pitch || 0.92;
+  utterance.volume = live2DBroadcastConfig.speech?.volume || 1;
+  return utterance;
 }
 
 async function playBroadcastSegments(segments, index = 0) {
@@ -355,44 +483,71 @@ async function playBroadcastSegments(segments, index = 0) {
 
   const voice = chooseBroadcastVoice();
   const segment = segments[index];
-  const utterance = new SpeechSynthesisUtterance(segment.text);
-  if (voice) {
-    utterance.voice = voice;
-    utterance.lang = voice.lang || 'zh-CN';
-  } else {
-    utterance.lang = 'zh-CN';
-  }
-  utterance.rate = 1.02;
-  utterance.pitch = 1;
+  const clauses = splitBroadcastClauses(segment.text);
+  let clauseIndex = 0;
 
-  utterance.onstart = () => {
-    state.broadcast.isPlaying = true;
-    state.broadcast.isPaused = false;
-    setAvatarSpeaking(true);
-    updateBroadcastStatusChip('播报中', 'playing');
-    updateBroadcastSegment(segment);
-    updateBroadcastButtons();
-  };
-  utterance.onend = () => {
-    setAvatarSpeaking(false);
-    if (!state.broadcast.isPlaying) {
+  const speakNextClause = async () => {
+    if (!state.broadcast.isPlaying && clauseIndex > 0) {
       return;
     }
-    if (index + 1 < segments.length) {
-      playBroadcastSegments(segments, index + 1);
+    const clause = clauses[clauseIndex];
+    if (!clause) {
+      setAvatarSpeaking(false);
+      stopMouthAnimation();
+      if (index + 1 < segments.length) {
+        playBroadcastSegments(segments, index + 1);
+        return;
+      }
+      stopBroadcastPlayback();
+      updateBroadcastStatusChip('播报完成', 'idle');
+      broadcastCurrentTitleEl.textContent = '播报完成';
+      broadcastSubtitleEl.textContent = segment.text;
       return;
     }
-    stopBroadcastPlayback();
-    updateBroadcastStatusChip('播报完成', 'idle');
-    broadcastCurrentTitleEl.textContent = '播报完成';
-    broadcastSubtitleEl.textContent = segment.text;
+
+    const utterance = buildUtterance(clause.text, voice);
+    state.broadcast.utterance = utterance;
+
+    utterance.onstart = () => {
+      state.broadcast.isPlaying = true;
+      state.broadcast.isPaused = false;
+      setAvatarSpeaking(true);
+      pulseBroadcastMouth(clause.isSentenceEnd ? 1.35 : 1.15);
+      startMouthAnimation();
+      updateBroadcastStatusChip('播报中', 'playing');
+      updateBroadcastSegment(segment);
+      broadcastMetaEl.textContent = `当前播报音色：${getSelectedVoiceLabel()}。系统已启用节奏型嘴型驱动。`;
+      updateBroadcastButtons();
+    };
+    utterance.onboundary = (event) => {
+      if (event.name === 'word' || event.name === 'sentence' || typeof event.charIndex === 'number') {
+        pulseBroadcastMouth(clause.isSentenceEnd ? 1.28 : 1.05);
+      }
+    };
+    utterance.onend = async () => {
+      if (!state.broadcast.isPlaying) {
+        return;
+      }
+      clauseIndex += 1;
+      setAvatarSpeaking(false);
+      pulseBroadcastMouth(0.72);
+      await wait(clause.isSentenceEnd
+        ? (live2DBroadcastConfig.speech?.sentencePauseMs || 190)
+        : (live2DBroadcastConfig.speech?.clausePauseMs || 110));
+      if (!state.broadcast.isPlaying) {
+        return;
+      }
+      speakNextClause();
+    };
+    utterance.onerror = () => {
+      stopBroadcastPlayback();
+      updateBroadcastStatusChip('播报失败', 'error');
+      setToneMessage(messageEl, '当前浏览器语音播报失败，请检查系统语音设置。', 'error');
+    };
+    window.speechSynthesis.speak(utterance);
   };
-  utterance.onerror = () => {
-    stopBroadcastPlayback();
-    updateBroadcastStatusChip('播报失败', 'error');
-    setToneMessage(messageEl, '浏览器语音播报失败，请尝试重新点击“开始播报”。', 'error');
-  };
-  window.speechSynthesis.speak(utterance);
+
+  speakNextClause();
 }
 
 async function startBroadcastPlayback() {
@@ -401,8 +556,8 @@ async function startBroadcastPlayback() {
     generateBroadcastScriptFromState();
   }
   if (!state.broadcast.supported) {
-    updateBroadcastStatusChip('仅预览', 'error');
-    setToneMessage(messageEl, '当前浏览器不支持语音合成，已保留播报稿文本预览。', 'error');
+    updateBroadcastStatusChip('不可播报', 'error');
+    setToneMessage(messageEl, '当前浏览器不支持语音播报，请查看右侧播报稿预览。', 'error');
     return;
   }
   window.speechSynthesis.cancel();
@@ -417,11 +572,14 @@ function toggleBroadcastPause() {
     window.speechSynthesis.resume();
     state.broadcast.isPaused = false;
     setAvatarSpeaking(true);
+    pulseBroadcastMouth(1.2);
+    startMouthAnimation();
     updateBroadcastStatusChip('播报中', 'playing');
   } else {
     window.speechSynthesis.pause();
     state.broadcast.isPaused = true;
     setAvatarSpeaking(false);
+    stopMouthAnimation();
     updateBroadcastStatusChip('已暂停', 'paused');
   }
   updateBroadcastButtons();
@@ -429,19 +587,19 @@ function toggleBroadcastPause() {
 
 async function initLive2DBroadcastAvatar() {
   if (!live2DBroadcastConfig?.enabled || !live2DBroadcastConfig?.modelJsonPath || !live2dAvatarStageEl) {
-    broadcastAvatarHintEl.textContent = '首版默认使用内置播报形象。补充 Live2D Core 和模型后，可切换为 easy-live2d 数字人角色。';
+    broadcastAvatarHintEl.textContent = '当前未启用 Live2D 资源，将继续使用静态数字人形象。';
     return;
   }
 
   if (!window.Live2DCubismCore) {
-    broadcastAvatarHintEl.textContent = '已启用 Live2D 配置，但未检测到 Cubism Core。请先在页面中引入官方 Core 脚本。';
+    broadcastAvatarHintEl.textContent = '检测不到 Live2D Core，已回退到静态数字人形象。';
     return;
   }
   try {
     const easyLive2D = await import(live2DBroadcastConfig.bundlePath);
     const { Application, Ticker, Config, Live2DSprite, Priority } = easyLive2D;
     if (!Application || !Live2DSprite) {
-      throw new Error('easy-live2d bundle 导出不完整。');
+      throw new Error('easy-live2d bundle 加载失败');
     }
 
     Config.MotionGroupIdle = live2DBroadcastConfig.idleMotionGroup || 'Idle';
@@ -467,19 +625,14 @@ async function initLive2DBroadcastAvatar() {
       modelPath: live2DBroadcastConfig.modelJsonPath,
       ticker: Ticker.shared,
     });
-    const stageWidth = live2dAvatarStageEl.clientWidth || 360;
-    const stageHeight = live2dAvatarStageEl.clientHeight || 450;
-    const scale = live2DBroadcastConfig.scale || 0.34;
-    sprite.x = -stageWidth * 0.34;
-    sprite.y = -stageHeight * 0.3;
-    sprite.width = stageWidth * window.devicePixelRatio * scale * 3.05;
-    sprite.height = stageHeight * window.devicePixelRatio * scale * 3.05;
     app.stage.addChild(sprite);
     state.broadcast.live2dReady = true;
     state.broadcast.live2dSprite = sprite;
     state.broadcast.live2dApp = app;
+    broadcastAvatarFrameEl?.classList.add('has-live2d');
     document.getElementById('broadcast-avatar-fallback')?.classList.add('hidden');
-    broadcastAvatarHintEl.textContent = '褰撳墠宸插惎鐢?easy-live2d Hiyori 鍏嶈垂妯″瀷锛屾挱鎶ユ椂浼氳嚜鍔ㄥ垏鎹㈠姩浣溿€?;
+    layoutLive2DAvatar();
+    broadcastAvatarHintEl.textContent = '当前已挂载 easy-live2d Hiyori 模型，播报时会尝试切换待机动作。';
     window.setTimeout(() => {
       try {
         sprite.startMotion?.({
@@ -496,8 +649,10 @@ async function initLive2DBroadcastAvatar() {
       state.broadcast.live2dReady = true;
       state.broadcast.live2dSprite = sprite;
       state.broadcast.live2dApp = app;
+      broadcastAvatarFrameEl?.classList.add('has-live2d');
       document.getElementById('broadcast-avatar-fallback')?.classList.add('hidden');
-      broadcastAvatarHintEl.textContent = '当前已启用 easy-live2d Hiyori 免费模型，播报时会自动切换动作。';
+      layoutLive2DAvatar();
+      broadcastAvatarHintEl.textContent = '当前已挂载 easy-live2d Hiyori 模型，播报时会尝试切换待机动作。';
       try {
         await sprite.startMotion({
           group: live2DBroadcastConfig.idleMotionGroup || 'Idle',
@@ -512,8 +667,26 @@ async function initLive2DBroadcastAvatar() {
     state.broadcast.avatarMode = 'live2d';
   } catch (error) {
     console.error('Live2D avatar init failed:', error);
-    broadcastAvatarHintEl.textContent = 'Live2D 模型初始化失败，系统已回退到内置播报形象。';
+    broadcastAvatarFrameEl?.classList.remove('has-live2d');
+    broadcastAvatarHintEl.textContent = 'Live2D 初始化失败，已回退到静态数字人形象。';
   }
+}
+
+function layoutLive2DAvatar() {
+  if (!state.broadcast.live2dApp?.renderer || !live2dAvatarStageEl || !state.broadcast.live2dSprite) {
+    return;
+  }
+  const width = live2dAvatarStageEl.clientWidth || 360;
+  const height = live2dAvatarStageEl.clientHeight || 450;
+  const scale = live2DBroadcastConfig.scale || 0.34;
+  const spriteWidth = width * scale * 2.55;
+  const spriteHeight = height * scale * 2.55;
+
+  state.broadcast.live2dApp.renderer.resize(width, height);
+  state.broadcast.live2dSprite.width = spriteWidth;
+  state.broadcast.live2dSprite.height = spriteHeight;
+  state.broadcast.live2dSprite.x = (width - spriteWidth) / 2;
+  state.broadcast.live2dSprite.y = Math.max((height - spriteHeight) / 2, height - spriteHeight * 0.96);
 }
 
 function getChart(name) {
@@ -528,18 +701,7 @@ function getChart(name) {
 
 function resizeCharts() {
   state.chartInstances.forEach((chart) => chart.resize());
-  if (state.broadcast.live2dApp?.renderer && live2dAvatarStageEl) {
-    const width = live2dAvatarStageEl.clientWidth || 360;
-    const height = live2dAvatarStageEl.clientHeight || 450;
-    state.broadcast.live2dApp.renderer.resize(width, height);
-    if (state.broadcast.live2dSprite) {
-      const scale = live2DBroadcastConfig.scale || 0.34;
-      state.broadcast.live2dSprite.x = -width * 0.34;
-      state.broadcast.live2dSprite.y = -height * 0.3;
-      state.broadcast.live2dSprite.width = width * window.devicePixelRatio * scale * 3.05;
-      state.broadcast.live2dSprite.height = height * window.devicePixelRatio * scale * 3.05;
-    }
-  }
+  layoutLive2DAvatar();
 }
 
 function renderChartPlaceholder(target, message) {
@@ -554,7 +716,7 @@ function renderChartPlaceholder(target, message) {
   `;
 }
 
-function renderPageEmpty(message = '请选择班级后查看学情分析结果。') {
+function renderPageEmpty(message = '当前筛选条件下还没有形成可分析的数据。') {
   overviewCardsEl.innerHTML = `
     <article class="metric-card rounded-[1.9rem] border border-dashed border-slate-300 bg-white/88 px-6 py-8 text-center text-sm text-slate-500 md:col-span-2 xl:col-span-4">
       <p class="section-kicker">Overview</p>
@@ -590,7 +752,7 @@ function renderOverviewCards(analytics) {
     {
       label: '综合达成率',
       value: formatPercent(analytics.avgPerformanceRate),
-      note: '综合作业得分率与练习客观题达成情况',
+      note: '综合作业得分与练习客观题达成情况',
       progress: analytics.avgPerformanceRate,
       accent: '达',
       meta: `形成 ${formatMetricNumber(analytics.totalAnsweredCount)} 次有效作答`,
@@ -649,11 +811,11 @@ function renderOverallSummary(analytics) {
       <div class="grid gap-4 md:grid-cols-2">
         <div class="rounded-[1.45rem] border border-white/80 bg-white px-4 py-4 shadow-[0_14px_30px_rgba(15,23,42,0.05)]">
           <p class="section-kicker">重点章节</p>
-          <p class="mt-3 text-sm leading-7 text-slate-600">${weakestChapters.length ? weakestChapters.join('、') : '当前筛选条件下暂无明显分化章节。'}</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">${weakestChapters.length ? weakestChapters.join('、') : '当前没有需要重点讲评的章节。'}</p>
         </div>
         <div class="rounded-[1.45rem] border border-white/80 bg-white px-4 py-4 shadow-[0_14px_30px_rgba(15,23,42,0.05)]">
-          <p class="section-kicker">优先讲评知识点</p>
-          <p class="mt-3 text-sm leading-7 text-slate-600">${weakestKnowledge.length ? weakestKnowledge.join('、') : '当前筛选条件下暂无薄弱知识点。'}</p>
+          <p class="section-kicker">薄弱知识点</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600">${weakestKnowledge.length ? weakestKnowledge.join('、') : '当前没有明显集中的薄弱知识点。'}</p>
         </div>
       </div>
       <div class="flex flex-wrap gap-2">
@@ -668,7 +830,7 @@ function renderOverallSummary(analytics) {
 function renderChapterPerformanceChart(analytics) {
   const chart = getChart('chapterPerformance');
   if (!chart || !analytics.chapters.length) {
-    renderChartPlaceholder(chartRoots.chapterPerformance, '当前没有可绘制的章节图表数据。');
+    renderChartPlaceholder(chartRoots.chapterPerformance, '当前暂无可展示的章节掌握与正确率数据。');
     return;
   }
   chartRoots.chapterPerformance.innerHTML = '';
@@ -743,7 +905,7 @@ function renderAbilityRadarChart(analytics) {
     .slice(0, 6);
 
   if (!chart || !items.length) {
-    renderChartPlaceholder(chartRoots.abilityRadar, '当前没有足够的能力维度数据可用于绘制雷达图。');
+    renderChartPlaceholder(chartRoots.abilityRadar, '当前暂无可展示的能力维度掌握数据。');
     return;
   }
   chartRoots.abilityRadar.innerHTML = '';
@@ -773,7 +935,7 @@ function renderAbilityRadarChart(analytics) {
         data: [
           {
             value: items.map((item) => item.masteryRate),
-            name: '能力掌握率',
+            name: '班级画像',
             areaStyle: { color: 'rgba(17,93,140,0.2)' },
             lineStyle: { color: '#115D8C', width: 3 },
             itemStyle: { color: '#115D8C' },
@@ -788,7 +950,7 @@ function renderWeakKnowledgeChart(analytics) {
   const chart = getChart('weakKnowledge');
   const items = analytics.overallWeakKnowledgeTopN.slice(0, 10);
   if (!chart || !items.length) {
-    renderChartPlaceholder(chartRoots.weakKnowledge, '当前没有足够的知识点数据可用于绘制图表。');
+    renderChartPlaceholder(chartRoots.weakKnowledge, '当前暂无可展示的薄弱知识点数据。');
     return;
   }
   chartRoots.weakKnowledge.innerHTML = '';
@@ -1078,13 +1240,13 @@ async function refreshAnalytics() {
     state.broadcast.script = null;
     renderBroadcastOutline(null);
     resetBroadcastDisplay();
-    renderPageEmpty('请先选择一个班级。');
-    setToneMessage(messageEl, '请选择班级后开始分析。');
+    renderPageEmpty('请选择一个班级以生成学情分析。');
+    setToneMessage(messageEl, '请选择班级后再查看学情分析。');
     return;
   }
 
   try {
-    setToneMessage(messageEl, '正在汇总班级数据与章节分析，请稍候…');
+    setToneMessage(messageEl, '正在加载班级作答数据并生成章节分析...');
     await ensureReferenceData();
 
     const [classStudents, assignmentAttempts, practiceAttempts] = await Promise.all([
@@ -1107,21 +1269,21 @@ async function refreshAnalytics() {
     });
 
     renderAnalytics(state.analytics);
-    setToneMessage(messageEl, `分析完成：覆盖 ${state.analytics.totalStudents} 名学生，形成 ${state.analytics.chapterCount} 个章节画像。`, 'success');
+    setToneMessage(messageEl, `分析完成：覆盖 ${state.analytics.totalStudents} 名学生，形成 ${state.analytics.chapterCount} 个章节画像。`, "success");
   } catch (error) {
     console.error('Failed to load learning analytics:', error);
     state.analytics = null;
     state.broadcast.script = null;
     renderBroadcastOutline(null);
     resetBroadcastDisplay();
-    renderPageEmpty('加载学情分析失败，请检查网络或教师权限。');
-    setToneMessage(messageEl, error?.message || '加载学情分析失败。', 'error');
+    renderPageEmpty('当前加载失败，请稍后重试。');
+    setToneMessage(messageEl, error?.message || '学情分析加载失败。', 'error');
   }
 }
 
 function populateClassSelect() {
   classSelect.innerHTML = ['<option value="">请选择班级</option>']
-    .concat(state.classes.map((item) => `<option value="${item.classId}">${item.classId} · ${item.name || item.classId}</option>`))
+    .concat(state.classes.map((item) => `<option value="${item.classId}">${item.classId} 路 ${item.name || item.classId}</option>`))
     .join('');
   if (!classSelect.value && state.classes[0]?.classId) {
     classSelect.value = state.classes[0].classId;
@@ -1136,7 +1298,7 @@ async function refreshClasses() {
 function renderHeader(user, profile) {
   const classLabel = profile?.role === 'admin'
     ? '当前为管理员视角，可切换全部班级。'
-    : `当前负责班级：${(profile?.assignedClassIds || []).join('、') || '未分配班级'}`;
+    : `当前可查看班级：${(profile?.assignedClassIds || []).join('、') || '未分配班级'}`;
   headerSummaryEl.textContent = `${profile?.name || user?.email || ''} 已进入班级整体学情分析中心。${classLabel}`;
 }
 
@@ -1155,7 +1317,7 @@ function bindEvents() {
 
   generateBroadcastBtn.addEventListener('click', () => {
     generateBroadcastScriptFromState();
-    setToneMessage(messageEl, '已根据当前筛选结果生成播报稿。', 'success');
+    setToneMessage(messageEl, '播报稿已生成，可以直接开始播报。', 'success');
   });
 
   startBroadcastBtn.addEventListener('click', async () => {
@@ -1213,14 +1375,14 @@ async function bootstrap() {
       });
     } catch (error) {
       console.error('Teacher analytics bootstrap failed:', error);
-      setToneMessage(messageEl, error?.message || '初始化学情分析页面失败。', 'error');
-      renderPageEmpty('初始化失败，请稍后重试。');
+      setToneMessage(messageEl, error?.message || '页面初始化失败。', 'error');
+      renderPageEmpty('页面初始化失败，请刷新后重试。');
     }
   });
 }
 
 bindEvents();
-renderPageEmpty('请选择班级后查看学情分析结果。');
+renderPageEmpty('正在等待教师权限校验与数据加载。');
 renderBroadcastOutline(null);
 resetBroadcastDisplay();
 bootstrap();

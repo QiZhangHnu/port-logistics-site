@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -164,6 +164,9 @@
 
     .broadcast-avatar-frame {
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: min(100%, 25rem);
       margin: 0 auto;
       aspect-ratio: 4 / 5;
@@ -173,6 +176,19 @@
       box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
       backdrop-filter: blur(14px);
       overflow: hidden;
+    }
+
+    .broadcast-avatar-frame.has-live2d img {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    #live2d-avatar-stage {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .broadcast-avatar-frame img,
@@ -229,7 +245,7 @@
       <div>
         <p class="text-xs uppercase tracking-[0.35em] text-ocean-mid/70">Learning Analytics</p>
         <h1 class="mt-2 text-3xl font-bold text-ocean-deep">班级学情分析中心</h1>
-        <p id="analytics-header-summary" class="mt-2 text-sm text-slate-600">正在校验教师权限并加载分析数据…</p>
+        <p id="analytics-header-summary" class="mt-2 text-sm text-slate-600">正在校验教师权限并加载分析数据...</p>
       </div>
       <div class="flex flex-wrap items-center gap-3 text-sm">
         <a href="teacher-dashboard.html" class="rounded-full border border-slate-200 px-4 py-2 font-semibold text-slate-700 transition hover:border-ocean-mid hover:text-ocean-deep">返回教师后台</a>
@@ -293,7 +309,7 @@
               <span></span>
             </div>
           </div>
-          <p id="broadcast-avatar-hint" class="mt-4 text-xs leading-6 text-white/72">首版默认使用内置播报形象。补充 Live2D Core 和模型后，可切换为 easy-live2d 数字人角色。</p>
+          <p id="broadcast-avatar-hint" class="mt-4 text-xs leading-6 text-white/72">当前默认使用 easy-live2d 数字人模型，播报时会自动切换待机与发声状态。</p>
         </div>
       </article>
 
@@ -386,6 +402,7 @@
   </main>
 
   <script src="/assets/vendor/live2d/live2dcubismcore.js"></script>
-  <script type="module" src="assets/js/teacher-learning-analytics-page.js?v=20260405-live2d"></script>
+  <script type="module" src="assets/js/teacher-learning-analytics-page.js?v=20260405-analytics-text-center"></script>
 </body>
 </html>
+
