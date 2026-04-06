@@ -1,8 +1,8 @@
 export const live2DBroadcastConfig = {
   enabled: true,
-  bundlePath: '/assets/vendor/live2d/easy-live2d.bundle.js',
-  coreScript: '/assets/vendor/live2d/live2dcubismcore.js',
-  modelJsonPath: '/assets/live2d/models/haru_official/Haru.model3.json',
+  bundlePath: new URL('../vendor/live2d/easy-live2d.bundle.js', import.meta.url).href,
+  coreScript: new URL('../vendor/live2d/live2dcubismcore.js', import.meta.url).href,
+  modelJsonPath: new URL('../live2d/models/haru_official/Haru.model3.json', import.meta.url).href,
   scale: 0.33,
   idleMotionGroup: 'Idle',
   introMotionGroup: 'TapBody',
