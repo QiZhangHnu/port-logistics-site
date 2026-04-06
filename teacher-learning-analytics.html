@@ -23,10 +23,221 @@
     };
   </script>
   <style>
+    :root {
+      --panel-border: rgba(255, 255, 255, 0.74);
+      --panel-border-soft: rgba(226, 232, 240, 0.9);
+      --panel-bg: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(249,251,255,0.88));
+      --panel-bg-soft: linear-gradient(180deg, rgba(248,250,252,0.96), rgba(255,255,255,0.92));
+      --panel-shadow: 0 28px 72px rgba(15, 23, 42, 0.08);
+      --panel-shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.05);
+      --panel-inset: inset 0 1px 0 rgba(255,255,255,0.9);
+      --panel-radius: 2rem;
+    }
+
     .analytics-grid {
       position: relative;
       overflow-x: hidden;
       isolation: isolate;
+    }
+
+    .page-shell {
+      position: relative;
+      max-width: 88rem;
+      margin: 0 auto;
+    }
+
+    .showcase-panel {
+      border: 1px solid var(--panel-border);
+      background: var(--panel-bg);
+      box-shadow: var(--panel-shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .headline-glow {
+      position: relative;
+    }
+
+    .headline-glow::after {
+      content: "";
+      position: absolute;
+      inset: -2rem auto auto -1.5rem;
+      width: 14rem;
+      height: 14rem;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(17, 93, 140, 0.18), rgba(17, 93, 140, 0));
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .story-ribbon {
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.95), rgba(255,255,255,0) 38%),
+        linear-gradient(140deg, rgba(11,58,90,0.94), rgba(17,93,140,0.88) 54%, rgba(56,189,248,0.68));
+      color: white;
+    }
+
+    .story-ribbon-card {
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.1);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+      backdrop-filter: blur(14px);
+    }
+
+    .control-surface {
+      border: 1px solid var(--panel-border-soft);
+      background: var(--panel-bg-soft);
+      box-shadow: var(--panel-inset), var(--panel-shadow-soft);
+    }
+
+    .surface-card {
+      position: relative;
+      border: 1px solid var(--panel-border);
+      background: var(--panel-bg);
+      box-shadow: var(--panel-shadow-soft);
+      backdrop-filter: blur(14px);
+    }
+
+    .surface-card::before,
+    .surface-card-soft::before,
+    .chapter-suggestion-card::before,
+    .knowledge-row-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.66), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+
+    .surface-card-soft {
+      position: relative;
+      border: 1px solid rgba(226, 232, 240, 0.88);
+      background: linear-gradient(180deg, rgba(249,250,251,0.94), rgba(255,255,255,0.92));
+      box-shadow: 0 14px 28px rgba(15,23,42,0.04), inset 0 1px 0 rgba(255,255,255,0.88);
+      backdrop-filter: blur(10px);
+    }
+
+    .surface-card-accent {
+      border: 1px solid rgba(191, 219, 254, 0.6);
+      background: linear-gradient(135deg, rgba(10, 56, 90, 0.98), rgba(17, 93, 140, 0.9) 52%, rgba(56, 189, 248, 0.82));
+      box-shadow: 0 18px 42px rgba(17, 93, 140, 0.2);
+      color: white;
+    }
+
+    .story-step-card {
+      border: 1px solid rgba(255, 255, 255, 0.82);
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.82));
+      box-shadow: 0 14px 30px rgba(15,23,42,0.04);
+      backdrop-filter: blur(10px);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 999px;
+      padding: 0.38rem 0.82rem;
+      border: 1px solid transparent;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .status-pill-strong {
+      border-color: rgba(110, 231, 183, 0.52);
+      background: rgba(236, 253, 245, 0.96);
+      color: #047857;
+    }
+
+    .status-pill-warning {
+      border-color: rgba(253, 224, 71, 0.62);
+      background: rgba(255, 251, 235, 0.96);
+      color: #b45309;
+    }
+
+    .status-pill-weak {
+      border-color: rgba(252, 165, 165, 0.64);
+      background: rgba(254, 242, 242, 0.96);
+      color: #b91c1c;
+    }
+
+    .chapter-surface-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.45rem;
+      border: 1px solid rgba(255, 255, 255, 0.82);
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(246,250,255,0.92));
+      box-shadow: 0 14px 34px rgba(15,23,42,0.05);
+    }
+
+    .chapter-surface-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+
+    .chapter-surface-strong {
+      border-color: rgba(167, 243, 208, 0.74);
+      background: linear-gradient(180deg, rgba(240,253,250,0.96), rgba(236,253,245,0.9));
+    }
+
+    .chapter-surface-warning {
+      border-color: rgba(252, 211, 77, 0.72);
+      background: linear-gradient(180deg, rgba(255,251,235,0.96), rgba(254,243,199,0.88));
+    }
+
+    .chapter-surface-weak {
+      border-color: rgba(252, 165, 165, 0.7);
+      background: linear-gradient(180deg, rgba(255,241,242,0.96), rgba(254,226,226,0.88));
+    }
+
+    .knowledge-row-card {
+      position: relative;
+      border: 1px solid var(--panel-border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92));
+      box-shadow: 0 14px 30px rgba(15,23,42,0.04);
+    }
+
+    .chapter-suggestion-card {
+      position: relative;
+      border: 1px solid rgba(226,232,240,0.84);
+      background: linear-gradient(180deg, rgba(248,250,252,0.95), rgba(255,255,255,0.92));
+      box-shadow: 0 12px 24px rgba(15,23,42,0.04);
+    }
+
+    .outline-card {
+      border: 1px solid rgba(226,232,240,0.84);
+      background: linear-gradient(180deg, rgba(248,250,252,0.95), rgba(255,255,255,0.92));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.88);
+    }
+
+    .chapter-focus-ring {
+      box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.15), 0 12px 28px rgba(14, 165, 233, 0.12);
+    }
+
+    .chart-stage {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .chart-stage > article:nth-child(1),
+    .chart-stage > article:nth-child(2) {
+      grid-column: span 6 / span 6;
+    }
+
+    .chart-stage > article:nth-child(3) {
+      grid-column: span 5 / span 5;
+    }
+
+    .chart-stage > article:nth-child(4) {
+      grid-column: span 7 / span 7;
+    }
+
+    .story-divider {
+      height: 1px;
+      background: linear-gradient(90deg, rgba(148,163,184,0), rgba(148,163,184,0.34), rgba(148,163,184,0));
     }
 
     .analytics-grid::before {
@@ -59,6 +270,20 @@
     .chapter-card {
       position: relative;
       overflow: hidden;
+      border: 1px solid var(--panel-border);
+      background: var(--panel-bg);
+      box-shadow: var(--panel-shadow);
+      backdrop-filter: blur(16px);
+      transition: box-shadow 180ms ease, transform 180ms ease, border-color 180ms ease;
+    }
+
+    .metric-card:hover,
+    .chart-card:hover,
+    .chapter-card:hover,
+    .surface-card:hover,
+    .surface-card-soft:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 30px 76px rgba(15, 23, 42, 0.1);
     }
 
     .metric-card::before,
@@ -108,24 +333,25 @@
     }
 
     .chapter-hero.theme-strong {
-      background: linear-gradient(135deg, #0f766e 0%, #0f9f8f 52%, #a7f3d0 100%);
+      background: linear-gradient(135deg, #0f766e 0%, #0f8f85 46%, #5eead4 74%, #a7f3d0 100%);
       color: #ecfeff;
     }
 
     .chapter-hero.theme-warning {
-      background: linear-gradient(135deg, #b45309 0%, #f59e0b 55%, #fde68a 100%);
+      background: linear-gradient(135deg, #b45309 0%, #d97706 42%, #f59e0b 72%, #fde68a 100%);
       color: #fffdf5;
     }
 
     .chapter-hero.theme-weak {
-      background: linear-gradient(135deg, #b91c1c 0%, #ef4444 54%, #fecaca 100%);
+      background: linear-gradient(135deg, #991b1b 0%, #dc2626 44%, #ef4444 72%, #fecaca 100%);
       color: #fff7f7;
     }
 
     .chapter-glass {
-      background: rgba(255, 255, 255, 0.14);
+      background: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
       border: 1px solid rgba(255, 255, 255, 0.24);
-      backdrop-filter: blur(10px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
     }
 
     .metric-progress {
@@ -146,9 +372,28 @@
       position: relative;
       overflow: hidden;
       min-height: 26rem;
+      transition: background 240ms ease, box-shadow 240ms ease;
       background:
         radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 38%),
         linear-gradient(160deg, rgba(11, 58, 90, 0.94), rgba(17, 93, 140, 0.92) 55%, rgba(56, 189, 248, 0.76));
+    }
+
+    .broadcast-avatar-shell::before {
+      content: "";
+      position: absolute;
+      inset: 3.5rem 12% 2.75rem 12%;
+      border-radius: 2.4rem;
+      background:
+        radial-gradient(circle at 50% 36%, rgba(255,255,255,0.34), rgba(255,255,255,0.1) 46%, rgba(255,255,255,0.02) 72%),
+        linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 30px 60px rgba(8, 47, 73, 0.18);
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 220ms ease, transform 260ms ease;
+      pointer-events: none;
+      z-index: 0;
     }
 
     .broadcast-avatar-shell::after {
@@ -178,6 +423,25 @@
       overflow: hidden;
     }
 
+    .broadcast-avatar-shell.is-broadcast-spotlight::before {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .broadcast-avatar-shell.is-broadcast-spotlight {
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at 40% 24%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0) 30%),
+        linear-gradient(160deg, rgba(8, 47, 73, 0.98), rgba(17, 93, 140, 0.94) 52%, rgba(56, 189, 248, 0.84));
+    }
+
+    .broadcast-shell-header,
+    .broadcast-shell-header > div,
+    #broadcast-status-chip {
+      position: relative;
+      z-index: 40;
+    }
+
     .broadcast-avatar-frame.has-live2d img {
       opacity: 0;
       visibility: hidden;
@@ -197,10 +461,97 @@
       height: 100%;
       object-fit: contain;
       display: block;
+      position: relative;
+      z-index: 1;
+      transition: transform 240ms ease;
     }
 
     .broadcast-avatar-frame.is-speaking img {
       animation: presenter-float 2.6s ease-in-out infinite;
+    }
+
+    .broadcast-avatar-frame {
+      transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease, background 240ms ease;
+    }
+
+    .broadcast-avatar-frame.is-broadcast-spotlight {
+      transform: translateY(-8px) scale(1.08);
+      border-color: rgba(255, 255, 255, 0.34);
+      background: rgba(255, 255, 255, 0.16);
+      box-shadow:
+        0 34px 80px rgba(8, 47, 73, 0.34),
+        0 0 0 1px rgba(255,255,255,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+
+    .broadcast-avatar-frame.is-broadcast-spotlight img,
+    .broadcast-avatar-frame.is-broadcast-spotlight canvas {
+      transform: scale(1.11) translateY(1.5%);
+    }
+
+    .broadcast-stage {
+      transition: grid-template-columns 240ms ease;
+    }
+
+    .broadcast-console-panel {
+      position: relative;
+      transition: opacity 220ms ease, transform 220ms ease, max-height 220ms ease;
+    }
+
+    .broadcast-console-overlay {
+      display: none;
+      position: absolute;
+      left: 1.5rem;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      z-index: 30;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: linear-gradient(180deg, rgba(8,47,73,0.68), rgba(15,70,112,0.5));
+      box-shadow: 0 18px 42px rgba(8,47,73,0.24);
+      backdrop-filter: blur(16px);
+    }
+
+    .broadcast-stage.is-broadcast-takeover {
+      grid-template-columns: 1fr;
+    }
+
+    .broadcast-stage.is-broadcast-takeover .executive-panel {
+      opacity: 0;
+      transform: scale(0.98);
+      pointer-events: none;
+      max-height: 0;
+      overflow: hidden;
+      padding: 0;
+      margin: 0;
+      border-width: 0;
+    }
+
+    .broadcast-stage.is-broadcast-takeover .broadcast-panel {
+      grid-column: 1 / -1;
+    }
+
+    .broadcast-stage.is-broadcast-takeover .broadcast-avatar-shell {
+      min-height: min(70vh, 52rem);
+      padding-bottom: 7.5rem;
+    }
+
+    .broadcast-stage.is-broadcast-takeover .broadcast-avatar-frame {
+      width: min(100%, 31rem);
+      aspect-ratio: 5 / 6;
+    }
+
+    .broadcast-stage.is-broadcast-takeover .broadcast-console-panel {
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      max-height: 0;
+      overflow: hidden;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .broadcast-stage.is-broadcast-takeover .broadcast-console-overlay {
+      display: block;
     }
 
     .broadcast-bars span {
@@ -223,9 +574,31 @@
     .broadcast-bars span:nth-child(4) { animation-delay: 0.36s; }
 
     .chapter-card.is-broadcast-focus {
-      box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.32), 0 30px 80px rgba(14, 165, 233, 0.16);
-      transform: translateY(-2px);
-      transition: box-shadow 180ms ease, transform 180ms ease;
+      border-color: rgba(56, 189, 248, 0.42);
+      box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.24), 0 32px 84px rgba(14, 165, 233, 0.16);
+      transform: translateY(-3px);
+    }
+
+    .chapter-stack {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .chapter-stack > .chapter-card {
+      scroll-margin-top: 7rem;
+    }
+
+    @media (max-width: 1279px) {
+      .chart-stage {
+        grid-template-columns: 1fr;
+      }
+
+      .chart-stage > article:nth-child(1),
+      .chart-stage > article:nth-child(2),
+      .chart-stage > article:nth-child(3),
+      .chart-stage > article:nth-child(4) {
+        grid-column: auto;
+      }
     }
 
     @keyframes presenter-float {
@@ -241,11 +614,11 @@
 </head>
 <body class="analytics-grid min-h-screen bg-[radial-gradient(circle_at_top,_rgba(199,227,255,0.92),_rgba(241,245,249,1)_44%,_rgba(248,250,252,1)_100%)] font-sans text-slate-800">
   <header class="border-b border-slate-200 bg-white/90 backdrop-blur">
-    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5">
-      <div>
+    <div class="page-shell flex items-center justify-between gap-4 px-4 py-5">
+      <div class="headline-glow">
         <p class="text-xs uppercase tracking-[0.35em] text-ocean-mid/70">Learning Analytics</p>
-        <h1 class="mt-2 text-3xl font-bold text-ocean-deep">班级学情分析中心</h1>
-        <p id="analytics-header-summary" class="mt-2 text-sm text-slate-600">正在校验教师权限并加载分析数据...</p>
+        <h1 class="mt-2 text-4xl font-bold tracking-tight text-ocean-deep">班级学情分析中心</h1>
+        <p id="analytics-header-summary" class="mt-3 max-w-3xl text-sm leading-7 text-slate-600">正在校验教师权限并加载分析数据...</p>
       </div>
       <div class="flex flex-wrap items-center gap-3 text-sm">
         <a href="teacher-dashboard.html" class="rounded-full border border-slate-200 px-4 py-2 font-semibold text-slate-700 transition hover:border-ocean-mid hover:text-ocean-deep">返回教师后台</a>
@@ -255,24 +628,44 @@
     </div>
   </header>
 
-  <main class="mx-auto max-w-7xl space-y-6 px-4 py-8">
-    <section class="overflow-hidden rounded-[2rem] border border-white/70 bg-white/88 shadow-[0_28px_80px_rgba(15,23,42,0.08)] backdrop-blur">
-      <div class="grid gap-5 px-6 py-6 lg:grid-cols-[1.25fr_0.75fr]">
+  <main class="page-shell space-y-6 px-4 py-8">
+    <section class="showcase-panel overflow-hidden rounded-[2.2rem]">
+      <div class="grid gap-5 px-6 py-6 lg:grid-cols-[1.12fr_0.88fr]">
         <div>
           <p class="section-kicker text-ocean-mid/70">Class Snapshot</p>
-          <h2 class="mt-3 text-3xl font-bold text-ocean-deep">按章节看班级真实掌握情况</h2>
-          <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600">本页聚焦班级整体表现，不做单个学生画像。系统会基于正式作业与综合练习的真实作答数据，按章节输出图表、评价结果和教学建议。</p>
+          <h2 class="mt-3 text-3xl font-bold tracking-tight text-ocean-deep">用可视化叙事还原班级学情全貌</h2>
+          <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600">这一页不只是汇总数据，而是把班级表现转成“整体判断、图表证据、章节建议”三层叙事，帮助教师在汇报、展示和讲评时快速抓到重点。</p>
+          <div class="mt-6 grid gap-3 sm:grid-cols-3">
+            <div class="story-step-card rounded-[1.4rem] px-4 py-4">
+              <p class="section-kicker">Step 1</p>
+              <p class="mt-2 text-sm font-semibold text-ocean-deep">筛选班级与数据源</p>
+            </div>
+            <div class="story-step-card rounded-[1.4rem] px-4 py-4">
+              <p class="section-kicker">Step 2</p>
+              <p class="mt-2 text-sm font-semibold text-ocean-deep">看图表证据与整体判断</p>
+            </div>
+            <div class="story-step-card rounded-[1.4rem] px-4 py-4">
+              <p class="section-kicker">Step 3</p>
+              <p class="mt-2 text-sm font-semibold text-ocean-deep">按章节输出讲评建议</p>
+            </div>
+          </div>
         </div>
-        <div class="rounded-[1.75rem] border border-white/80 bg-gradient-to-br from-slate-50 via-white to-sky-50 px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
-          <p class="text-sm font-semibold text-ocean-deep">分析口径</p>
-          <ul class="mt-3 space-y-2 text-sm leading-7 text-slate-600">
-            <li>仅教师或管理员可查看。</li>
-            <li>支持按班级和数据来源筛选。</li>
-            <li>文字评价由固定阈值和模板生成，不依赖 LLM。</li>
-          </ul>
+        <div class="story-ribbon rounded-[1.9rem] px-6 py-6 shadow-[0_24px_60px_rgba(17,93,140,0.22)]">
+          <p class="section-kicker text-white/60">Narrative Frame</p>
+          <h3 class="mt-3 text-2xl font-bold tracking-tight">先判断，再举证，最后给建议</h3>
+          <div class="mt-5 grid gap-3">
+            <div class="story-ribbon-card rounded-[1.35rem] px-4 py-4">
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-white/60">分析口径</p>
+              <p class="mt-2 text-sm leading-7 text-white/88">仅教师或管理员可查看，支持按班级和数据来源筛选，文字评价由固定阈值和模板生成，不依赖 LLM。</p>
+            </div>
+            <div class="story-ribbon-card rounded-[1.35rem] px-4 py-4">
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-white/60">展示定位</p>
+              <p class="mt-2 text-sm leading-7 text-white/88">适合课堂讲评、比赛展示和汇报场景，重点突出班级整体表现与章节讲评顺序。</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="border-t border-slate-100 bg-slate-50/80 px-6 py-5">
+      <div class="border-t border-slate-100 bg-slate-50/78 px-6 py-5">
         <form id="learning-analytics-filter-form" class="grid gap-4 lg:grid-cols-[1.1fr_0.9fr_1fr_auto]">
           <select id="analytics-class-select" class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm"></select>
           <select id="analytics-source-select" class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm">
@@ -289,13 +682,50 @@
       </div>
     </section>
 
-    <section class="grid gap-6 xl:grid-cols-[0.72fr_1.28fr]">
-      <article class="chart-card rounded-[2rem] border border-white/70 bg-white/88 shadow-[0_24px_70px_rgba(15,23,42,0.07)] backdrop-blur">
-        <div class="broadcast-avatar-shell px-6 py-6 text-white">
-          <div class="flex items-center justify-between gap-3">
+    <section id="broadcast-stage" class="broadcast-stage grid gap-6 xl:grid-cols-[1.03fr_0.97fr]">
+      <article id="executive-panel" class="executive-panel showcase-panel rounded-[2.1rem] px-6 py-6">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="section-kicker">Executive Snapshot</p>
+            <h3 class="mt-3 text-3xl font-bold tracking-tight text-ocean-deep">先看整体表现，再进入证据区</h3>
+            <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-500">首屏先给班级整体轮廓，包括参与率、达成率、正确率与知识点平均掌握率。右侧文字判断负责回答“整体如何”，下方图表再解释“为什么”。</p>
+          </div>
+        </div>
+        <div id="learning-overview-cards" class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4"></div>
+        <div class="story-divider my-6"></div>
+        <div class="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
+          <section class="control-surface rounded-[1.8rem] px-5 py-5">
+            <p class="section-kicker">Narrative Summary</p>
+            <h4 class="mt-3 text-2xl font-bold text-ocean-deep">班级整体判断</h4>
+            <div id="analytics-overall-summary" class="mt-5 rounded-[1.6rem] px-5 py-5 text-sm leading-7 text-slate-600"></div>
+          </section>
+          <section class="control-surface rounded-[1.8rem] px-5 py-5">
+            <p class="section-kicker">Story Guide</p>
+            <h4 class="mt-3 text-2xl font-bold text-ocean-deep">汇报建议顺序</h4>
+            <div class="mt-5 grid gap-3">
+              <div class="surface-card-soft rounded-[1.25rem] px-4 py-4">
+                <p class="text-sm font-semibold text-ocean-deep">1. 用指标卡开场</p>
+                <p class="mt-2 text-sm leading-7 text-slate-500">先概括班级整体参与、达成和掌握情况。</p>
+              </div>
+              <div class="surface-card-soft rounded-[1.25rem] px-4 py-4">
+                <p class="text-sm font-semibold text-ocean-deep">2. 用图表解释问题</p>
+                <p class="mt-2 text-sm leading-7 text-slate-500">再切到章节趋势、能力雷达与薄弱知识点，说明差异来源。</p>
+              </div>
+              <div class="surface-card-soft rounded-[1.25rem] px-4 py-4">
+                <p class="text-sm font-semibold text-ocean-deep">3. 进入章节讲评</p>
+                <p class="mt-2 text-sm leading-7 text-slate-500">最后逐章展示评价与建议，形成可直接用于教学的结论。</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </article>
+
+      <article id="broadcast-panel" class="broadcast-panel showcase-panel rounded-[2.1rem] overflow-hidden">
+        <div id="broadcast-avatar-shell" class="broadcast-avatar-shell px-6 py-6 text-white">
+          <div class="broadcast-shell-header flex items-center justify-between gap-3">
             <div>
               <p class="section-kicker text-white/60">Digital Presenter</p>
-              <h3 class="mt-2 text-2xl font-bold">数字人学情播报</h3>
+              <h3 class="mt-2 text-3xl font-bold tracking-tight">数字人学情播报</h3>
             </div>
             <span id="broadcast-status-chip" class="rounded-full border border-white/20 bg-white/12 px-3 py-1 text-xs font-semibold text-white/90">待生成</span>
           </div>
@@ -309,54 +739,72 @@
               <span></span>
             </div>
           </div>
+          <div id="broadcast-console-overlay" class="broadcast-console-overlay rounded-[1.5rem] px-5 py-4 text-white">
+            <div class="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-white/60">Broadcast Console</p>
+                <h4 class="mt-2 text-xl font-bold">数字人播报进行中</h4>
+                <p id="broadcast-overlay-title" class="mt-2 text-sm leading-7 text-white/84">当前数字人将接管中段展示区域，播报时可直接暂停或停止。</p>
+              </div>
+              <div class="flex flex-wrap gap-3">
+                <button id="overlay-pause-broadcast-btn" type="button" class="rounded-2xl border border-white/24 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/18">暂停</button>
+                <button id="overlay-stop-broadcast-btn" type="button" class="rounded-2xl border border-white/20 bg-rose-500/18 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-500/28">停止</button>
+              </div>
+            </div>
+          </div>
           <p id="broadcast-avatar-hint" class="mt-4 text-xs leading-6 text-white/72">当前默认使用 easy-live2d 数字人模型，播报时会自动切换待机与发声状态。</p>
         </div>
-      </article>
-
-      <article class="chart-card rounded-[2rem] border border-white/70 bg-white/88 px-6 py-6 shadow-[0_24px_70px_rgba(15,23,42,0.07)] backdrop-blur">
-        <div class="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p class="section-kicker">Broadcast Console</p>
-            <h3 class="mt-2 text-2xl font-bold text-ocean-deep">播报控制台</h3>
-            <p class="mt-2 text-sm leading-7 text-slate-500">系统会根据当前筛选结果自动生成播报稿，支持播放、暂停、停止，并在播报时同步高亮对应章节。</p>
-          </div>
-          <div class="flex flex-wrap gap-3">
-            <button id="generate-broadcast-script-btn" type="button" class="rounded-2xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-ocean-mid hover:text-ocean-deep">生成播报稿</button>
-            <button id="start-broadcast-btn" type="button" class="rounded-2xl bg-ocean-deep px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-ocean-mid">开始播报</button>
-            <button id="pause-broadcast-btn" type="button" class="rounded-2xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-ocean-mid hover:text-ocean-deep">暂停</button>
-            <button id="stop-broadcast-btn" type="button" class="rounded-2xl border border-rose-200 px-4 py-2.5 text-sm font-semibold text-rose-600 transition hover:bg-rose-50">停止</button>
-          </div>
-        </div>
-
-        <div class="mt-5 grid gap-4 xl:grid-cols-[0.8fr_1.2fr]">
-          <section class="rounded-[1.75rem] border border-white/80 bg-gradient-to-br from-slate-50 via-white to-sky-50 px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
-            <p class="section-kicker">Current Segment</p>
-            <h4 id="broadcast-current-title" class="mt-2 text-xl font-bold text-ocean-deep">等待播报</h4>
-            <p id="broadcast-subtitle" class="mt-4 text-sm leading-8 text-slate-600">点击“生成播报稿”后，系统会输出整体结论和各章节播报内容。</p>
-            <div class="mt-5 rounded-[1.4rem] bg-white px-4 py-4 shadow-[0_10px_25px_rgba(15,23,42,0.04)]">
-              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">播报说明</p>
-              <p id="broadcast-meta" class="mt-3 text-sm leading-7 text-slate-500">当前使用浏览器语音合成进行首版播报。若浏览器不支持语音合成，将保留播报稿文本预览。</p>
+        <div id="broadcast-console-panel" class="broadcast-console-panel px-6 py-6">
+          <div class="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p class="section-kicker">Broadcast Console</p>
+              <h3 class="mt-2 text-2xl font-bold text-ocean-deep">讲评播报控制台</h3>
+              <p class="mt-2 text-sm leading-7 text-slate-500">系统会根据当前筛选结果自动生成播报稿，适合在汇报、讲评或展示时同步播放。</p>
             </div>
-          </section>
+            <div class="flex flex-wrap gap-3">
+              <button id="generate-broadcast-script-btn" type="button" class="rounded-2xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-ocean-mid hover:text-ocean-deep">生成播报稿</button>
+              <button id="start-broadcast-btn" type="button" class="rounded-2xl bg-ocean-deep px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-ocean-mid">开始播报</button>
+              <button id="pause-broadcast-btn" type="button" class="rounded-2xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-ocean-mid hover:text-ocean-deep">暂停</button>
+              <button id="stop-broadcast-btn" type="button" class="rounded-2xl border border-rose-200 px-4 py-2.5 text-sm font-semibold text-rose-600 transition hover:bg-rose-50">停止</button>
+            </div>
+          </div>
 
-          <section class="rounded-[1.75rem] border border-white/80 bg-white px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <p class="section-kicker">Script Outline</p>
-                <h4 class="mt-2 text-xl font-bold text-ocean-deep">播报稿预览</h4>
+          <div class="mt-5 grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+            <section class="control-surface rounded-[1.65rem] px-5 py-5">
+              <p class="section-kicker">Current Segment</p>
+              <h4 id="broadcast-current-title" class="mt-2 text-xl font-bold text-ocean-deep">等待播报</h4>
+              <p id="broadcast-subtitle" class="mt-4 text-sm leading-8 text-slate-600">点击“生成播报稿”后，系统会输出整体结论和各章节播报内容。</p>
+              <div class="mt-5 rounded-[1.3rem] bg-white px-4 py-4 shadow-[0_10px_25px_rgba(15,23,42,0.04)]">
+                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">播报说明</p>
+                <p id="broadcast-meta" class="mt-3 text-sm leading-7 text-slate-500">当前使用浏览器语音合成进行首版播报。若浏览器不支持语音合成，将保留播报稿文本预览。</p>
               </div>
-              <span id="broadcast-segment-count" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">0 段</span>
-            </div>
-            <div id="broadcast-script-outline" class="mt-4 space-y-3"></div>
-          </section>
+            </section>
+
+            <section class="control-surface rounded-[1.65rem] px-5 py-5">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="section-kicker">Script Outline</p>
+                  <h4 class="mt-2 text-xl font-bold text-ocean-deep">播报稿预览</h4>
+                </div>
+                <span id="broadcast-segment-count" class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">0 段</span>
+              </div>
+              <div id="broadcast-script-outline" class="mt-4 space-y-3"></div>
+            </section>
+          </div>
         </div>
       </article>
     </section>
 
-    <section id="learning-overview-cards" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4"></section>
-
-    <section class="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-      <article class="chart-card rounded-[2rem] border border-white/70 bg-white/88 px-6 py-6 shadow-[0_24px_70px_rgba(15,23,42,0.07)] backdrop-blur">
+    <section class="showcase-panel rounded-[2.1rem] px-6 py-6">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="section-kicker">Evidence Board</p>
+          <h3 class="mt-3 text-3xl font-bold tracking-tight text-ocean-deep">用图表解释班级掌握差异</h3>
+          <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-500">图表区按“趋势、薄弱点、能力结构、章节讲评入口”组织，适合在汇报时从宏观到细节逐步展开。</p>
+        </div>
+      </div>
+      <div class="chart-stage mt-6">
+      <article class="chart-card rounded-[2rem] px-6 py-6">
         <div class="flex items-start justify-between gap-4">
           <div>
             <p class="section-kicker">Overview Chart</p>
@@ -367,27 +815,40 @@
         <div id="chapter-performance-chart" class="mt-5 h-[24rem]"></div>
       </article>
 
-      <article class="chart-card rounded-[2rem] border border-white/70 bg-white/88 px-6 py-6 shadow-[0_24px_70px_rgba(15,23,42,0.07)] backdrop-blur">
-        <p class="section-kicker">Narrative Summary</p>
-        <h3 class="mt-3 text-2xl font-bold text-ocean-deep">班级整体判断</h3>
-        <div id="analytics-overall-summary" class="mt-5 rounded-[1.75rem] border border-white/80 bg-gradient-to-br from-slate-50 via-white to-sky-50 px-5 py-5 text-sm leading-7 text-slate-600 shadow-[0_18px_40px_rgba(15,23,42,0.05)]"></div>
+      <article class="chart-card rounded-[2rem] px-6 py-6">
+        <p class="section-kicker">Knowledge Focus</p>
+        <h3 class="mt-3 text-2xl font-bold text-ocean-deep">薄弱知识点 Top 10</h3>
+        <p class="mt-2 text-sm text-slate-500">优先展示掌握率最低的知识点，帮助教师确定讲评顺序。</p>
+        <div id="weak-knowledge-chart" class="mt-5 h-[24rem]"></div>
       </article>
-    </section>
 
-    <section class="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
-      <article class="chart-card rounded-[2rem] border border-white/70 bg-white/88 px-6 py-6 shadow-[0_24px_70px_rgba(15,23,42,0.07)] backdrop-blur">
+      <article class="chart-card rounded-[2rem] px-6 py-6">
         <p class="section-kicker">Ability Radar</p>
         <h3 class="mt-3 text-2xl font-bold text-ocean-deep">能力维度掌握雷达图</h3>
         <p class="mt-2 text-sm text-slate-500">反映班级在主要能力标签上的整体掌握水平。</p>
         <div id="ability-radar-chart" class="mt-5 h-[24rem]"></div>
       </article>
 
-      <article class="chart-card rounded-[2rem] border border-white/70 bg-white/88 px-6 py-6 shadow-[0_24px_70px_rgba(15,23,42,0.07)] backdrop-blur">
-        <p class="section-kicker">Knowledge Focus</p>
-        <h3 class="mt-3 text-2xl font-bold text-ocean-deep">薄弱知识点 Top 10</h3>
-        <p class="mt-2 text-sm text-slate-500">优先展示掌握率最低的知识点，帮助教师确定讲评顺序。</p>
-        <div id="weak-knowledge-chart" class="mt-5 h-[24rem]"></div>
+      <article class="chart-card rounded-[2rem] px-6 py-6">
+        <p class="section-kicker">Chapter Review</p>
+        <h3 class="mt-3 text-2xl font-bold text-ocean-deep">按章节输出评价与建议</h3>
+        <p class="mt-2 text-sm text-slate-500">这一部分沿着“章节表现 -> 知识点 -> 教学建议”的顺序展开，是整页最后的落点。</p>
+        <div class="mt-6 grid gap-3">
+          <div class="surface-card-soft rounded-[1.35rem] px-4 py-4">
+            <p class="text-sm font-semibold text-ocean-deep">章节标题与等级</p>
+            <p class="mt-2 text-sm leading-7 text-slate-500">先判断本章是稳定、巩固还是补强。</p>
+          </div>
+          <div class="surface-card-soft rounded-[1.35rem] px-4 py-4">
+            <p class="text-sm font-semibold text-ocean-deep">知识点掌握图</p>
+            <p class="mt-2 text-sm leading-7 text-slate-500">再看本章最需要优先讲评的知识点。</p>
+          </div>
+          <div class="surface-card-soft rounded-[1.35rem] px-4 py-4">
+            <p class="text-sm font-semibold text-ocean-deep">评价结果与教学建议</p>
+            <p class="mt-2 text-sm leading-7 text-slate-500">最后直接形成可用于汇报和课堂讲评的结论。</p>
+          </div>
+        </div>
       </article>
+      </div>
     </section>
 
     <section>
@@ -397,11 +858,11 @@
           <h3 class="mt-2 text-2xl font-bold text-ocean-deep">按章节输出评价与建议</h3>
         </div>
       </div>
-      <div id="chapter-analysis-sections" class="space-y-5"></div>
+      <div id="chapter-analysis-sections" class="chapter-stack"></div>
     </section>
   </main>
 
-  <script type="module" src="assets/js/teacher-learning-analytics-page.js?v=20260405-analytics-text-center"></script>
+  <script type="module" src="assets/js/teacher-learning-analytics-page.js?v=20260406-broadcast-header-top"></script>
 </body>
 </html>
 

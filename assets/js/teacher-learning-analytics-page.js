@@ -39,6 +39,11 @@ const broadcastSubtitleEl = document.getElementById('broadcast-subtitle');
 const broadcastMetaEl = document.getElementById('broadcast-meta');
 const broadcastSegmentCountEl = document.getElementById('broadcast-segment-count');
 const broadcastScriptOutlineEl = document.getElementById('broadcast-script-outline');
+const broadcastStageEl = document.getElementById('broadcast-stage');
+const broadcastOverlayTitleEl = document.getElementById('broadcast-overlay-title');
+const overlayPauseBroadcastBtn = document.getElementById('overlay-pause-broadcast-btn');
+const overlayStopBroadcastBtn = document.getElementById('overlay-stop-broadcast-btn');
+const broadcastAvatarShellEl = document.getElementById('broadcast-avatar-shell');
 const broadcastAvatarFrameEl = document.getElementById('broadcast-avatar-frame');
 const broadcastAudioBarsEl = document.getElementById('broadcast-audio-bars');
 const broadcastAvatarHintEl = document.getElementById('broadcast-avatar-hint');
@@ -109,12 +114,12 @@ function clampUnit(value) {
 
 function masteryTone(level) {
   if (level === 'strong') {
-    return 'border-emerald-200 bg-emerald-50 text-emerald-700';
+    return 'status-pill status-pill-strong';
   }
   if (level === 'warning') {
-    return 'border-amber-200 bg-amber-50 text-amber-700';
+    return 'status-pill status-pill-warning';
   }
-  return 'border-rose-200 bg-rose-50 text-rose-700';
+  return 'status-pill status-pill-weak';
 }
 
 function masteryLabel(level) {
@@ -128,7 +133,7 @@ function chapterTheme(level) {
     return {
       hero: 'theme-strong',
       badge: 'border-white/20 bg-white/15 text-white',
-      surface: 'border-emerald-100 bg-emerald-50/70',
+      surface: 'chapter-surface-card chapter-surface-strong',
       progress: 'linear-gradient(90deg, #0f766e 0%, #34d399 100%)',
     };
   }
@@ -136,14 +141,14 @@ function chapterTheme(level) {
     return {
       hero: 'theme-warning',
       badge: 'border-white/20 bg-white/15 text-white',
-      surface: 'border-amber-100 bg-amber-50/70',
+      surface: 'chapter-surface-card chapter-surface-warning',
       progress: 'linear-gradient(90deg, #d97706 0%, #fbbf24 100%)',
     };
   }
   return {
     hero: 'theme-weak',
     badge: 'border-white/20 bg-white/15 text-white',
-    surface: 'border-rose-100 bg-rose-50/70',
+    surface: 'chapter-surface-card chapter-surface-weak',
     progress: 'linear-gradient(90deg, #dc2626 0%, #f87171 100%)',
   };
 }
@@ -229,6 +234,12 @@ function setAvatarSpeaking(isSpeaking) {
   } catch (error) {
     console.warn('Live2D motion switch failed:', error);
   }
+}
+
+function setBroadcastSpotlight(isActive) {
+  broadcastStageEl?.classList.toggle('is-broadcast-takeover', isActive);
+  broadcastAvatarShellEl?.classList.toggle('is-broadcast-spotlight', isActive);
+  broadcastAvatarFrameEl?.classList.toggle('is-broadcast-spotlight', isActive);
 }
 
 function ensureLive2DCoreLoaded() {
@@ -332,8 +343,8 @@ function renderBroadcastOutline(script) {
   const segments = script?.segments || [];
   broadcastSegmentCountEl.textContent = `${segments.length} 段`;
   if (!segments.length) {
-    broadcastScriptOutlineEl.innerHTML = `
-      <div class="rounded-[1.4rem] border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-sm text-slate-500">
+  broadcastScriptOutlineEl.innerHTML = `
+      <div class="outline-card rounded-[1.4rem] border-dashed border-slate-300 px-4 py-6 text-sm text-slate-500">
         当前还没有生成播报稿。
       </div>
     `;
@@ -342,7 +353,7 @@ function renderBroadcastOutline(script) {
   broadcastScriptOutlineEl.innerHTML = segments.map((segment, index) => `
     <article
       data-broadcast-segment-id="${segment.id}"
-      class="rounded-[1.35rem] border border-slate-200 bg-slate-50 px-4 py-4 transition"
+      class="outline-card rounded-[1.35rem] px-4 py-4 transition"
     >
       <div class="flex items-start gap-3">
         <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-xs font-bold text-slate-500 shadow-sm">${index + 1}</span>
@@ -376,6 +387,18 @@ function updateBroadcastButtons() {
   stopBroadcastBtn.disabled = !state.broadcast.isPlaying && !state.broadcast.isPaused;
   generateBroadcastBtn.disabled = !state.analytics;
 
+  if (overlayPauseBroadcastBtn) {
+    overlayPauseBroadcastBtn.disabled = !state.broadcast.isPlaying;
+    overlayPauseBroadcastBtn.classList.toggle('opacity-50', overlayPauseBroadcastBtn.disabled);
+    overlayPauseBroadcastBtn.classList.toggle('cursor-not-allowed', overlayPauseBroadcastBtn.disabled);
+    overlayPauseBroadcastBtn.textContent = state.broadcast.isPaused ? '继续' : '暂停';
+  }
+  if (overlayStopBroadcastBtn) {
+    overlayStopBroadcastBtn.disabled = !state.broadcast.isPlaying && !state.broadcast.isPaused;
+    overlayStopBroadcastBtn.classList.toggle('opacity-50', overlayStopBroadcastBtn.disabled);
+    overlayStopBroadcastBtn.classList.toggle('cursor-not-allowed', overlayStopBroadcastBtn.disabled);
+  }
+
   [startBroadcastBtn, pauseBroadcastBtn, stopBroadcastBtn, generateBroadcastBtn].forEach((button) => {
     if (!button) return;
     button.classList.toggle('opacity-50', button.disabled);
@@ -388,8 +411,12 @@ function resetBroadcastDisplay() {
   state.broadcast.activeSegmentId = '';
   broadcastCurrentTitleEl.textContent = '等待播报';
   broadcastSubtitleEl.textContent = '点击“生成播报稿”后，系统会输出整体结论和各章节播报内容。';
+  if (broadcastOverlayTitleEl) {
+    broadcastOverlayTitleEl.textContent = '当前数字人将接管中段展示区域，播报时可直接暂停或停止。';
+  }
   highlightBroadcastSegment('');
   clearBroadcastFocus();
+  setBroadcastSpotlight(false);
   setAvatarSpeaking(false);
   updateBroadcastStatusChip(state.broadcast.script ? '待播报' : '待生成');
   updateBroadcastButtons();
@@ -425,6 +452,11 @@ function updateBroadcastSegment(segment) {
   state.broadcast.activeSegmentId = segment?.id || '';
   broadcastCurrentTitleEl.textContent = segment?.title || '等待播报';
   broadcastSubtitleEl.textContent = segment?.text || '当前段落暂无文本。';
+  if (broadcastOverlayTitleEl) {
+    broadcastOverlayTitleEl.textContent = segment?.title
+      ? `当前播报：${segment.title}`
+      : '当前数字人将接管中段展示区域，播报时可直接暂停或停止。';
+  }
   highlightBroadcastSegment(segment?.id || '');
   focusBroadcastChapter(segment?.chapterId || '');
 }
@@ -436,6 +468,7 @@ function stopBroadcastPlayback() {
   state.broadcast.utterance = null;
   state.broadcast.isPlaying = false;
   state.broadcast.isPaused = false;
+  setBroadcastSpotlight(false);
   setAvatarSpeaking(false);
   stopMouthAnimation();
   updateBroadcastStatusChip(state.broadcast.script ? '待播报' : '待生成');
@@ -593,6 +626,7 @@ async function startBroadcastPlayback() {
     setToneMessage(messageEl, '当前浏览器不支持语音播报，请查看右侧播报稿预览。', 'error');
     return;
   }
+  setBroadcastSpotlight(true);
   window.speechSynthesis.cancel();
   await playBroadcastSegments(state.broadcast.script?.segments || []);
 }
@@ -604,6 +638,7 @@ function toggleBroadcastPause() {
   if (state.broadcast.isPaused) {
     window.speechSynthesis.resume();
     state.broadcast.isPaused = false;
+    setBroadcastSpotlight(true);
     setAvatarSpeaking(true);
     pulseBroadcastMouth(1.2);
     startMouthAnimation();
@@ -611,6 +646,7 @@ function toggleBroadcastPause() {
   } else {
     window.speechSynthesis.pause();
     state.broadcast.isPaused = true;
+    setBroadcastSpotlight(true);
     setAvatarSpeaking(false);
     stopMouthAnimation();
     updateBroadcastStatusChip('已暂停', 'paused');
@@ -662,7 +698,7 @@ async function initLive2DBroadcastAvatar() {
     broadcastAvatarFrameEl?.classList.add('has-live2d');
     document.getElementById('broadcast-avatar-fallback')?.classList.add('hidden');
     layoutLive2DAvatar();
-    broadcastAvatarHintEl.textContent = '当前已挂载 easy-live2d Hiyori 模型，播报时会尝试切换待机动作。';
+    broadcastAvatarHintEl.textContent = '当前已挂载 easy-live2d Haru 模型，播报时会尝试切换待机动作。';
     window.setTimeout(() => {
       try {
         sprite.startMotion?.({
@@ -682,7 +718,7 @@ async function initLive2DBroadcastAvatar() {
       broadcastAvatarFrameEl?.classList.add('has-live2d');
       document.getElementById('broadcast-avatar-fallback')?.classList.add('hidden');
       layoutLive2DAvatar();
-      broadcastAvatarHintEl.textContent = '当前已挂载 easy-live2d Hiyori 模型，播报时会尝试切换待机动作。';
+      broadcastAvatarHintEl.textContent = '当前已挂载 easy-live2d Haru 模型，播报时会尝试切换待机动作。';
       try {
         await sprite.startMotion({
           group: live2DBroadcastConfig.idleMotionGroup || 'Idle',
@@ -737,7 +773,7 @@ function resizeCharts() {
 function renderChartPlaceholder(target, message) {
   if (!target) return;
   target.innerHTML = `
-    <div class="flex h-full items-center justify-center rounded-[1.75rem] border border-dashed border-slate-300 bg-gradient-to-br from-slate-50 via-white to-sky-50 px-6 text-center text-sm leading-7 text-slate-500">
+    <div class="surface-card-soft flex h-full items-center justify-center rounded-[1.75rem] border-dashed border-slate-300 px-6 text-center text-sm leading-7 text-slate-500">
       <div class="max-w-sm">
         <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Analytics Pending</p>
         <p class="mt-3">${message}</p>
@@ -748,18 +784,18 @@ function renderChartPlaceholder(target, message) {
 
 function renderPageEmpty(message = '当前筛选条件下还没有形成可分析的数据。') {
   overviewCardsEl.innerHTML = `
-    <article class="metric-card rounded-[1.9rem] border border-dashed border-slate-300 bg-white/88 px-6 py-8 text-center text-sm text-slate-500 md:col-span-2 xl:col-span-4">
+    <article class="metric-card rounded-[1.9rem] border-dashed border-slate-300 px-6 py-8 text-center text-sm text-slate-500 md:col-span-2 xl:col-span-4">
       <p class="section-kicker">Overview</p>
       <p class="mt-3">${message}</p>
     </article>
   `;
   overallSummaryEl.innerHTML = `
-    <div class="rounded-[1.5rem] bg-white/75 px-5 py-5 text-sm leading-7 text-slate-500">
+    <div class="surface-card-soft rounded-[1.5rem] px-5 py-5 text-sm leading-7 text-slate-500">
       <p>${message}</p>
     </div>
   `;
   chapterSectionsEl.innerHTML = `
-    <article class="chapter-card rounded-[2rem] border border-dashed border-slate-300 bg-white/88 px-6 py-10 text-center text-sm text-slate-500">
+    <article class="chapter-card rounded-[2rem] border-dashed border-slate-300 px-6 py-10 text-center text-sm text-slate-500">
       <p class="section-kicker">Chapter Review</p>
       <p class="mt-3">${message}</p>
     </article>
@@ -806,7 +842,7 @@ function renderOverviewCards(analytics) {
   ];
 
   overviewCardsEl.innerHTML = cards.map((item) => `
-    <article class="metric-card rounded-[1.9rem] border border-white/75 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(241,245,249,0.88))] px-5 py-5 shadow-[0_20px_50px_rgba(15,23,42,0.07)] backdrop-blur">
+    <article class="metric-card rounded-[1.9rem] px-5 py-5">
       <div class="flex items-start justify-between gap-4">
         <div>
           <p class="section-kicker text-slate-500">${item.label}</p>
@@ -834,24 +870,24 @@ function renderOverallSummary(analytics) {
 
   overallSummaryEl.innerHTML = `
     <div class="space-y-4">
-      <div class="rounded-[1.6rem] bg-ocean-deep px-5 py-5 text-white shadow-[0_18px_40px_rgba(17,93,140,0.22)]">
+      <div class="surface-card-accent rounded-[1.6rem] px-5 py-5">
         <p class="section-kicker text-white/60">Overall Reading</p>
         <p class="mt-3 text-sm leading-8 text-white/90">${analytics.overallNarrative}</p>
       </div>
       <div class="grid gap-4 md:grid-cols-2">
-        <div class="rounded-[1.45rem] border border-white/80 bg-white px-4 py-4 shadow-[0_14px_30px_rgba(15,23,42,0.05)]">
+        <div class="surface-card-soft rounded-[1.45rem] px-4 py-4">
           <p class="section-kicker">重点章节</p>
           <p class="mt-3 text-sm leading-7 text-slate-600">${weakestChapters.length ? weakestChapters.join('、') : '当前没有需要重点讲评的章节。'}</p>
         </div>
-        <div class="rounded-[1.45rem] border border-white/80 bg-white px-4 py-4 shadow-[0_14px_30px_rgba(15,23,42,0.05)]">
+        <div class="surface-card-soft rounded-[1.45rem] px-4 py-4">
           <p class="section-kicker">薄弱知识点</p>
           <p class="mt-3 text-sm leading-7 text-slate-600">${weakestKnowledge.length ? weakestKnowledge.join('、') : '当前没有明显集中的薄弱知识点。'}</p>
         </div>
       </div>
       <div class="flex flex-wrap gap-2">
-        <span class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">稳定章节 ${analytics.masteryBucketSummary.strong}</span>
-        <span class="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">巩固章节 ${analytics.masteryBucketSummary.warning}</span>
-        <span class="rounded-full border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700">补强章节 ${analytics.masteryBucketSummary.weak}</span>
+        <span class="status-pill status-pill-strong">稳定章节 ${analytics.masteryBucketSummary.strong}</span>
+        <span class="status-pill status-pill-warning">巩固章节 ${analytics.masteryBucketSummary.warning}</span>
+        <span class="status-pill status-pill-weak">补强章节 ${analytics.masteryBucketSummary.weak}</span>
       </div>
     </div>
   `;
@@ -1036,10 +1072,10 @@ function renderWeakKnowledgeChart(analytics) {
 
 function renderKnowledgeRows(items = []) {
   if (!items.length) {
-    return '<div class="rounded-[1.5rem] border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-sm text-slate-500">当前章节暂无可分析的知识点数据。</div>';
+    return '<div class="surface-card-soft rounded-[1.5rem] border-dashed border-slate-300 px-4 py-6 text-sm text-slate-500">当前章节暂无可分析的知识点数据。</div>';
   }
   return items.map((item, index) => `
-    <div class="rounded-[1.5rem] border border-white/80 bg-white px-4 py-4 shadow-[0_14px_30px_rgba(15,23,42,0.04)]">
+    <div class="knowledge-row-card rounded-[1.5rem] px-4 py-4">
       <div class="flex items-start justify-between gap-4">
         <div>
           <div class="flex flex-wrap items-center gap-2">
@@ -1062,10 +1098,10 @@ function renderAbilityRows(items = []) {
     return '<p class="text-sm text-slate-500">当前章节暂无能力维度数据。</p>';
   }
   return items.map((item) => `
-    <div class="rounded-[1.4rem] border ${masteryTone(item.level)} px-4 py-4">
+    <div class="surface-card-soft rounded-[1.4rem] px-4 py-4">
       <div class="flex items-center justify-between gap-3">
         <span class="text-sm font-semibold">${item.label}</span>
-        <span class="text-sm font-semibold">${formatPercent(item.masteryRate)}</span>
+        <span class="${masteryTone(item.level)}">${formatPercent(item.masteryRate)}</span>
       </div>
       <p class="mt-2 text-xs text-slate-500">共 ${item.totalCount} 次客观题作答，失分 ${item.incorrectCount} 次</p>
       <div class="mt-3 h-2 overflow-hidden rounded-full bg-white/70">
@@ -1083,7 +1119,7 @@ function renderChapterSections(analytics) {
 
   if (!chapters.length) {
     chapterSectionsEl.innerHTML = `
-      <article class="chapter-card rounded-[2rem] border border-dashed border-slate-300 bg-white px-6 py-10 text-center text-sm text-slate-500">
+      <article class="chapter-card rounded-[2rem] border-dashed border-slate-300 px-6 py-10 text-center text-sm text-slate-500">
         当前筛选条件下没有匹配的章节分析结果。
       </article>
     `;
@@ -1093,7 +1129,7 @@ function renderChapterSections(analytics) {
   chapterSectionsEl.innerHTML = chapters.map((chapter) => {
     const theme = chapterTheme(chapter.level);
     return `
-      <article data-chapter-id="${chapter.chapterId}" class="chapter-card rounded-[2.2rem] border border-white/80 bg-white/92 shadow-[0_28px_80px_rgba(15,23,42,0.08)] backdrop-blur">
+      <article data-chapter-id="${chapter.chapterId}" class="chapter-card rounded-[2.2rem]">
         <div class="chapter-hero ${theme.hero} px-6 py-6">
           <div class="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
             <div class="max-w-3xl">
@@ -1130,36 +1166,36 @@ function renderChapterSections(analytics) {
         <div class="grid gap-5 px-6 py-6 xl:grid-cols-[1.02fr_0.98fr]">
           <div class="space-y-5">
             <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              <div class="rounded-[1.45rem] border ${theme.surface} px-4 py-4">
+              <div class="${theme.surface} px-4 py-4">
                 <p class="section-kicker">有效题次</p>
                 <p class="mt-3 text-2xl font-bold text-ocean-deep">${chapter.answeredCount}</p>
                 <p class="mt-2 text-xs text-slate-500">进入统计口径的题目作答总量</p>
               </div>
-              <div class="rounded-[1.45rem] border ${theme.surface} px-4 py-4">
+              <div class="${theme.surface} px-4 py-4">
                 <p class="section-kicker">查看答案</p>
                 <p class="mt-3 text-2xl font-bold text-ocean-deep">${chapter.answerRevealedCount}</p>
                 <p class="mt-2 text-xs text-slate-500">用于判断提示依赖情况</p>
               </div>
-              <div class="rounded-[1.45rem] border ${theme.surface} px-4 py-4">
+              <div class="${theme.surface} px-4 py-4">
                 <p class="section-kicker">知识点数</p>
                 <p class="mt-3 text-2xl font-bold text-ocean-deep">${chapter.knowledgeMastery.length}</p>
                 <p class="mt-2 text-xs text-slate-500">形成章节画像的知识点总数</p>
               </div>
-              <div class="rounded-[1.45rem] border ${theme.surface} px-4 py-4">
+              <div class="${theme.surface} px-4 py-4">
                 <p class="section-kicker">能力标签</p>
                 <p class="mt-3 text-2xl font-bold text-ocean-deep">${chapter.abilityMastery.length}</p>
                 <p class="mt-2 text-xs text-slate-500">用于判断迁移与应用表现</p>
               </div>
             </section>
 
-            <section class="rounded-[1.8rem] border border-white/80 bg-gradient-to-br from-slate-50 via-white to-sky-50 px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+            <section class="surface-card rounded-[1.8rem] px-5 py-5">
               <div class="flex items-center justify-between gap-3">
                 <div>
                   <p class="section-kicker">Knowledge Mastery</p>
                   <h5 class="mt-2 text-xl font-bold text-ocean-deep">章节知识点掌握图</h5>
                   <p class="mt-2 text-sm text-slate-500">按掌握率从低到高展示本章优先讲评的知识点。</p>
                 </div>
-                <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-500 shadow-sm">Top ${Math.min(chapter.weakKnowledgeTopN.length, 5)}</span>
+                <span class="status-pill border-slate-200 bg-white/88 text-slate-500 shadow-sm">Top ${Math.min(chapter.weakKnowledgeTopN.length, 5)}</span>
               </div>
               <div class="mt-4 space-y-3">
                 ${renderKnowledgeRows(chapter.weakKnowledgeTopN)}
@@ -1168,18 +1204,18 @@ function renderChapterSections(analytics) {
           </div>
 
           <div class="space-y-5">
-            <section class="rounded-[1.8rem] border border-white/80 bg-white px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+            <section class="surface-card rounded-[1.8rem] px-5 py-5">
               <p class="section-kicker">Evaluation</p>
               <h5 class="mt-2 text-xl font-bold text-ocean-deep">章节评价结果</h5>
               <p class="mt-4 text-sm leading-8 text-slate-600">${chapter.narrative.evaluation}</p>
             </section>
 
-            <section class="rounded-[1.8rem] border border-white/80 bg-white px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+            <section class="surface-card rounded-[1.8rem] px-5 py-5">
               <p class="section-kicker">Teaching Suggestions</p>
               <h5 class="mt-2 text-xl font-bold text-ocean-deep">教学建议</h5>
               <div class="mt-4 space-y-3">
                 ${chapter.narrative.suggestions.map((item, index) => `
-                  <div class="rounded-[1.4rem] bg-slate-50 px-4 py-4 text-sm leading-7 text-slate-600">
+                  <div class="chapter-suggestion-card rounded-[1.4rem] px-4 py-4 text-sm leading-7 text-slate-600">
                     <span class="mr-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-ocean-deep text-xs font-bold text-white shadow-[0_10px_20px_rgba(17,93,140,0.18)]">${index + 1}</span>
                     ${item}
                   </div>
@@ -1187,7 +1223,7 @@ function renderChapterSections(analytics) {
               </div>
             </section>
 
-            <section class="rounded-[1.8rem] border border-white/80 bg-white px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+            <section class="surface-card rounded-[1.8rem] px-5 py-5">
               <p class="section-kicker">Ability Signals</p>
               <h5 class="mt-2 text-xl font-bold text-ocean-deep">能力维度表现</h5>
               <p class="mt-2 text-sm text-slate-500">优先显示本章掌握率较低的能力标签，用于判断知识迁移与应用表现。</p>
@@ -1358,7 +1394,16 @@ function bindEvents() {
     toggleBroadcastPause();
   });
 
+  overlayPauseBroadcastBtn?.addEventListener('click', () => {
+    toggleBroadcastPause();
+  });
+
   stopBroadcastBtn.addEventListener('click', () => {
+    stopBroadcastPlayback();
+    resetBroadcastDisplay();
+  });
+
+  overlayStopBroadcastBtn?.addEventListener('click', () => {
     stopBroadcastPlayback();
     resetBroadcastDisplay();
   });
